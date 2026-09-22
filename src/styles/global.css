@@ -190,13 +190,22 @@ html {
   -webkit-font-smoothing: antialiased;
 }
 
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
 body {
   font-family: var(--font-body);
   font-size: var(--text-base);
   line-height: 1.7;
   color: var(--text-body);
   background: var(--bg-base);
+}
+
+.page-container {
   overflow-x: hidden;
+  width: 100%;
 }
 
 img, svg, video { display: block; max-width: 100%; }

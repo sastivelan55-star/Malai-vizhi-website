@@ -1,0 +1,255 @@
+---
+---
+
+<section id="pipeline" class="pipeline-section">
+  <div class="container">
+    <div class="section-label dark"><span class="section-label-text">ARCHITECTURE</span></div>
+    <h2 class="display-lg text-white">The Malai Vizhi Pipeline</h2>
+    <p class="body-lg" style="color: rgba(255,255,255,0.7); max-width: 600px; margin-bottom: var(--s16);">
+      Data flows from physical sensors into a multi-tiered intelligence engine, generating a highly accurate point-based risk score before a landslide occurs.
+    </p>
+
+    <div class="pipeline-grid">
+      <!-- 1. RAW INPUTS -->
+      <div class="pipeline-node node-1">
+        <div class="node-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"/><polyline points="16 6 12 2 8 6"/><line x1="12" y1="2" x2="12" y2="15"/></svg>
+        </div>
+        <h3 class="heading-sm text-white">1. Raw Inputs</h3>
+        <p class="body-sm text-gray">Continuous telemetry from IoT soil moisture sensors, IMU tilt meters, satellite rainfall estimates (GPM), and digital elevation models (DEM).</p>
+      </div>
+
+      <!-- Connector 1 -->
+      <div class="pipeline-connector connector-1">
+        <div class="flow-line"></div>
+        <div class="flow-particle"></div>
+      </div>
+
+      <!-- 2. MACHINE LEARNING -->
+      <div class="pipeline-node node-2">
+        <div class="node-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="4" width="16" height="16" rx="2" ry="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+        </div>
+        <h3 class="heading-sm text-white">2. Machine Learning</h3>
+        <p class="body-sm text-gray">Random Forest models isolate non-linear thresholds in soil saturation, while temporal algorithms detect accelerating deformation patterns.</p>
+      </div>
+
+      <!-- Connector 2 -->
+      <div class="pipeline-connector connector-2">
+        <div class="flow-line"></div>
+        <div class="flow-particle"></div>
+      </div>
+
+      <!-- 3. ENSEMBLE PROCESSING -->
+      <div class="pipeline-node node-3">
+        <div class="node-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2v20"/><path d="M12 12h10"/><path d="M2 12h10"/></svg>
+        </div>
+        <h3 class="heading-sm text-white">3. Ensemble Processing</h3>
+        <p class="body-sm text-gray">Outputs are weighted using Dempster-Shafer theory, merging ML predictions with heuristic hydrological thresholds to suppress false positives.</p>
+      </div>
+
+      <!-- Connector 3 -->
+      <div class="pipeline-connector connector-3">
+        <div class="flow-line"></div>
+        <div class="flow-particle"></div>
+      </div>
+
+      <!-- 4. FINAL RISK SCORE -->
+      <div class="pipeline-node node-4">
+        <div class="node-icon highlight">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <h3 class="heading-sm text-white">4. Final Risk Score</h3>
+        <p class="body-sm text-gray">A normalized 0-100 point scale is generated. Any score ≥75 triggers automated regional alerts and immediate localized evacuation protocols.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .pipeline-section {
+    padding: var(--s24) 0;
+    background: var(--bg-navy);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .pipeline-grid {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s8);
+    position: relative;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .pipeline-node {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: var(--r-xl);
+    padding: var(--s8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+    position: relative;
+    z-index: 2;
+    backdrop-filter: blur(10px);
+    transition: transform 0.4s ease, border-color 0.4s ease;
+  }
+
+  .pipeline-node:hover {
+    transform: translateY(-5px);
+    border-color: rgba(255, 255, 255, 0.2);
+  }
+
+  .node-icon {
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--r-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--primary-color);
+  }
+
+  .node-icon.highlight {
+    background: rgba(46, 204, 113, 0.1);
+    color: #2ECC71;
+  }
+
+  .node-icon svg {
+    width: 24px;
+    height: 24px;
+  }
+
+  .text-gray {
+    color: rgba(255, 255, 255, 0.6);
+  }
+
+  /* Desktop layout */
+  @media (min-width: 900px) {
+    .pipeline-grid {
+      flex-direction: row;
+      align-items: flex-start;
+      max-width: 100%;
+      gap: 0;
+    }
+
+    .pipeline-node {
+      flex: 1;
+      margin: 0 16px;
+    }
+
+    .pipeline-connector {
+      flex: 0 0 40px;
+      height: 100px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .flow-line {
+      width: 100%;
+      height: 2px;
+      background: rgba(255, 255, 255, 0.1);
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .flow-particle {
+      width: 8px;
+      height: 8px;
+      background: var(--primary-color);
+      border-radius: 50%;
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      box-shadow: 0 0 10px var(--primary-color);
+      opacity: 0;
+    }
+  }
+
+  /* Mobile layout connectors */
+  @media (max-width: 899px) {
+    .pipeline-connector {
+      height: 40px;
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    .flow-line {
+      width: 2px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .flow-particle {
+      width: 8px;
+      height: 8px;
+      background: var(--primary-color);
+      border-radius: 50%;
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 10px var(--primary-color);
+      opacity: 0;
+    }
+  }
+</style>
+
+<script>
+  // @ts-nocheck
+  (() => {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const isDesktop = window.matchMedia('(min-width: 900px)').matches;
+
+    // Animate nodes appearing
+    gsap.utils.toArray('.pipeline-node').forEach((node, i) => {
+      gsap.from(node, {
+        scrollTrigger: {
+          trigger: '.pipeline-section',
+          start: 'top 70%',
+        },
+        y: 30,
+        opacity: 0,
+        duration: 0.8,
+        delay: i * 0.2,
+        ease: 'power3.out'
+      });
+    });
+
+    // Animate flow particles
+    gsap.utils.toArray('.pipeline-connector').forEach((connector, i) => {
+      const particle = connector.querySelector('.flow-particle');
+      
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: '.pipeline-section',
+          start: 'top 50%',
+        },
+        repeat: -1,
+        delay: i * 0.6
+      });
+
+      if (isDesktop) {
+        tl.to(particle, { opacity: 1, duration: 0.2 })
+          .to(particle, { left: '100%', duration: 1.5, ease: 'linear' }, '-=0.2')
+          .to(particle, { opacity: 0, duration: 0.2 }, '-=0.2');
+      } else {
+        tl.to(particle, { opacity: 1, duration: 0.2 })
+          .to(particle, { top: '100%', duration: 1.5, ease: 'linear' }, '-=0.2')
+          .to(particle, { opacity: 0, duration: 0.2 }, '-=0.2');
+      }
+    });
+  })();
+</script>
