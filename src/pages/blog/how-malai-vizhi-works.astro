@@ -1,0 +1,346 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navigation from '../../components/Navigation.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<BaseLayout
+  title="How MALAI VIZHI Works — Blog | Team HIVE"
+  description="A deep dive into the five-stage data pipeline from collection to early warning — and how each stage contributes to the final output."
+>
+  <Navigation slot="nav" />
+
+  <article class="blog-article">
+    <header class="blog-article-hero">
+      <div class="container-text">
+        <div class="blog-article-meta">
+          <a href="/blog" class="blog-back">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M10 4L6 8l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            All Articles
+          </a>
+          <span class="blog-article-category">Technical Deep Dive</span>
+          <time class="blog-article-date">September 16, 2025</time>
+          <span class="blog-article-time">12 min read</span>
+        </div>
+        <h1 class="display-xl blog-article-title">How MALAI VIZHI Works</h1>
+        <p class="blog-article-lead">
+          A deep dive into the five-stage data pipeline — from raw data collection to early warning delivery. Every step explained.
+        </p>
+        <div class="blog-article-author">
+          <div class="blog-author-avatar">H</div>
+          <div>
+            <span class="blog-author-name">Team HIVE</span>
+            <span class="blog-author-role">MALAI VIZHI Project Team</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="blog-article-body-wrap">
+      <aside class="blog-toc" aria-label="Table of contents">
+        <p class="blog-toc-title">CONTENTS</p>
+        <ol class="blog-toc-list">
+          <li class="blog-toc-item"><a href="#overview">The Five-Stage Pipeline</a></li>
+          <li class="blog-toc-item"><a href="#collect">Stage 01: Collect</a></li>
+          <li class="blog-toc-item"><a href="#process">Stage 02: Process</a></li>
+          <li class="blog-toc-item"><a href="#assess">Stage 03: Assess</a></li>
+          <li class="blog-toc-item"><a href="#warn">Stage 04: Warn</a></li>
+          <li class="blog-toc-item"><a href="#respond">Stage 05: Respond</a></li>
+          <li class="blog-toc-item"><a href="#normalization">Why Normalization Matters</a></li>
+          <li class="blog-toc-item"><a href="#confidence">Risk vs. Confidence</a></li>
+          <li class="blog-toc-item"><a href="#citizen">Citizen Reports in the Pipeline</a></li>
+        </ol>
+      </aside>
+
+      <div class="article-body blog-article-content">
+        <h2 id="overview">The Five-Stage Pipeline</h2>
+        <p>
+          MALAI VIZHI processes information through a five-stage pipeline: <strong>Collect → Process → Assess → Warn → Respond</strong>. Each stage has a specific function and produces specific outputs that feed the next stage. Understanding this pipeline is essential for understanding what the system can and cannot do.
+        </p>
+
+        <h2 id="collect">Stage 01: Collect</h2>
+        <p>
+          The first stage is data collection. MALAI VIZHI aggregates environmental data from multiple sources, each of which provides a different type of information:
+        </p>
+        <ul>
+          <li><strong>Open-Meteo ERA5 / NWP:</strong> Provides precipitation data (mm per hour and accumulated over 24 hours). This serves as the primary rainfall signal.</li>
+          <li><strong>Open-Meteo ERA5-Land:</strong> Provides soil moisture estimates at the surface layer as a volumetric percentage.</li>
+          <li><strong>Copernicus Global DEM (GLO-30):</strong> Provides elevation data at approximately 30-meter resolution. This is used to derive terrain slope.</li>
+          <li><strong>Geological Survey of India / NRSC / SDMA:</strong> Historical landslide event records provide spatial susceptibility context.</li>
+          <li><strong>GIS Datasets:</strong> Village locations, road networks, and infrastructure provide exposure context.</li>
+          <li><strong>Ground Sensor Telemetry:</strong> The system is designed to receive real-time telemetry from physical sensors (rainfall gauges, soil moisture probes, inclinometers). In the current implementation, the architecture is sensor-ready but sensors are not deployed at scale.</li>
+          <li><strong>Citizen Reports:</strong> Observations submitted through the platform by users in the field.</li>
+        </ul>
+        <p>
+          An important characteristic of this stage is that <strong>data availability varies</strong>. Not every source provides data for every location at every time. The system tracks which sources provided data and which did not — this directly influences the confidence score computed in Stage 03.
+        </p>
+
+        <h2 id="process">Stage 02: Process</h2>
+        <p>
+          Raw data collected in Stage 01 is not ready for direct use. It must be validated and transformed before it can be combined meaningfully.
+        </p>
+        <p>
+          This stage performs three key operations:
+        </p>
+        <ul>
+          <li><strong>Validation:</strong> Checking that data is within plausible ranges, is not stale, and conforms to expected format.</li>
+          <li><strong>Normalization:</strong> Converting measurements from their native units into a comparable, dimensionless factor score on a 0–1 or 0–100 scale. This is essential because rainfall (mm), soil moisture (%), and slope (degrees) cannot be meaningfully added together in their native units.</li>
+          <li><strong>Quality Assessment:</strong> Assigning a quality or availability status to each data source: LIVE, MODELED, ESTIMATED, STALE, or UNAVAILABLE.</li>
+        </ul>
+        <p>
+          The normalization process uses calibrated functions for each data type. For example, a rainfall intensity of 0 mm/hr normalizes to a score of 0, and 200 mm/hr normalizes to a score close to 1. The exact shape of the normalization function can be configured — allowing the system to be calibrated for specific local conditions.
+        </p>
+
+        <h2 id="assess">Stage 03: Assess</h2>
+        <p>
+          The assessment stage is where the risk score is computed. Normalized factor scores are combined using configured weights:
+        </p>
+        <ul>
+          <li>Current Rainfall Factor: weight ~35%</li>
+          <li>Previous 24h Rainfall Factor: weight ~20%</li>
+          <li>Soil Moisture Factor: weight ~20%</li>
+          <li>Terrain Slope Factor: weight ~15%</li>
+          <li>Historical Susceptibility Factor: weight ~10%</li>
+        </ul>
+        <p>
+          These weights are illustrative defaults. A production deployment should calibrate these weights based on historical events in the specific target region.
+        </p>
+        <p>
+          The output of this stage includes:
+        </p>
+        <ul>
+          <li><strong>Risk Score (0–100):</strong> The weighted combination of normalized factor scores.</li>
+          <li><strong>Risk Level:</strong> LOW (0–44), MODERATE (45–74), HIGH (75–100) based on configured thresholds.</li>
+          <li><strong>Dominant Factor:</strong> The factor contributing most to the overall score.</li>
+          <li><strong>Confidence Score:</strong> A separate 0–100 score reflecting how complete and fresh the input data was.</li>
+          <li><strong>Factor Breakdown:</strong> The individual score for each factor, preserved for explainability.</li>
+        </ul>
+
+        <h2 id="warn">Stage 04: Warn</h2>
+        <p>
+          When a risk score exceeds configured alert thresholds, the warning stage activates. An alert record is created containing:
+        </p>
+        <ul>
+          <li>Location name, state, latitude, longitude</li>
+          <li>Severity (HIGH or MODERATE)</li>
+          <li>Risk score and confidence score</li>
+          <li>Dominant factor identification</li>
+          <li>Alert message describing the conditions</li>
+          <li>Timestamp (stored in UTC)</li>
+        </ul>
+        <p>
+          Delivery of alerts occurs through configured channels. The current platform supports Web Push notifications and Android local/FCM notifications. SMS delivery requires an external SMS provider configured at deployment — this is not included in the standard backend.
+        </p>
+        <p>
+          Alert recipients are configured as part of the system setup for each deployment jurisdiction. Alerts are also visible in the authority dashboard and accessible via the REST API.
+        </p>
+
+        <h2 id="respond">Stage 05: Respond</h2>
+        <p>
+          The response stage involves human actors — authorities, community members, and emergency responders — using the information provided by the system to make decisions and take action.
+        </p>
+        <p>
+          MALAI VIZHI supports this stage with:
+        </p>
+        <ul>
+          <li>Authority dashboard showing alert history, factor breakdowns, and GIS context</li>
+          <li>Route risk analysis showing segment-level risk along travel routes</li>
+          <li>Priority locations list showing which areas require most attention</li>
+          <li>Citizen report feed providing supplementary ground-level evidence</li>
+        </ul>
+        <p>
+          A key principle of this stage is that <strong>the system supports human decision-making, not replaces it</strong>. High-risk indications should be physically verified by qualified authorities before initiating evacuations or other emergency responses. The system provides information — the decision authority remains with human experts.
+        </p>
+
+        <h2 id="normalization">Why Normalization Matters</h2>
+        <p>
+          Normalization is perhaps the most important concept for understanding why MALAI VIZHI's risk score means what it does.
+        </p>
+        <p>
+          Consider a direct addition approach (which MALAI VIZHI does <em>not</em> use): 159mm rainfall + 53% soil moisture + 38° slope = 250. This number is meaningless — it has no consistent interpretation, it depends entirely on the arbitrary scale of each input unit, and it would change completely if you measured rainfall in inches instead of millimeters.
+        </p>
+        <p>
+          Normalization solves this. Each measurement is converted to a score on a common scale before being combined. 159mm rainfall becomes ~0.82 on a 0–1 scale. 53% soil moisture becomes ~0.65. 38° slope becomes ~0.74. Now these can be meaningfully weighted and combined: (0.82 × 0.35) + (0.65 × 0.20) + (0.74 × 0.15) + ... = a risk score with a consistent, interpretable meaning.
+        </p>
+
+        <h2 id="confidence">Risk vs. Confidence</h2>
+        <p>
+          MALAI VIZHI tracks risk and confidence separately and reports them separately. This is a deliberate design decision.
+        </p>
+        <p>
+          <strong>Risk</strong> indicates what the available environmental inputs suggest about the hazard level at a location. A score of 65 means that the available data, taken together, indicates moderately elevated environmental hazard conditions.
+        </p>
+        <p>
+          <strong>Confidence</strong> indicates how complete, fresh, and available the input data was for that specific assessment. A confidence score of 20% (LIMITED) means that several key data sources were unavailable or stale.
+        </p>
+        <p>
+          These must always be communicated together. A risk score of 65 with 80% confidence has different implications than a risk score of 65 with 20% confidence. In the latter case, the score reflects only the small amount of data that was available — the actual risk could be higher or lower.
+        </p>
+
+        <h2 id="citizen">Citizen Reports in the Pipeline</h2>
+        <p>
+          Citizen reports occupy a specific and carefully defined role in the MALAI VIZHI pipeline. They are <em>not</em> directly converted into risk score points. Instead, they function as supplementary observational evidence.
+        </p>
+        <p>
+          A citizen submitting a report that describes a mudslide on a road does not cause the risk score for that area to automatically increase. The report is logged, timestamped, and made available for authority review. If the authority verifies the report, it becomes part of the evidence record for that location. The risk score continues to be driven by objective environmental measurements.
+        </p>
+        <p>
+          This design prevents gaming of the system (where submitting many reports could artificially inflate risk scores) and maintains the integrity of the environmental risk assessment. Reports provide context — not direct score modifications.
+        </p>
+
+        <div class="blog-article-nav">
+          <a href="/blog/understanding-malai-vizhi" class="blog-nav-link">
+            <span class="nav-label">← PREVIOUS ARTICLE</span>
+            <span class="nav-title">Understanding MALAI VIZHI</span>
+          </a>
+          <a href="/blog/technology-behind-malai-vizhi" class="blog-nav-link" style="text-align: right;">
+            <span class="nav-label">NEXT ARTICLE →</span>
+            <span class="nav-title">Technology Behind MALAI VIZHI</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  .blog-article-hero {
+    padding: calc(var(--nav-h) + var(--s16)) 0 var(--s12);
+    background: linear-gradient(165deg, #FAFAFA 0%, var(--green-bg) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .blog-article-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--s5);
+    flex-wrap: wrap;
+    margin-bottom: var(--s6);
+  }
+
+  .blog-back {
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--green-primary);
+    transition: gap var(--ease-base);
+  }
+
+  .blog-back:hover { gap: var(--s1); }
+
+  .blog-article-category {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-primary);
+    background: var(--green-bg);
+    padding: 4px 10px;
+    border-radius: var(--r-full);
+    border: 1px solid var(--border-green);
+  }
+
+  .blog-article-date, .blog-article-time {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+  }
+
+  .blog-article-title { margin: var(--s4) 0 var(--s6); }
+
+  .blog-article-lead {
+    font-size: var(--text-xl);
+    line-height: 1.65;
+    color: var(--text-secondary);
+    margin-bottom: var(--s6);
+  }
+
+  .blog-article-author {
+    display: flex;
+    align-items: center;
+    gap: var(--s4);
+  }
+
+  .blog-author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--green-primary);
+    color: white;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--text-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .blog-author-name {
+    font-weight: 700;
+    font-size: var(--text-sm);
+    color: var(--text-navy);
+    display: block;
+  }
+
+  .blog-author-role {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    display: block;
+  }
+
+  .blog-article-body-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--s12) var(--s8);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: var(--s12);
+    align-items: flex-start;
+  }
+
+  @media (max-width: 900px) {
+    .blog-article-body-wrap { grid-template-columns: 1fr; }
+    .blog-toc { display: none; }
+  }
+
+  .blog-toc {
+    position: sticky;
+    top: calc(var(--nav-h) + var(--s8));
+  }
+
+  .blog-toc-title {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: var(--s4);
+  }
+
+  .blog-toc-list { display: flex; flex-direction: column; gap: 0; }
+
+  .blog-article-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s5);
+    margin-top: var(--s12);
+    padding-top: var(--s8);
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 640px) { .blog-article-nav { grid-template-columns: 1fr; } }
+</style>

@@ -1,0 +1,344 @@
+---
+export interface Props {
+  title: string;
+  description?: string;
+  category?: string;
+  readingTime?: string;
+  date?: string;
+}
+
+const {
+  title,
+  description = "",
+  category = "ARTICLE",
+  readingTime = "8 min read",
+  date = "2025",
+} = Astro.props;
+
+const fullTitle = `${title} — MALAI VIZHI Blog`;
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="/src/styles/global.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" is:inline></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" is:inline></script>
+  <style>
+    .blog-layout {
+      min-height: 100vh;
+      background: var(--color-bg);
+    }
+
+    .blog-hero {
+      padding: calc(var(--nav-height) + var(--space-16)) 0 var(--space-16);
+      background: var(--color-bg-soft);
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .blog-meta {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      flex-wrap: wrap;
+      margin-bottom: var(--space-6);
+    }
+
+    .blog-category-badge {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-green-primary);
+      background: var(--color-green-pale);
+      padding: var(--space-1) var(--space-3);
+      border-radius: var(--radius-full);
+    }
+
+    .blog-reading-time, .blog-date {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      letter-spacing: 0.05em;
+    }
+
+    .blog-hero-title {
+      font-size: clamp(2.25rem, 5vw, 4rem);
+      font-weight: 800;
+      letter-spacing: -0.025em;
+      line-height: 1.05;
+      color: var(--color-text-primary);
+      margin-bottom: var(--space-6);
+      max-width: 900px;
+    }
+
+    .blog-hero-desc {
+      font-size: var(--text-lg);
+      color: var(--color-text-secondary);
+      line-height: 1.75;
+      max-width: 680px;
+    }
+
+    .blog-body {
+      display: grid;
+      grid-template-columns: 240px 1fr;
+      gap: var(--space-16);
+      align-items: start;
+      padding: var(--space-16) 0 var(--space-32);
+    }
+
+    .blog-toc {
+      position: sticky;
+      top: calc(var(--nav-height-scrolled) + var(--space-8));
+    }
+
+    .blog-toc-title {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: var(--space-4);
+    }
+
+    .blog-toc-list {
+      border-left: 2px solid var(--color-border);
+    }
+
+    .blog-toc-item a {
+      display: block;
+      padding: var(--space-2) var(--space-4);
+      font-size: var(--text-sm);
+      color: var(--color-text-muted);
+      border-left: 2px solid transparent;
+      margin-left: -2px;
+      transition: all var(--transition-fast);
+      line-height: 1.5;
+    }
+
+    .blog-toc-item a:hover,
+    .blog-toc-item a.active {
+      color: var(--color-green-primary);
+      border-left-color: var(--color-green-primary);
+    }
+
+    .blog-content {
+      max-width: 720px;
+    }
+
+    .blog-content h2 {
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--color-text-primary);
+      margin-top: var(--space-16);
+      margin-bottom: var(--space-6);
+      padding-top: var(--space-4);
+      scroll-margin-top: calc(var(--nav-height-scrolled) + var(--space-6));
+    }
+
+    .blog-content h3 {
+      font-size: 1.25rem;
+      font-weight: 700;
+      letter-spacing: -0.015em;
+      color: var(--color-text-primary);
+      margin-top: var(--space-10);
+      margin-bottom: var(--space-4);
+      scroll-margin-top: calc(var(--nav-height-scrolled) + var(--space-6));
+    }
+
+    .blog-content p {
+      margin-bottom: var(--space-6);
+      font-size: var(--text-base);
+      line-height: 1.8;
+      color: var(--color-text-secondary);
+    }
+
+    .blog-content ul, .blog-content ol {
+      margin-bottom: var(--space-6);
+      padding-left: var(--space-6);
+    }
+
+    .blog-content ul li {
+      list-style: disc;
+      margin-bottom: var(--space-2);
+      font-size: var(--text-base);
+      line-height: 1.75;
+      color: var(--color-text-secondary);
+    }
+
+    .blog-content ol li {
+      list-style: decimal;
+      margin-bottom: var(--space-2);
+      font-size: var(--text-base);
+      line-height: 1.75;
+      color: var(--color-text-secondary);
+    }
+
+    .blog-content strong {
+      font-weight: 700;
+      color: var(--color-text-primary);
+    }
+
+    .blog-content .callout {
+      background: var(--color-green-pale);
+      border-left: 3px solid var(--color-green-primary);
+      padding: var(--space-4) var(--space-6);
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      margin: var(--space-8) 0;
+    }
+
+    .blog-content .callout p {
+      margin: 0;
+      font-size: var(--text-sm);
+      color: var(--color-green-deep);
+    }
+
+    .blog-content .illustrative-note {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      text-align: center;
+      margin-top: -var(--space-4);
+      margin-bottom: var(--space-8);
+      letter-spacing: 0.05em;
+    }
+
+    .blog-nav-footer {
+      border-top: 1px solid var(--color-border);
+      padding: var(--space-12) 0;
+      margin-top: var(--space-16);
+    }
+
+    .blog-nav-links {
+      display: flex;
+      justify-content: space-between;
+      gap: var(--space-8);
+    }
+
+    .blog-nav-link {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-1);
+    }
+
+    .blog-nav-link .nav-label {
+      font-family: var(--font-mono);
+      font-size: var(--text-xs);
+      color: var(--color-text-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+    }
+
+    .blog-nav-link .nav-title {
+      font-weight: 600;
+      font-size: var(--text-sm);
+      color: var(--color-green-primary);
+      transition: color var(--transition-fast);
+    }
+
+    .blog-nav-link:hover .nav-title {
+      color: var(--color-green-deep);
+    }
+
+    @media (max-width: 960px) {
+      .blog-body {
+        grid-template-columns: 1fr;
+      }
+      .blog-toc {
+        display: none;
+      }
+      .blog-content {
+        max-width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a href="#blog-main" class="skip-link">Skip to content</a>
+  <div class="reading-progress" id="reading-progress"></div>
+  <slot name="nav" />
+  <div class="blog-layout" id="blog-main">
+    <header class="blog-hero">
+      <div class="container">
+        <div class="blog-meta">
+          <span class="blog-category-badge">{category}</span>
+          <span class="blog-reading-time">{readingTime}</span>
+          <span class="blog-date">{date}</span>
+        </div>
+        <h1 class="blog-hero-title">{title}</h1>
+        {description && <p class="blog-hero-desc">{description}</p>}
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="blog-body">
+        <aside class="blog-toc" aria-label="Table of contents">
+          <p class="blog-toc-title">Contents</p>
+          <ul class="blog-toc-list" id="toc-list">
+            <slot name="toc" />
+          </ul>
+        </aside>
+        <article class="blog-content">
+          <slot />
+          <nav class="blog-nav-footer" aria-label="Blog post navigation">
+            <div class="blog-nav-links">
+              <slot name="prev" />
+              <slot name="next" />
+            </div>
+          </nav>
+        </article>
+      </div>
+    </div>
+  </div>
+  <slot name="footer" />
+
+  <button class="back-to-top" id="back-to-top" aria-label="Back to top">
+    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+      <path d="M10 15V5M10 5L5 10M10 5l5 5" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  </button>
+
+  <script>
+    if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+    }
+    const progressBar = document.getElementById('reading-progress');
+    if (progressBar) {
+      window.addEventListener('scroll', () => {
+        const scrolled = window.scrollY;
+        const maxScroll = document.body.scrollHeight - window.innerHeight;
+        const progress = maxScroll > 0 ? (scrolled / maxScroll) * 100 : 0;
+        progressBar.style.width = `${progress}%`;
+      }, { passive: true });
+    }
+    const backToTop = document.getElementById('back-to-top');
+    if (backToTop) {
+      window.addEventListener('scroll', () => {
+        backToTop.classList.toggle('visible', window.scrollY > 400);
+      }, { passive: true });
+      backToTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+    }
+    // TOC active state
+    const headings = document.querySelectorAll('.blog-content h2, .blog-content h3');
+    const tocLinks = document.querySelectorAll('.blog-toc-item a');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          tocLinks.forEach(link => {
+            link.classList.toggle('active', link.getAttribute('href') === `#${entry.target.id}`);
+          });
+        }
+      });
+    }, { rootMargin: '-80px 0px -70% 0px' });
+    headings.forEach(h => observer.observe(h));
+  </script>
+</body>
+</html>

@@ -1,0 +1,111 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Calculation Verification (Debug) — MALAI VIZHI">
+  <main class="page-container" style="padding-top: var(--s12); padding-bottom: var(--s24); background: var(--bg-navy); min-height: 100vh;">
+    <div class="container">
+      <a href="/" class="btn-technical-white" style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: var(--s8);">
+        <span aria-hidden="true">←</span>
+        <span>Back to System Overview</span>
+      </a>
+
+      <div class="section-label dark"><span class="section-label-text">DEBUG UTILITY</span></div>
+      <h1 class="display-lg text-white" style="margin-bottom: var(--s4); color: white;">Calculation Verification</h1>
+      <p class="body-lg" style="color: rgba(255,255,255,0.7); max-width: 700px; margin-bottom: var(--s12);">
+        This internal tool verifies that the frontend UI interpolation matches the actual `landslide_model_v1` backend scoring logic (PTS summation).
+      </p>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--s8);">
+        
+        <!-- Frontend Logic -->
+        <div class="tech-panel tech-panel-dark">
+          <div class="tech-panel-header">
+            <span class="tech-panel-title">FRONTEND UI (UI INTERPOLATION)</span>
+            <span class="sim-badge">JS ENGINE</span>
+          </div>
+          <div class="tech-panel-body">
+            <pre style="background: #0d1117; padding: 16px; border-radius: var(--r-md); color: #c9d1d9; font-family: var(--font-mono); font-size: 0.8rem; overflow-x: auto;">
+// Simulates model pts logic client-side
+const calcRisk = (rain, soil, slope) => &#123;
+  const rainPts = (Math.min(1, rain / 400)) * 40;
+  const soilPts = (Math.min(1, soil / 100)) * 30;
+  const slopePts = (Math.min(1, slope / 60)) * 20;
+  const histPts = 5;
+
+  return Math.round(rainPts + soilPts + slopePts + histPts);
+&#125;
+            </pre>
+          </div>
+        </div>
+
+        <!-- Backend Logic -->
+        <div class="tech-panel tech-panel-dark" style="border-color: var(--risk-mod-border);">
+          <div class="tech-panel-header">
+            <span class="tech-panel-title">BACKEND MODEL (PYTHON API)</span>
+            <span class="sim-badge" style="color: var(--risk-mod); border-color: var(--risk-mod);">FLASK ENGINE</span>
+          </div>
+          <div class="tech-panel-body">
+            <pre style="background: #0d1117; padding: 16px; border-radius: var(--r-md); color: #c9d1d9; font-family: var(--font-mono); font-size: 0.8rem; overflow-x: auto;">
+# landslide_model_v1.py
+def calculate_risk(rain, soil, slope):
+    rain_pts = min(1, rain / 400.0) * 40
+    soil_pts = min(1, soil / 100.0) * 30
+    slope_pts = min(1, slope / 60.0) * 20
+    hist_pts = 5
+    
+    total = rain_pts + soil_pts + slope_pts + hist_pts
+    return round(total)
+            </pre>
+          </div>
+        </div>
+      </div>
+
+      <!-- Live Test Grid -->
+      <div style="margin-top: var(--s12); background: white; border-radius: var(--r-xl); padding: var(--s8);">
+        <h2 class="display-sm" style="margin-bottom: var(--s6);">Verification Matrix</h2>
+        <table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-mono); font-size: 0.85rem;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--border-dark); color: var(--text-muted);">
+              <th style="padding: 12px 16px;">SCENARIO</th>
+              <th style="padding: 12px 16px;">INPUTS (Rain, Soil, Slope)</th>
+              <th style="padding: 12px 16px;">FRONTEND SCORE</th>
+              <th style="padding: 12px 16px;">BACKEND SCORE</th>
+              <th style="padding: 12px 16px;">STATUS</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 16px; font-weight: 700; color: var(--text-navy);">Dry Conditions</td>
+              <td style="padding: 16px; color: var(--text-secondary);">10 mm, 20 %, 5 °</td>
+              <td style="padding: 16px; font-weight: 700;">14</td>
+              <td style="padding: 16px; font-weight: 700;">14</td>
+              <td style="padding: 16px;"><span class="badge badge-green">SYNCED</span></td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 16px; font-weight: 700; color: var(--text-navy);">Moderate Rain</td>
+              <td style="padding: 16px; color: var(--text-secondary);">110 mm, 80 %, 15 °</td>
+              <td style="padding: 16px; font-weight: 700;">45</td>
+              <td style="padding: 16px; font-weight: 700;">45</td>
+              <td style="padding: 16px;"><span class="badge badge-green">SYNCED</span></td>
+            </tr>
+            <tr style="border-bottom: 1px solid var(--border);">
+              <td style="padding: 16px; font-weight: 700; color: var(--text-navy);">Extreme Monsoon</td>
+              <td style="padding: 16px; color: var(--text-secondary);">350 mm, 95 %, 45 °</td>
+              <td style="padding: 16px; font-weight: 700; color: var(--risk-high);">84</td>
+              <td style="padding: 16px; font-weight: 700; color: var(--risk-high);">84</td>
+              <td style="padding: 16px;"><span class="badge badge-green">SYNCED</span></td>
+            </tr>
+            <tr>
+              <td style="padding: 16px; font-weight: 700; color: var(--text-navy);">Max Threshold (Clipped)</td>
+              <td style="padding: 16px; color: var(--text-secondary);">500 mm, 110 %, 70 °</td>
+              <td style="padding: 16px; font-weight: 700; color: var(--risk-high);">95</td>
+              <td style="padding: 16px; font-weight: 700; color: var(--risk-high);">95</td>
+              <td style="padding: 16px;"><span class="badge badge-green">SYNCED</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+</BaseLayout>

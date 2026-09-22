@@ -1,0 +1,285 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navigation from '../../components/Navigation.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<BaseLayout
+  title="Understanding MALAI VIZHI — Blog | Team HIVE"
+  description="What is MALAI VIZHI, why does it exist, and what problem does it address in the North Eastern Region of India?"
+>
+  <Navigation slot="nav" />
+
+  <article class="blog-article">
+    <!-- Hero -->
+    <header class="blog-article-hero">
+      <div class="container-text">
+        <div class="blog-article-meta">
+          <a href="/blog" class="blog-back">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M10 4L6 8l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            All Articles
+          </a>
+          <span class="blog-article-category">Introduction</span>
+          <time class="blog-article-date">September 15, 2025</time>
+          <span class="blog-article-time">8 min read</span>
+        </div>
+        <h1 class="display-xl blog-article-title">Understanding MALAI VIZHI</h1>
+        <p class="blog-article-lead">
+          What is MALAI VIZHI, why does it exist, and what problem does it address in the North Eastern Region of India?
+        </p>
+        <div class="blog-article-author">
+          <div class="blog-author-avatar">H</div>
+          <div>
+            <span class="blog-author-name">Team HIVE</span>
+            <span class="blog-author-role">MALAI VIZHI Project Team</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Content -->
+    <div class="blog-article-body-wrap">
+      <!-- TOC -->
+      <aside class="blog-toc" aria-label="Table of contents">
+        <p class="blog-toc-title">CONTENTS</p>
+        <ol class="blog-toc-list">
+          <li class="blog-toc-item"><a href="#what-is">What Is MALAI VIZHI?</a></li>
+          <li class="blog-toc-item"><a href="#context">The NER India Context</a></li>
+          <li class="blog-toc-item"><a href="#problem">The Landslide Problem</a></li>
+          <li class="blog-toc-item"><a href="#purpose">Purpose of the System</a></li>
+          <li class="blog-toc-item"><a href="#not-about">What It Is Not</a></li>
+          <li class="blog-toc-item"><a href="#how-name">About the Name</a></li>
+          <li class="blog-toc-item"><a href="#beyond">Beyond a Sensor Network</a></li>
+        </ol>
+      </aside>
+
+      <!-- Body -->
+      <div class="article-body blog-article-content">
+        <h2 id="what-is">What Is MALAI VIZHI?</h2>
+        <p>
+          MALAI VIZHI is a location-based landslide risk monitoring and early-warning platform designed for the North Eastern Region (NER) of India. The platform combines multiple environmental data sources — rainfall, soil moisture, terrain slope, historical landslide data, and citizen-submitted observations — into a unified risk assessment that can be understood by both technical users and community members.
+        </p>
+        <p>
+          The system is not a single sensor. It is not a weather forecast service. And it is not an artificial intelligence system that claims to predict when a landslide will occur. It is a system that aggregates, normalizes, and presents environmental evidence in a way that supports informed risk awareness and earlier preparedness — before environmental conditions become dangerous.
+        </p>
+
+        <h2 id="context">The North Eastern Region India Context</h2>
+        <p>
+          The North Eastern Region of India comprises eight states: Arunachal Pradesh, Assam, Manipur, Meghalaya, Mizoram, Nagaland, Sikkim, and Tripura. Geographically, much of this region sits within mountainous terrain — the eastern Himalayas, the Shillong Plateau, the Naga Hills, the Mizo Hills, and the Barail Range.
+        </p>
+        <p>
+          These landscapes are characterized by steep slopes, dense forest cover, high annual rainfall (some of the highest in the world, including Cherrapunji and Mawsynram in Meghalaya), and a complex pattern of monsoon precipitation. The combination of these factors makes the region inherently susceptible to landslides during and after heavy rainfall events.
+        </p>
+        <p>
+          Communities, roads, bridges, hospitals, and other critical infrastructure exist in this terrain. The ability to understand when environmental conditions are shifting toward more hazardous configurations — even imperfectly — provides time for awareness, preparedness, and response.
+        </p>
+
+        <h2 id="problem">The Landslide Problem</h2>
+        <p>
+          A landslide does not occur because of rainfall alone. The combination of factors that leads to a slope failure involves terrain angle, soil type, vegetation cover, accumulated moisture in the soil column, intensity and duration of rainfall, and the presence of existing instability zones.
+        </p>
+        <p>
+          This means that a monitoring system based on a single signal — for example, "it is raining heavily, so there is risk" — will have limited accuracy and limited usefulness. Sometimes heavy rainfall occurs on terrain where the slope is gentle and the soil drains quickly — landslide risk remains low. Sometimes moderate rainfall occurs on a steep slope where the soil is already saturated from previous weeks — risk can be significantly elevated.
+        </p>
+        <p>
+          MALAI VIZHI is designed to address this fundamental challenge by combining multiple signals rather than relying on any single measurement.
+        </p>
+
+        <h2 id="purpose">The Purpose of the System</h2>
+        <p>
+          The core purpose of MALAI VIZHI is to transform raw environmental data into an understandable and explainable risk indication for a specific geographic location — and to deliver that indication to the people who need it, in a form they can use.
+        </p>
+        <p>
+          This involves:
+        </p>
+        <ul>
+          <li><strong>Collecting</strong> environmental data from available sources (Open-Meteo for rainfall and soil moisture, Copernicus DEM for terrain, historical databases for susceptibility context)</li>
+          <li><strong>Processing</strong> that data to validate, normalize, and assess its quality</li>
+          <li><strong>Assessing</strong> the combined environmental conditions to produce a risk score and risk level classification</li>
+          <li><strong>Warning</strong> configured recipients when risk exceeds configured thresholds</li>
+          <li><strong>Supporting</strong> authority response with contextual information, GIS visualization, and citizen report evidence</li>
+        </ul>
+
+        <h2 id="not-about">What MALAI VIZHI Is Not</h2>
+        <p>
+          Clarity about limitations is as important as clarity about capabilities. MALAI VIZHI is <strong>not</strong> the following:
+        </p>
+        <ul>
+          <li>Not a system that guarantees prediction of when a landslide will occur</li>
+          <li>Not a nationwide physical sensor network — it is designed for ground sensor integration but sensors are not currently deployed at scale</li>
+          <li>Not an AI system using neural networks or trained machine learning models for risk computation</li>
+          <li>Not a system that fabricates values when data is unavailable — missing data is shown as UNAVAILABLE with appropriate confidence reduction</li>
+          <li>Not a replacement for qualified geotechnical assessment, authority verification, or physical ground inspection in critical situations</li>
+        </ul>
+
+        <h2 id="how-name">About the Name: MALAI VIZHI</h2>
+        <p>
+          The name MALAI VIZHI is derived from Tamil — two words that together form a meaningful name for the system. <em>Malai</em> (மலை) means "mountain" or "hill." <em>Vizhi</em> (விழி) means "eye" or "sight." Together, MALAI VIZHI translates as "mountain sight" or more expressively, "seeing the hill" — which aligns with the project tagline: <strong>Seeing the Risk Before the Landslide.</strong>
+        </p>
+        <p>
+          The name reflects the system's purpose: to observe and understand what is happening in mountainous terrain, to make that information visible, and to provide earlier awareness of conditions that may indicate elevated risk.
+        </p>
+
+        <h2 id="beyond">Beyond a Sensor Network</h2>
+        <p>
+          One of the important distinctions of MALAI VIZHI is that it does not require a complete physical sensor network to provide value. The system is designed to ingest sensor data when sensors are available, but it can also operate with satellite-derived environmental data, DEM-based terrain analysis, and historical susceptibility context — all available without deploying physical hardware.
+        </p>
+        <p>
+          This design decision means that the platform can provide risk context even in regions where physical sensor deployment has not yet occurred — while being designed to leverage sensor data as it is deployed incrementally over time.
+        </p>
+        <p>
+          This is reflected in the system's confidence scoring: a risk assessment made without ground sensor data carries lower confidence than one supported by direct telemetry. The system communicates this honestly — a risk score of 65 with 20% confidence (LIMITED) carries different implications than the same risk score with 80% confidence (HIGH).
+        </p>
+
+        <div class="blog-article-nav">
+          <div></div>
+          <a href="/blog/how-malai-vizhi-works" class="blog-nav-link" style="text-align: right;">
+            <span class="nav-label">NEXT ARTICLE →</span>
+            <span class="nav-title">How MALAI VIZHI Works</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  .blog-article-hero {
+    padding: calc(var(--nav-h) + var(--s16)) 0 var(--s12);
+    background: linear-gradient(165deg, #FAFAFA 0%, var(--green-bg) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .blog-article-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--s5);
+    flex-wrap: wrap;
+    margin-bottom: var(--s6);
+  }
+
+  .blog-back {
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--green-primary);
+    transition: gap var(--ease-base);
+  }
+
+  .blog-back:hover { gap: var(--s1); }
+
+  .blog-article-category {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-primary);
+    background: var(--green-bg);
+    padding: 4px 10px;
+    border-radius: var(--r-full);
+    border: 1px solid var(--border-green);
+  }
+
+  .blog-article-date, .blog-article-time {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+  }
+
+  .blog-article-title { margin: var(--s4) 0 var(--s6); }
+
+  .blog-article-lead {
+    font-size: var(--text-xl);
+    line-height: 1.65;
+    color: var(--text-secondary);
+    margin-bottom: var(--s6);
+    font-weight: 400;
+  }
+
+  .blog-article-author {
+    display: flex;
+    align-items: center;
+    gap: var(--s4);
+  }
+
+  .blog-author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--green-primary);
+    color: white;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--text-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .blog-author-name {
+    font-weight: 700;
+    font-size: var(--text-sm);
+    color: var(--text-navy);
+    display: block;
+  }
+
+  .blog-author-role {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    display: block;
+  }
+
+  .blog-article-body-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--s12) var(--s8);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: var(--s12);
+    align-items: flex-start;
+  }
+
+  @media (max-width: 900px) {
+    .blog-article-body-wrap { grid-template-columns: 1fr; }
+    .blog-toc { display: none; }
+  }
+
+  .blog-toc {
+    position: sticky;
+    top: calc(var(--nav-h) + var(--s8));
+  }
+
+  .blog-toc-title {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: var(--s4);
+  }
+
+  .blog-toc-list { display: flex; flex-direction: column; gap: 0; }
+
+  .blog-article-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s5);
+    margin-top: var(--s12);
+    padding-top: var(--s8);
+    border-top: 1px solid var(--border);
+  }
+</style>

@@ -1,0 +1,111 @@
+---
+// FAQ Accordion — 15 real MALAI VIZHI technical questions
+---
+
+<div class="faq-container" id="faq-container">
+  {[
+    {
+      q: "Why not use only rainfall to assess landslide risk?",
+      a: "Rainfall alone does not determine landslide risk. A terrain with very low slope angle may remain stable even under intense rainfall. Conversely, a steep slope with already-saturated soil may be more susceptible under moderate rainfall. MALAI VIZHI combines rainfall, soil moisture, terrain slope, and historical susceptibility to produce a more contextually meaningful assessment."
+    },
+    {
+      q: "How is slope calculated from terrain data?",
+      a: "Slope is derived from Digital Elevation Model (DEM) data provided by the Copernicus Global DEM (GLO-30). For any given point, the system retrieves elevation values at neighboring grid points, calculates the maximum rate of change in elevation over horizontal distance, and converts this to a slope angle in degrees. This derived slope value then becomes one input to the risk analysis engine."
+    },
+    {
+      q: "Does soil moisture become risk points directly?",
+      a: "No. A raw measurement such as 70% soil moisture cannot be directly added to a risk score, because different factors have different units and scales. Soil moisture is first normalized into a soil-risk factor score (typically on a 0–1 or 0–100 scale) using a calibration function. This normalized factor score, weighted by its configured importance, then contributes to the combined risk score."
+    },
+    {
+      q: "Does every sensor contribute risk points to the score?",
+      a: "Sensors provide environmental measurements (rainfall mm, soil moisture %, ground movement mm). These measurements are normalized into factor scores before contributing to risk. A sensor reading of 50mm rainfall is not added as 50 risk points — it is passed through a normalization function that produces a calibrated factor score."
+    },
+    {
+      q: "What happens if a sensor fails or goes offline?",
+      a: "A sensor failure is not automatically interpreted as a landslide event. When a sensor heartbeat is missed, the system marks its data as STALE or OFFLINE, preserves the last valid telemetry reading, and continues operating using remaining available data sources. Possible causes include network failure, power failure, hardware malfunction, or physical damage. Authority verification is required before treating a sensor outage as a confirmed hazard event."
+    },
+    {
+      q: "Does a citizen report automatically increase the risk score?",
+      a: "No. Citizen reports provide supplementary ground-level context and do not directly alter the official environmental risk score. A report is reviewed and, if verified, recorded as additional observational evidence. The risk engine continues to operate on environmental data sources. A citizen report may prompt authorities to investigate further but is not automatically converted into a risk score change."
+    },
+    {
+      q: "What happens if environmental data is unavailable?",
+      a: "When data sources are unavailable, the system shows UNAVAILABLE or LIMITED status for the affected factor. The risk score for that location reflects the reduced data confidence. Overall confidence is separately reported as a score (e.g., 20/100 = LIMITED). The system never fabricates missing values — if Open-Meteo or Copernicus DEM returns no data for a location, those factors are marked as unavailable and confidence is reduced accordingly."
+    },
+    {
+      q: "What is the difference between Risk and Confidence?",
+      a: "Risk indicates what the available environmental inputs suggest about the hazard level. Confidence indicates how complete, fresh, and available those inputs are. An elevated risk score with LIMITED confidence means the available inputs suggest elevated hazard, but there is significant uncertainty because some data sources are missing or stale. Both should be communicated together — not just the risk number."
+    },
+    {
+      q: "Is MALAI VIZHI an AI system?",
+      a: "MALAI VIZHI does not use a trained machine learning model, neural network, or deep learning system for its current risk assessment. The system uses an empirical, physics-informed multi-factor risk analysis engine where environmental measurements are normalized, weighted, and combined into a risk score based on configurable parameters. This approach is explainable — every factor contribution can be traced back to its input measurement."
+    },
+    {
+      q: "How does the alert system generate warnings?",
+      a: "When the risk engine produces a risk score for a monitored location that exceeds a configured threshold, an alert is generated. The alert records the severity, location, contributing factors, and timestamp. Alert delivery mechanisms include web notifications and Android/local notifications. SMS delivery requires an external provider configured separately. The system clearly indicates when SMS is not configured."
+    },
+    {
+      q: "How does offline or low-connectivity mode work?",
+      a: "The MALAI VIZHI web application is designed with PWA (Progressive Web App) capabilities. In low-connectivity conditions, cached data (last known risk state, location information) remains accessible. Any citizen reports or queries entered while offline are queued locally and synchronized automatically when connectivity is restored. The app clearly distinguishes between CACHED, QUEUED, and LIVE data states."
+    },
+    {
+      q: "How does route risk analysis work?",
+      a: "A route is divided into geographic segments. Each segment is analyzed for its underlying terrain conditions (slope, historical susceptibility, proximity to known hazard zones). The combined risk for each segment is assessed independently and displayed as LOW / MODERATE / HIGH along the route. Demo routes are clearly labeled as DEMO ROUTE unless actual road data is used."
+    },
+    {
+      q: "What is Exposure, and how is it different from Hazard?",
+      a: "Hazard refers to the environmental danger — the likelihood or intensity of a landslide occurring at a location. Exposure refers to what is present at or near that location — people, villages, roads, hospitals, power infrastructure. A location with HIGH hazard but LOW exposure (remote uninhabited slope) has a different impact priority than HIGH hazard + HIGH exposure (slope above a village). MALAI VIZHI combines hazard and exposure to inform impact priority."
+    },
+    {
+      q: "What are the real limitations of MALAI VIZHI?",
+      a: "MALAI VIZHI requires: (1) Physical sensor deployment in field conditions, (2) Reliable network connectivity in remote terrain, (3) Complete environmental data — currently many locations return UNAVAILABLE for real-time rainfall and terrain data, (4) Ground validation of high-risk indications, (5) Calibration of risk thresholds for specific regions and terrain types, and (6) Governance and authority workflows configured for operational deployment. These limitations are documented openly and should be considered before operational use."
+    },
+    {
+      q: "Where does the data come from?",
+      a: "MALAI VIZHI uses: Open-Meteo for precipitation and soil moisture environmental data; Copernicus Global DEM (GLO-30) for terrain elevation and derived slope; Geological Survey of India (GSI) and similar sources for historical landslide susceptibility; GIS datasets for spatial context; ground sensor telemetry (sensor-ready architecture); and citizen-submitted reports. Not all sources are available at all locations at all times."
+    },
+  ].map((item, i) => (
+    <div class="faq-item" id={`faq-${i}`}>
+      <button
+        class="faq-trigger"
+        aria-expanded="false"
+        aria-controls={`faq-body-${i}`}
+        id={`faq-trigger-${i}`}
+      >
+        <span>{item.q}</span>
+        <span class="faq-icon" aria-hidden="true">+</span>
+      </button>
+      <div class="faq-body" id={`faq-body-${i}`} role="region" aria-labelledby={`faq-trigger-${i}`}>
+        <p>{item.a}</p>
+      </div>
+    </div>
+  ))}
+</div>
+
+<script>
+  (() => {
+    document.querySelectorAll('.faq-trigger').forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.closest('.faq-item');
+        const isOpen = item.classList.contains('open');
+
+        // Close all
+        document.querySelectorAll('.faq-item.open').forEach(openItem => {
+          openItem.classList.remove('open');
+          openItem.querySelector('.faq-trigger')?.setAttribute('aria-expanded', 'false');
+        });
+
+        // Open clicked if was closed
+        if (!isOpen) {
+          item.classList.add('open');
+          trigger.setAttribute('aria-expanded', 'true');
+
+          // Smooth scroll to item
+          setTimeout(() => {
+            item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+          }, 100);
+        }
+      });
+    });
+  })();
+</script>

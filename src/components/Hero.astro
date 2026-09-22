@@ -1,0 +1,460 @@
+---
+---
+<section class="hero" aria-labelledby="hero-title">
+  <!-- Canvas Terrain Background -->
+  <canvas class="hero-canvas" id="hero-canvas" aria-hidden="true"></canvas>
+
+  <!-- SVG Mountain Terrain Overlay -->
+  <div class="hero-terrain" aria-hidden="true">
+    <svg class="terrain-svg" viewBox="0 0 1400 600" preserveAspectRatio="xMidYMax meet" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Contour lines — back layers -->
+      <path class="contour c-1" d="M-50 580 Q200 540 400 510 Q600 480 800 500 Q1000 520 1200 490 Q1350 465 1450 470" stroke="#E8F0E8" stroke-width="1.5"/>
+      <path class="contour c-2" d="M-50 540 Q150 490 350 460 Q550 430 750 450 Q950 470 1150 440 Q1300 415 1450 425" stroke="#D8EDD8" stroke-width="1.5"/>
+      <path class="contour c-3" d="M-50 500 Q100 440 300 410 Q500 378 700 400 Q900 422 1100 390 Q1260 365 1450 375" stroke="#C8E8C8" stroke-width="1.5"/>
+      <path class="contour c-4" d="M-50 460 Q100 390 280 360 Q460 328 660 350 Q860 372 1060 340 Q1220 315 1450 330" stroke="#B8E0B8" stroke-width="1.5"/>
+      <path class="contour c-5" d="M-50 420 Q80 340 240 310 Q400 278 600 300 Q800 322 1000 290 Q1160 265 1450 285" stroke="#A8D8A8" stroke-width="1.5"/>
+
+      <!-- Mid terrain fill -->
+      <path class="terrain-fill t-1" d="M0 600 L0 480 Q200 440 400 410 Q600 378 800 400 Q1000 422 1200 390 Q1350 365 1400 375 L1400 600 Z" fill="#F0F7F0" opacity="0.8"/>
+
+      <!-- Front ridgeline -->
+      <path class="terrain-fill t-2" d="M0 600 L0 520 Q150 480 300 455 Q450 428 600 442 Q750 456 900 430 Q1050 405 1200 420 Q1320 432 1400 425 L1400 600 Z" fill="#E8F3E8" opacity="0.9"/>
+
+      <!-- Mountain silhouette peaks -->
+      <path class="mountain-peak pk-1" d="M200 600 L280 360 L360 600 Z" fill="#D8EDD8" opacity="0.7"/>
+      <path class="mountain-peak pk-2" d="M450 600 L560 290 L670 600 Z" fill="#C8E5C8" opacity="0.75"/>
+      <path class="mountain-peak pk-3" d="M750 600 L840 320 L930 600 Z" fill="#D0E9D0" opacity="0.65"/>
+      <path class="mountain-peak pk-4" d="M1000 600 L1080 380 L1160 600 Z" fill="#D8EDD8" opacity="0.6"/>
+      <path class="mountain-peak pk-5" d="M1200 600 L1270 340 L1340 600 Z" fill="#C8E5C8" opacity="0.65"/>
+
+      <!-- Elevation labels -->
+      <text class="elev-label" x="280" y="350" fill="#2D6A4F" font-family="JetBrains Mono, monospace" font-size="9" opacity="0.4" letter-spacing="1">1420m</text>
+      <text class="elev-label" x="560" y="280" fill="#2D6A4F" font-family="JetBrains Mono, monospace" font-size="9" opacity="0.4" letter-spacing="1">1680m</text>
+      <text class="elev-label" x="840" y="310" fill="#2D6A4F" font-family="JetBrains Mono, monospace" font-size="9" opacity="0.4" letter-spacing="1">1540m</text>
+
+      <!-- Risk zone markers -->
+      <g class="risk-markers">
+        <circle class="risk-dot" cx="560" cy="420" r="8" fill="#DC2626" opacity="0.7"/>
+        <circle class="risk-dot" cx="560" cy="420" r="16" fill="#DC2626" opacity="0.2"/>
+        <circle class="risk-dot" cx="280" cy="480" r="6" fill="#D97706" opacity="0.6"/>
+        <circle class="risk-dot" cx="280" cy="480" r="12" fill="#D97706" opacity="0.15"/>
+        <circle class="risk-dot" cx="840" cy="460" r="5" fill="#16A34A" opacity="0.6"/>
+        <circle class="risk-dot" cx="840" cy="460" r="10" fill="#16A34A" opacity="0.15"/>
+      </g>
+
+      <!-- Data grid lines (subtle) -->
+      <g class="data-grid" opacity="0.08" stroke="#2D6A4F" stroke-width="0.5">
+        <line x1="0" y1="100" x2="1400" y2="100"/>
+        <line x1="0" y1="200" x2="1400" y2="200"/>
+        <line x1="0" y1="300" x2="1400" y2="300"/>
+        <line x1="0" y1="400" x2="1400" y2="400"/>
+        <line x1="0" y1="500" x2="1400" y2="500"/>
+        <line x1="200" y1="0" x2="200" y2="600"/>
+        <line x1="400" y1="0" x2="400" y2="600"/>
+        <line x1="600" y1="0" x2="600" y2="600"/>
+        <line x1="800" y1="0" x2="800" y2="600"/>
+        <line x1="1000" y1="0" x2="1000" y2="600"/>
+        <line x1="1200" y1="0" x2="1200" y2="600"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- Hero Content -->
+  <div class="hero-content" id="hero-content">
+    <div class="hero-tag">
+      <span class="label">Landslide Risk Monitoring & Early Warning</span>
+    </div>
+
+    <h1 class="hero-title" id="hero-title">
+      <span class="hero-word hero-word-1" aria-label="MALAI VIZHI">MALAI</span>
+      <span class="hero-word hero-word-2">VIZHI</span>
+    </h1>
+
+    <p class="hero-subtitle">Seeing the Risk Before the Landslide.</p>
+
+    <p class="hero-body">
+      MALAI VIZHI is a multi-factor landslide risk monitoring and early-warning platform that combines environmental, terrain and location-based information to help communities and authorities understand changing landslide risk.
+    </p>
+
+    <div class="hero-actions">
+      <a href="/how-it-works" class="btn btn-primary" id="hero-cta-primary">
+        Explore MALAI VIZHI
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </a>
+      <a href="#how-it-works-section" class="btn btn-outline" id="hero-cta-secondary">How It Works</a>
+    </div>
+
+    <!-- Data strip -->
+    <div class="hero-data-strip" aria-label="Key monitoring factors">
+      <div class="hero-data-item">
+        <span class="hero-data-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 2v3M5 4l2 2M11 4l-2 2M3 9h10M5 12h6" stroke="#2D6A4F" stroke-width="1.25" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span>Rainfall</span>
+      </div>
+      <div class="hero-data-sep" aria-hidden="true"></div>
+      <div class="hero-data-item">
+        <span class="hero-data-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M8 3Q5 6 5 9a3 3 0 006 0Q11 6 8 3Z" stroke="#2D6A4F" stroke-width="1.25" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span>Soil Moisture</span>
+      </div>
+      <div class="hero-data-sep" aria-hidden="true"></div>
+      <div class="hero-data-item">
+        <span class="hero-data-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M2 14L6 6L10 10L14 2" stroke="#2D6A4F" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span>Terrain Slope</span>
+      </div>
+      <div class="hero-data-sep" aria-hidden="true"></div>
+      <div class="hero-data-item">
+        <span class="hero-data-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <circle cx="8" cy="8" r="5" stroke="#2D6A4F" stroke-width="1.25"/>
+            <path d="M8 3v2M8 11v2M3 8h2M11 8h2" stroke="#2D6A4F" stroke-width="1.25" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span>Location Context</span>
+      </div>
+      <div class="hero-data-sep" aria-hidden="true"></div>
+      <div class="hero-data-item">
+        <span class="hero-data-icon" aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M3 13l4-8 3 5 2-3 2 6" stroke="#2D6A4F" stroke-width="1.25" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </span>
+        <span>Historical Hazard</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll indicator -->
+  <div class="hero-scroll-hint" aria-hidden="true">
+    <span class="label-dark">Scroll to explore</span>
+    <div class="scroll-indicator">
+      <div class="scroll-dot"></div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    overflow: hidden;
+    background: linear-gradient(170deg, #FFFFFF 0%, #F7F9FC 50%, #F0F7F0 100%);
+    padding-top: var(--nav-height);
+  }
+
+  /* Canvas */
+  .hero-canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+  }
+
+  /* Terrain SVG */
+  .hero-terrain {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .terrain-svg {
+    width: 100%;
+    height: auto;
+  }
+
+  /* Content */
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: var(--max-width-wide);
+    width: 100%;
+    margin: 0 auto;
+    padding: var(--space-16) var(--space-8);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .hero-tag {
+    margin-bottom: var(--space-6);
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  .hero-title {
+    display: flex;
+    flex-direction: column;
+    line-height: 0.88;
+    margin-bottom: var(--space-8);
+  }
+
+  .hero-word {
+    display: block;
+    font-family: var(--font-sans);
+    font-weight: 900;
+    font-size: clamp(5rem, 17vw, 13rem);
+    letter-spacing: -0.04em;
+    color: var(--color-text-primary);
+    opacity: 0;
+    transform: translateY(40px);
+  }
+
+  .hero-word-2 {
+    color: var(--color-green-primary);
+    -webkit-text-stroke: 0;
+  }
+
+  .hero-subtitle {
+    font-size: clamp(1.25rem, 2.5vw, 1.875rem);
+    font-weight: 300;
+    color: var(--color-text-secondary);
+    letter-spacing: -0.01em;
+    margin-bottom: var(--space-6);
+    max-width: 560px;
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .hero-body {
+    font-size: var(--text-base);
+    line-height: 1.75;
+    color: var(--color-text-muted);
+    max-width: 540px;
+    margin-bottom: var(--space-10);
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  .hero-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-16);
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  /* Data Strip */
+  .hero-data-strip {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    flex-wrap: wrap;
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  .hero-data-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-2) var(--space-4);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+  }
+
+  .hero-data-sep {
+    width: 1px;
+    height: 16px;
+    background: var(--color-border-strong);
+  }
+
+  /* Scroll hint */
+  .hero-scroll-hint {
+    position: absolute;
+    bottom: var(--space-8);
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-3);
+    opacity: 0;
+  }
+
+  .scroll-indicator {
+    width: 24px;
+    height: 40px;
+    border: 1.5px solid var(--color-border-strong);
+    border-radius: var(--radius-full);
+    display: flex;
+    justify-content: center;
+    padding-top: 6px;
+  }
+
+  .scroll-dot {
+    width: 4px;
+    height: 4px;
+    background: var(--color-green-primary);
+    border-radius: var(--radius-full);
+    animation: scrollPulse 2s ease-in-out infinite;
+  }
+
+  @keyframes scrollPulse {
+    0%, 100% { transform: translateY(0); opacity: 1; }
+    50%       { transform: translateY(16px); opacity: 0.3; }
+  }
+
+  /* Risk dots pulse */
+  .risk-dot {
+    animation: riskPulse 3s ease-in-out infinite;
+  }
+  .risk-dot:nth-child(1) { animation-delay: 0s; }
+  .risk-dot:nth-child(2) { animation-delay: 0.5s; }
+  .risk-dot:nth-child(3) { animation-delay: 1s; }
+  .risk-dot:nth-child(4) { animation-delay: 0.3s; }
+  .risk-dot:nth-child(5) { animation-delay: 0.8s; }
+  .risk-dot:nth-child(6) { animation-delay: 1.3s; }
+
+  @keyframes riskPulse {
+    0%, 100% { opacity: 0.7; transform: scale(1); }
+    50%       { opacity: 0.3; transform: scale(0.8); }
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero-content {
+      padding: var(--space-10) var(--space-4);
+      align-items: center;
+      text-align: center;
+    }
+    .hero-word {
+      font-size: clamp(4rem, 20vw, 8rem);
+    }
+    .hero-actions { justify-content: center; }
+    .hero-data-strip { justify-content: center; }
+    .hero-body { text-align: left; max-width: 100%; }
+    .hero-subtitle { text-align: center; max-width: 100%; }
+  }
+</style>
+
+<script>
+  (() => {
+    if (typeof gsap === 'undefined') return;
+
+    // Hero entrance animations
+    const tl = gsap.timeline({ delay: 0.5 });
+
+    tl.to('.hero-tag', { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' })
+      .to('.hero-word-1', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, '-=0.3')
+      .to('.hero-word-2', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, '-=0.6')
+      .to('.hero-subtitle', { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.4')
+      .to('.hero-body', { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.4')
+      .to('.hero-actions', { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.4')
+      .to('.hero-data-strip', { opacity: 1, y: 0, duration: 0.7, ease: 'power2.out' }, '-=0.3')
+      .to('.hero-scroll-hint', { opacity: 1, duration: 0.8, ease: 'power2.out' }, '-=0.2');
+
+    // Contour lines parallax
+    if (typeof ScrollTrigger !== 'undefined') {
+      gsap.registerPlugin(ScrollTrigger);
+      gsap.to('.contour', {
+        y: (i) => (i + 1) * -15,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1.5,
+        }
+      });
+      gsap.to('.mountain-peak', {
+        y: -30,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hero',
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 2,
+        }
+      });
+      gsap.to('.hero-content', {
+        opacity: 0,
+        y: -60,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.hero',
+          start: '30% top',
+          end: 'bottom top',
+          scrub: 1,
+        }
+      });
+    }
+
+    // Canvas rainfall particles
+    const canvas = document.getElementById('hero-canvas');
+    if (!canvas || !(canvas instanceof HTMLCanvasElement)) return;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    let W = 0, H = 0;
+    const drops = [];
+
+    function resize() {
+      W = canvas.width = canvas.offsetWidth;
+      H = canvas.height = canvas.offsetHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize, { passive: true });
+
+    for (let i = 0; i < 80; i++) {
+      drops.push({
+        x: Math.random() * 1600,
+        y: Math.random() * 1200,
+        len: Math.random() * 12 + 4,
+        speed: Math.random() * 2 + 1.5,
+        opacity: Math.random() * 0.25 + 0.05,
+        wind: Math.random() * 0.5 - 0.1,
+      });
+    }
+
+    let animId;
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      drops.forEach(d => {
+        ctx.beginPath();
+        ctx.moveTo(d.x, d.y);
+        ctx.lineTo(d.x + d.wind * 6, d.y + d.len);
+        ctx.strokeStyle = `rgba(45,106,79,${d.opacity})`;
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+        d.y += d.speed;
+        d.x += d.wind;
+        if (d.y > H) { d.y = -20; d.x = Math.random() * W; }
+        if (d.x > W) { d.x = 0; }
+      });
+      animId = requestAnimationFrame(draw);
+    }
+
+    // Only animate if not reduced motion
+    if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      draw();
+    }
+  })();
+</script>

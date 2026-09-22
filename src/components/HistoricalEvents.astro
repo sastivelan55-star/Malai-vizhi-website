@@ -1,0 +1,178 @@
+---
+// Historical Events component — fetches from /api/historical-events
+---
+
+<div class="history-panel" id="history-panel">
+  <div class="history-header">
+    <span class="badge badge-historical"><span class="badge-dot"></span>VERIFIED HISTORICAL EVENTS</span>
+    <span class="illustrative-note" style="font-size: 0.6rem; padding: 2px 6px;">SOURCE: GSI + SDMA + NRSC</span>
+  </div>
+  <div class="history-timeline" id="history-timeline">
+    {Array.from({length: 3}).map(() => (
+      <div class="alert-skeleton" style="height: 72px; margin: var(--s3) 0;"></div>
+    ))}
+  </div>
+</div>
+
+<style>
+  .history-panel {
+    background: var(--bg-white);
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .history-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--s4) var(--s6);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-soft);
+    flex-wrap: wrap;
+    gap: var(--s3);
+  }
+
+  .history-timeline {
+    position: relative;
+    padding: var(--s5) var(--s6);
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .history-timeline::before {
+    content: '';
+    position: absolute;
+    left: calc(var(--s6) + 16px);
+    top: var(--s5);
+    bottom: var(--s5);
+    width: 1.5px;
+    background: linear-gradient(to bottom, var(--border-mid), transparent);
+  }
+
+  .history-event {
+    display: grid;
+    grid-template-columns: 34px 1fr;
+    gap: var(--s4);
+    padding: var(--s4) 0;
+    animation: fadeIn 0.5s ease forwards;
+    position: relative;
+  }
+
+  .history-event-dot {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    z-index: 1;
+  }
+
+  .sev-CRITICAL { background: var(--risk-high-bg); border: 2px solid var(--risk-high); }
+  .sev-MAJOR    { background: var(--risk-mod-bg);  border: 2px solid var(--risk-mod); }
+  .sev-MODERATE { background: #EFF6FF; border: 2px solid #93C5FD; }
+
+  .history-event-body { min-width: 0; }
+
+  .history-event-top {
+    display: flex;
+    align-items: center;
+    gap: var(--s3);
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+
+  .history-event-location {
+    font-weight: 700;
+    font-size: var(--text-sm);
+    color: var(--text-navy);
+  }
+
+  .history-event-date {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+  }
+
+  .history-event-desc {
+    font-size: var(--text-xs);
+    color: var(--text-secondary);
+    line-height: 1.6;
+    margin-bottom: 4px;
+  }
+
+  .history-event-source {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--text-light);
+    letter-spacing: 0.06em;
+  }
+
+  .alert-skeleton {
+    background: linear-gradient(90deg, var(--bg-soft) 25%, var(--bg-muted) 50%, var(--bg-soft) 75%);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    border-radius: var(--r-md);
+  }
+
+  @keyframes shimmer {
+    0%   { background-position: -200% 0; }
+    100% { background-position:  200% 0; }
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+
+<script>
+  (() => {
+    const timeline = document.getElementById('history-timeline');
+
+    const sevIcon = (s) => {
+      if (s === 'CRITICAL') return '🔴';
+      if (s === 'MAJOR') return '🟠';
+      return '🔵';
+    };
+
+    fetch('https://backend-malaivizhi2-0.onrender.com/api/historical-events', { signal: AbortSignal.timeout(10000) })
+      .then(r => r.json())
+      .then(data => {
+        if (!timeline) return;
+        timeline.innerHTML = '';
+
+        // Sort by date descending
+        const sorted = [...data].sort((a, b) => new Date(b.date) - new Date(a.date));
+
+        sorted.forEach((event, i) => {
+          const item = document.createElement('div');
+          item.className = 'history-event';
+          item.style.animationDelay = `${i * 0.1}s`;
+          item.innerHTML = `
+            <div class="history-event-dot sev-${event.severity}">${sevIcon(event.severity)}</div>
+            <div class="history-event-body">
+              <div class="history-event-top">
+                <span class="history-event-location">${event.location}</span>
+                <span class="history-event-date">${event.date}</span>
+                <span class="badge badge-risk-${event.severity === 'CRITICAL' ? 'high' : event.severity === 'MAJOR' ? 'mod' : 'low'}">${event.severity}</span>
+                <span class="badge badge-${event.status === 'VERIFIED' ? 'live' : 'limited'}">${event.status}</span>
+              </div>
+              <p class="history-event-desc">${event.description}</p>
+              <p class="history-event-source">Source: ${event.source}</p>
+            </div>
+          `;
+          timeline.appendChild(item);
+        });
+      })
+      .catch(() => {
+        if (timeline) timeline.innerHTML = '<div style="padding: var(--s6); text-align:center; font-size: var(--text-sm); color: var(--text-muted);">Unable to load historical events. Backend may be starting up.</div>';
+      });
+  })();
+</script>

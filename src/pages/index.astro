@@ -1,17 +1,3881 @@
 ---
-
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import LiveAlertsFeed from '../components/LiveAlertsFeed.astro';
+import CitizenReportsFeed from '../components/CitizenReportsFeed.astro';
+import HistoricalEvents from '../components/HistoricalEvents.astro';
+import GISMapSection from '../components/GISMapSection.astro';
+import FAQAccordion from '../components/FAQAccordion.astro';
+import TechGlossary from '../components/TechGlossary.astro';
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="MALAI VIZHI — Landslide Risk Monitoring & Early Warning | Team HIVE"
+  description="MALAI VIZHI is a premium landslide risk monitoring and early-warning platform for the North Eastern Region of India. Multi-factor risk analysis, GIS mapping, citizen reporting, real-time alerts."
+>
+  <Navigation slot="nav" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    HERO SECTION
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="hero-section" id="home" aria-label="MALAI VIZHI introduction">
+    <!-- Terrain background canvas -->
+    <canvas class="hero-canvas" id="hero-canvas" aria-hidden="true"></canvas>
+
+    <!-- Topographic overlay lines -->
+    <div class="hero-topo-overlay" aria-hidden="true">
+      <svg viewBox="0 0 1440 600" fill="none" preserveAspectRatio="xMidYMid slice">
+        <path d="M-100 500 Q200 420 400 450 Q600 480 800 380 Q1000 280 1200 320 Q1400 360 1600 280" stroke="rgba(45,106,79,0.12)" stroke-width="1.5" fill="none"/>
+        <path d="M-100 540 Q200 460 400 490 Q600 520 800 420 Q1000 320 1200 360 Q1400 400 1600 320" stroke="rgba(45,106,79,0.08)" stroke-width="1" fill="none"/>
+        <path d="M-100 460 Q200 380 400 410 Q600 440 800 340 Q1000 240 1200 280 Q1400 320 1600 240" stroke="rgba(45,106,79,0.08)" stroke-width="1" fill="none"/>
+        <path d="M-100 400 Q300 300 500 340 Q700 380 900 260 Q1100 140 1300 200 Q1500 260 1700 180" stroke="rgba(45,106,79,0.06)" stroke-width="0.75" fill="none"/>
+        <path d="M-100 580 Q400 500 700 520 Q1000 540 1300 480 Q1600 420 1800 460" stroke="rgba(45,106,79,0.06)" stroke-width="0.75" fill="none"/>
+        <!-- Grid dots -->
+        <circle cx="200" cy="350" r="2" fill="rgba(45,106,79,0.15)"/>
+        <circle cx="400" cy="280" r="2" fill="rgba(45,106,79,0.15)"/>
+        <circle cx="650" cy="310" r="3" fill="rgba(185,28,28,0.3)"/>
+        <circle cx="900" cy="240" r="2" fill="rgba(45,106,79,0.15)"/>
+        <circle cx="1100" cy="290" r="2" fill="rgba(45,106,79,0.15)"/>
+        <circle cx="1350" cy="220" r="2.5" fill="rgba(180,83,9,0.3)"/>
+        <!-- Monitoring point pulses -->
+        <circle cx="650" cy="310" r="8" stroke="rgba(185,28,28,0.25)" stroke-width="1" fill="none" class="hero-pulse-1"/>
+        <circle cx="650" cy="310" r="16" stroke="rgba(185,28,28,0.12)" stroke-width="0.75" fill="none" class="hero-pulse-2"/>
+        <circle cx="1350" cy="220" r="8" stroke="rgba(180,83,9,0.25)" stroke-width="1" fill="none" class="hero-pulse-1"/>
+        <circle cx="1350" cy="220" r="16" stroke="rgba(180,83,9,0.12)" stroke-width="0.75" fill="none" class="hero-pulse-2"/>
+      </svg>
+    </div>
+
+    <div class="container">
+      <div class="hero-inner">
+        <!-- Left content -->
+        <div class="hero-content gsap-reveal-up">
+          <!-- Label -->
+          <div class="hero-label">
+            <span class="hero-label-tag">TEAM HIVE</span>
+            <span class="hero-label-divider" aria-hidden="true">·</span>
+            <span class="hero-label-text">LANDSLIDE RISK MONITORING & EARLY WARNING</span>
+          </div>
+
+          <!-- Main title -->
+          <h1 class="hero-title" aria-label="MALAI VIZHI">
+            <span class="hero-title-main">MALAI</span>
+            <span class="hero-title-main hero-title-accent">VIZHI</span>
+          </h1>
+
+          <!-- Tagline -->
+          <p class="hero-tagline">Seeing the Risk Before the Landslide.</p>
+
+          <!-- Description -->
+          <p class="hero-desc">
+            MALAI VIZHI is a location-based landslide risk monitoring and early-warning platform designed to combine environmental, terrain, historical and ground-level information into an understandable risk assessment for communities and authorities in the <strong>North Eastern Region of India</strong>.
+          </p>
+
+          <!-- CTA Buttons -->
+          <div class="hero-actions">
+            <a href="#how-it-works" class="btn-primary" id="hero-btn-explore">
+              <span>Explore MALAI VIZHI</span>
+              <svg class="btn-arrow" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a href="#risk-engine" class="btn-outline" id="hero-btn-risk">
+              <span>View Risk Engine</span>
+              <svg class="btn-arrow" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
+            <a href="https://backend-malaivizhi2-0.onrender.com/api/health" class="btn-technical" target="_blank" rel="noopener" id="hero-btn-api">
+              <svg width="8" height="8" viewBox="0 0 8 8" fill="none" aria-hidden="true">
+                <circle cx="4" cy="4" r="3" fill="currentColor"/>
+              </svg>
+              LIVE API STATUS
+            </a>
+          </div>
+
+          <!-- Technical status strip -->
+          <div class="hero-status-strip" role="list" aria-label="System capabilities">
+            <div class="hero-status-item" role="listitem">
+              <span class="hero-status-dot green" aria-hidden="true"></span>
+              <span>MULTI-SOURCE DATA</span>
+            </div>
+            <div class="hero-status-item" role="listitem">
+              <span class="hero-status-dot green" aria-hidden="true"></span>
+              <span>GIS MONITORING</span>
+            </div>
+            <div class="hero-status-item" role="listitem">
+              <span class="hero-status-dot green" aria-hidden="true"></span>
+              <span>EXPLAINABLE RISK</span>
+            </div>
+            <div class="hero-status-item" role="listitem">
+              <span class="hero-status-dot" id="hero-system-dot" aria-hidden="true"></span>
+              <span id="hero-system-status">SYSTEM DEMO</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right — Live dashboard panel -->
+        <div class="hero-panel gsap-reveal-right">
+          <div class="hero-panel-header">
+            <span class="hero-panel-title">SYSTEM OVERVIEW</span>
+            <span class="badge badge-limited" id="hero-panel-badge">
+              <span class="badge-dot"></span>LIMITED DATA
+            </span>
+          </div>
+
+          <!-- Live numbers from API -->
+          <div class="hero-stats-grid">
+            <div class="hero-stat">
+              <div class="hero-stat-num" id="stat-alerts">—</div>
+              <div class="hero-stat-label">Active Alerts</div>
+              <span class="badge badge-live" style="margin-top: 4px; font-size: 0.55rem;">REAL-TIME</span>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-num" id="stat-events">3</div>
+              <div class="hero-stat-label">Historical Events</div>
+              <span class="badge badge-historical" style="margin-top: 4px; font-size: 0.55rem;">VERIFIED</span>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-num" id="stat-reports">—</div>
+              <div class="hero-stat-label">Ground Reports</div>
+              <span class="badge badge-demo" style="margin-top: 4px; font-size: 0.55rem;">CITIZEN</span>
+            </div>
+            <div class="hero-stat">
+              <div class="hero-stat-num">0</div>
+              <div class="hero-stat-label">Live Sensors</div>
+              <span class="badge badge-unavail" style="margin-top: 4px; font-size: 0.55rem;">SENSOR-READY</span>
+            </div>
+          </div>
+
+          <!-- Coverage regions -->
+          <div class="hero-coverage">
+            <p class="hero-coverage-label">COVERAGE AREA · NER INDIA</p>
+            <div class="hero-regions">
+              {['Meghalaya','Assam','Nagaland','Manipur','Mizoram','Tripura','Arunachal Pradesh','Sikkim'].map(r => (
+                <span class="hero-region-tag">{r}</span>
+              ))}
+            </div>
+          </div>
+
+          <!-- Mini risk scale -->
+          <div class="hero-risk-scale">
+            <p class="hero-coverage-label" style="margin-bottom: 8px;">RISK CLASSIFICATION SCALE</p>
+            <div class="hero-risk-bar-wrap">
+              <div class="hero-risk-bar"></div>
+              <div class="hero-risk-labels">
+                <span>LOW</span>
+                <span>MODERATE</span>
+                <span>HIGH</span>
+              </div>
+              <div class="hero-risk-values">
+                <span>0</span>
+                <span>50</span>
+                <span>75</span>
+                <span>100</span>
+              </div>
+            </div>
+          </div>
+
+          <p class="hero-panel-note">
+            Environmental risk assessment based on multi-factor analysis.
+            Not a guaranteed landslide prediction.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="hero-scroll-indicator" aria-hidden="true">
+      <div class="hero-scroll-line"></div>
+      <span>SCROLL TO EXPLORE</span>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 01 — THE PROBLEM
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg topo-bg" id="problem" aria-labelledby="problem-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 01 / THE PROBLEM</span></div>
+      <div class="problem-grid">
+        <div class="problem-intro gsap-reveal-up">
+          <h2 class="display-lg" id="problem-title">
+            Why Landslide Risk Requires More Than Rainfall Monitoring.
+          </h2>
+          <p class="body-lg" style="margin-top: var(--s6);">
+            The North Eastern Region of India contains steep mountainous terrain, rainfall-sensitive environments, and scattered communities and infrastructure. Understanding when and where landslide conditions are elevated requires combining multiple environmental factors — not a single sensor.
+          </p>
+          <div class="problem-region-note">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.25"/>
+              <path d="M8 5v4M8 10.5v.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+            </svg>
+            <span>Focus Region: North Eastern India · Assam, Meghalaya, Nagaland, Manipur, Mizoram, Tripura, Arunachal Pradesh, Sikkim</span>
+          </div>
+        </div>
+
+        <div class="problem-cards-grid">
+          {[
+            {
+              num: '01',
+              title: 'Heavy Rainfall',
+              icon: '🌧',
+              desc: 'Sustained or intense rainfall can increase water infiltration and ground saturation. Cumulative rainfall over hours and days is often more significant than a single peak event.',
+              factor: 'RAINFALL INTENSITY & ACCUMULATION',
+              color: 'blue',
+            },
+            {
+              num: '02',
+              title: 'Saturated Soil',
+              icon: '🌱',
+              desc: 'Increasing soil moisture can reduce slope stability depending on local terrain conditions. High soil moisture reduces the shear strength of soil — a key factor in slope failure.',
+              factor: 'SOIL MOISTURE LEVEL',
+              color: 'amber',
+            },
+            {
+              num: '03',
+              title: 'Steep Terrain',
+              icon: '⛰',
+              desc: 'Terrain slope is a fundamental factor in landslide susceptibility. The angle of a slope determines the gravitational stress on overlying soil and rock layers.',
+              factor: 'SLOPE & TERRAIN ANGLE',
+              color: 'green',
+            },
+            {
+              num: '04',
+              title: 'Limited Ground Information',
+              icon: '📡',
+              desc: 'Remote or difficult terrain can make continuous monitoring and rapid verification challenging. MALAI VIZHI is designed with a sensor-ready architecture to address this incrementally.',
+              factor: 'OBSERVATIONAL GAPS',
+              color: 'red',
+            },
+          ].map(card => (
+            <div class={`problem-card problem-card--${card.color} gsap-reveal-up`} tabindex="0" role="article" aria-label={`Problem: ${card.title}`}>
+              <div class="problem-card-header">
+                <span class="problem-card-num" aria-hidden="true">{card.num}</span>
+                <span class="problem-card-icon" aria-hidden="true">{card.icon}</span>
+              </div>
+              <h3 class="problem-card-title">{card.title}</h3>
+              <p class="problem-card-desc">{card.desc}</p>
+              <div class="problem-card-factor">
+                <span class="problem-card-factor-text">{card.factor}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 02 — THE SOLUTION / HOW IT WORKS
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg" id="how-it-works" aria-labelledby="solution-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 02 / THE SOLUTION</span></div>
+      <h2 class="display-lg gsap-reveal-up" id="solution-title">
+        One System. Multiple Sources. One Clear View.
+      </h2>
+      <p class="body-lg gsap-reveal-up" style="margin-top: var(--s5); max-width: 680px;">
+        MALAI VIZHI connects environmental data, terrain information, ground observations and historical context into a single explainable risk pipeline — from raw measurement to early warning.
+      </p>
+
+      <!-- Pipeline interactive -->
+      <div class="pipeline-wrap gsap-scale" style="margin-top: var(--s12);">
+        <div class="pipeline-stages" id="pipeline-stages" role="list">
+          {[
+            {
+              id: 'collect',
+              num: '01',
+              icon: '📡',
+              title: 'COLLECT',
+              short: 'Multi-source data ingestion',
+              detail: 'The system collects data from multiple sources: rainfall measurements from Open-Meteo, soil moisture estimations from ERA5-Land, terrain elevation from Copernicus DEM, historical landslide susceptibility from GSI datasets, citizen reports from the mobile/web platform, and telemetry from ground sensors where deployed. Not every source is always available — the system tracks data completeness explicitly.'
+            },
+            {
+              id: 'process',
+              num: '02',
+              icon: '⚙',
+              title: 'PROCESS',
+              short: 'Validation & normalization',
+              detail: 'Raw measurements are validated for freshness, format, and plausibility. Each measurement is normalized from its native unit (mm, %, degrees) into a comparable factor score using calibrated functions. Data staleness, source availability, and quality are tracked. The system never invents or interpolates missing data — missing sources are explicitly marked as UNAVAILABLE.'
+            },
+            {
+              id: 'assess',
+              num: '03',
+              icon: '🔬',
+              title: 'ASSESS',
+              short: 'Multi-factor risk analysis',
+              detail: 'Normalized factor scores are combined using configured weights into a single 0–100 risk score. The dominant factor (the one contributing most to the score) is identified. Risk level (LOW / MODERATE / HIGH) is determined by applying classification thresholds. Overall confidence is computed from data completeness and freshness. The full factor breakdown is preserved for explainability.'
+            },
+            {
+              id: 'warn',
+              num: '04',
+              icon: '🔔',
+              title: 'WARN',
+              short: 'Location-based early warning',
+              detail: 'When risk scores exceed configured thresholds, the alert engine generates a location-specific warning. Alerts include the location, severity, contributing factors, confidence level, timestamp, and coordinates. Notifications are delivered via web push and Android notifications. SMS delivery requires an external provider configured at deployment. The system logs all alerts.'
+            },
+            {
+              id: 'respond',
+              num: '05',
+              icon: '🧭',
+              title: 'RESPOND',
+              short: 'Authority & community action',
+              detail: 'Alerts are delivered to configured authorities and affected communities. The authority dashboard provides detailed factor breakdowns, GIS context, citizen report evidence, and route risk information. Authorities can verify, acknowledge, and act on alerts. Citizens can submit additional ground observations. High-risk situations still require physical verification — the system supports, not replaces, human decision-making.'
+            },
+          ].map((stage, i) => (
+            <div
+              class="pipeline-stage"
+              id={`pipeline-stage-${stage.id}`}
+              data-stage={stage.id}
+              role="listitem button"
+              tabindex="0"
+              aria-expanded="false"
+              aria-controls={`pipeline-detail-${stage.id}`}
+            >
+              <div class="pipeline-stage-inner">
+                <span class="pipeline-stage-num" aria-hidden="true">{stage.num}</span>
+                <span class="pipeline-stage-icon" aria-hidden="true">{stage.icon}</span>
+                <span class="pipeline-stage-title">{stage.title}</span>
+                <span class="pipeline-stage-short">{stage.short}</span>
+              </div>
+              {i < 4 && (
+                <div class="pipeline-arrow" aria-hidden="true">
+                  <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                    <path d="M5 10h10M12 7l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  </svg>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+
+        <!-- Expandable detail panels -->
+        <div class="pipeline-details" id="pipeline-details">
+          {[
+            { id: 'collect', title: '01 COLLECT — DATA INGESTION', content: 'The system collects data from multiple sources: rainfall measurements from Open-Meteo, soil moisture estimations from ERA5-Land, terrain elevation from Copernicus DEM, historical landslide susceptibility from GSI datasets, citizen reports from the mobile/web platform, and telemetry from ground sensors where deployed. Not every source is always available — the system tracks data completeness explicitly.' },
+            { id: 'process', title: '02 PROCESS — VALIDATION & NORMALIZATION', content: 'Raw measurements are validated for freshness, format, and plausibility. Each measurement is normalized from its native unit (mm, %, degrees) into a comparable factor score using calibrated functions. Data staleness, source availability, and quality are tracked. The system never invents or interpolates missing data — missing sources are explicitly marked as UNAVAILABLE.' },
+            { id: 'assess', title: '03 ASSESS — MULTI-FACTOR RISK ANALYSIS', content: 'Normalized factor scores are combined using configured weights into a single 0–100 risk score. The dominant factor (the one contributing most to the score) is identified. Risk level (LOW / MODERATE / HIGH) is determined by applying classification thresholds. Overall confidence is computed from data completeness and freshness. The full factor breakdown is preserved for explainability.' },
+            { id: 'warn', title: '04 WARN — LOCATION-BASED EARLY WARNING', content: 'When risk scores exceed configured thresholds, the alert engine generates a location-specific warning. Alerts include the location, severity, contributing factors, confidence level, timestamp, and coordinates. Notifications are delivered via web push and Android notifications. SMS delivery requires an external provider configured at deployment.' },
+            { id: 'respond', title: '05 RESPOND — AUTHORITY & COMMUNITY ACTION', content: 'Alerts are delivered to configured authorities and affected communities. The authority dashboard provides detailed factor breakdowns, GIS context, citizen report evidence, and route risk information. Authorities can verify, acknowledge, and act on alerts. Citizens can submit additional ground observations. High-risk situations still require physical verification.' },
+          ].map(detail => (
+            <div class="pipeline-detail" id={`pipeline-detail-${detail.id}`} aria-hidden="true">
+              <div class="pipeline-detail-inner">
+                <h3 class="pipeline-detail-title">{detail.title}</h3>
+                <p class="pipeline-detail-content">{detail.content}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 03 & 04 — DATA SOURCES
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-dark topo-bg-dark section-lg" id="data" aria-labelledby="data-title">
+    <div class="container">
+      <div class="section-label dark"><span class="section-label-text">SECTION 03 / DATA SOURCES</span></div>
+      <h2 class="display-lg gsap-reveal-up" id="data-title">
+        The System Does Not Depend on One Signal.
+      </h2>
+      <p class="body-lg gsap-reveal-up" style="margin-top: var(--s5); max-width: 640px;">
+        Seven data categories feed the risk engine. Each source has different availability, quality, and coverage. The system is transparent about what is available and what is not.
+      </p>
+
+      <div class="data-sources-grid" style="margin-top: var(--s12);">
+        {[
+          {
+            icon: '🌧',
+            title: 'Rainfall Data',
+            provider: 'Open-Meteo ERA5 / NWP',
+            what: 'Precipitation measurements in mm per hour and per 24 hours',
+            why: 'Rainfall is the primary trigger for most landslides in NER India',
+            how: 'Hourly and 24-hour accumulation → normalized → rainfall factor score',
+            avail: 'limited',
+            availLabel: 'LIMITED / API-DEPENDENT',
+          },
+          {
+            icon: '🌱',
+            title: 'Soil Moisture',
+            provider: 'Open-Meteo ERA5-Land',
+            what: 'Volumetric soil water content at surface layer, % value',
+            why: 'High soil moisture reduces slope stability — key factor in failure threshold',
+            how: 'Volumetric % → normalized → soil-moisture factor score',
+            avail: 'modeled',
+            availLabel: 'MODELED / ESTIMATED',
+          },
+          {
+            icon: '🗻',
+            title: 'Terrain & Slope',
+            provider: 'Copernicus Global DEM (GLO-30)',
+            what: 'Elevation values at ~30m resolution for deriving slope angle',
+            why: 'Slope angle determines gravitational stress on soil layers',
+            how: 'DEM elevation grid → spatial gradient → slope angle (degrees) → normalized',
+            avail: 'historical',
+            availLabel: 'STATIC DEM / ON-DEMAND',
+          },
+          {
+            icon: '📚',
+            title: 'Historical Landslide Data',
+            provider: 'GSI Inventory · NRSC · SDMA',
+            what: 'Records of previous landslide events with location and severity',
+            why: 'Historical events indicate terrain susceptibility zones',
+            how: 'Spatial lookup → historical hazard factor score',
+            avail: 'live',
+            availLabel: 'AVAILABLE',
+          },
+          {
+            icon: '🗺',
+            title: 'GIS / Exposure Data',
+            provider: 'GIS Datasets (Demo)',
+            what: 'Village locations, road networks, infrastructure, population estimates',
+            why: 'Exposure determines impact priority — who and what is in the hazard zone',
+            how: 'Spatial overlap of hazard zone → exposure score → impact priority',
+            avail: 'demo',
+            availLabel: 'DEMO DATA',
+          },
+          {
+            icon: '📡',
+            title: 'Ground Sensor Telemetry',
+            provider: 'Sensor-Ready Architecture',
+            what: 'Rainfall gauge, soil probe, inclinometer, GPS, battery, timestamp',
+            why: 'Direct physical observation provides ground truth for models',
+            how: 'Sensor JSON → validate → real-time factor score update',
+            avail: 'unavail',
+            availLabel: 'SENSOR-READY / NOT DEPLOYED',
+          },
+          {
+            icon: '👥',
+            title: 'Citizen Reports',
+            provider: 'MALAI VIZHI Platform',
+            what: 'Ground observations submitted by users: photos, GPS, category, description',
+            why: 'Crowdsourced ground truth that sensors cannot always provide',
+            how: 'Report → verify → evidence log (does NOT directly alter risk score)',
+            avail: 'live',
+            availLabel: 'LIVE — 2 REPORTS ON RECORD',
+          },
+        ].map(src => (
+          <div class={`data-source-card gsap-reveal-up`} tabindex="0" role="article">
+            <div class="data-source-header">
+              <span class="data-source-icon" aria-hidden="true">{src.icon}</span>
+              <div>
+                <h3 class="data-source-title">{src.title}</h3>
+                <p class="data-source-provider">{src.provider}</p>
+              </div>
+              <span class={`badge badge-${src.avail}`}>{src.availLabel}</span>
+            </div>
+            <div class="data-source-details">
+              <div class="data-source-row">
+                <span class="data-source-key">WHAT</span>
+                <span class="data-source-val">{src.what}</span>
+              </div>
+              <div class="data-source-row">
+                <span class="data-source-key">WHY</span>
+                <span class="data-source-val">{src.why}</span>
+              </div>
+              <div class="data-source-row">
+                <span class="data-source-key">HOW USED</span>
+                <span class="data-source-val">{src.how}</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 05 — TERRAIN: FROM ELEVATION TO SLOPE
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg" id="terrain" aria-labelledby="terrain-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 05 / TERRAIN ANALYSIS</span></div>
+      <div class="terrain-grid">
+        <div class="gsap-reveal-up">
+          <h2 class="display-lg" id="terrain-title">From Elevation to Slope.</h2>
+          <p class="body-lg" style="margin-top: var(--s6); max-width: 520px;">
+            MALAI VIZHI does not require manual surveying of every hillside. Slope is computed programmatically from Digital Elevation Model data provided by Copernicus.
+          </p>
+          <div class="terrain-flow">
+            {[
+              { step: '01', label: 'GEOGRAPHIC COORDINATES', sub: 'Latitude & Longitude of point' },
+              { step: '02', label: 'DEM QUERY', sub: 'Retrieve elevation at point and neighbors' },
+              { step: '03', label: 'ELEVATION DIFFERENCE', sub: 'Compare elevations across grid' },
+              { step: '04', label: 'SLOPE CALCULATION', sub: 'Max change / horizontal distance = tan(slope)' },
+              { step: '05', label: 'SLOPE ANGLE (DEGREES)', sub: 'arctan of gradient → degrees' },
+              { step: '06', label: 'NORMALIZATION', sub: 'Slope angle → 0–100 terrain factor score' },
+              { step: '07', label: 'RISK ANALYSIS INPUT', sub: 'Weighted contribution to combined score' },
+            ].map((s, i) => (
+              <div class="terrain-step">
+                <div class="terrain-step-num">{s.step}</div>
+                <div class="terrain-step-body">
+                  <span class="terrain-step-label">{s.label}</span>
+                  <span class="terrain-step-sub">{s.sub}</span>
+                </div>
+                {i < 6 && <div class="terrain-step-line" aria-hidden="true"></div>}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <div class="terrain-visual-col gsap-reveal-right">
+          <!-- Animated DEM grid -->
+          <div class="dem-grid-wrap">
+            <p class="dem-grid-title">DEM GRID — ILLUSTRATIVE EXAMPLE</p>
+            <div class="dem-grid" id="dem-grid" aria-label="Illustrative DEM elevation grid" role="img">
+              <!-- Filled by JS -->
+            </div>
+            <div class="dem-legend">
+              <span class="dem-legend-low">Low Elevation</span>
+              <div class="dem-legend-bar"></div>
+              <span class="dem-legend-high">High Elevation</span>
+            </div>
+            <p class="dem-calc-note">
+              <span class="illustrative-note">ILLUSTRATIVE CALCULATION</span><br/>
+              <br/>Point P at elevation <strong>1240m</strong><br/>
+              Neighbor East: <strong>1185m</strong> · Δ = 55m over 30m horizontal<br/>
+              Gradient: 55/30 = <strong>1.833</strong><br/>
+              Slope: arctan(1.833) ≈ <strong>61.3°</strong> → <strong>HIGH RISK FACTOR</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 06 — RAINFALL → SOIL → TERRAIN
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-dark section-lg" id="environment" aria-labelledby="env-title">
+    <div class="container">
+      <div class="section-label dark"><span class="section-label-text">SECTION 06 / ENVIRONMENTAL CHAIN</span></div>
+      <h2 class="display-lg gsap-reveal-up" id="env-title">
+        How Environmental Conditions Change the Risk Context.
+      </h2>
+      <p class="body-lg gsap-reveal-up" style="margin-top: var(--s5); max-width: 620px;">
+        Rainfall, soil moisture, and terrain interact to create a combined environmental context. MALAI VIZHI uses these as indicators — not a deterministic simulation — of slope conditions.
+      </p>
+
+      <div class="env-chain-grid" style="margin-top: var(--s12);">
+        <div class="env-chain">
+          {[
+            { icon: '🌧', label: 'RAINFALL', color: '#60A5FA', desc: 'Precipitation accumulates on terrain surface. Hourly intensity and 24-hour accumulation both matter.' },
+            { icon: '↓', label: '', color: 'transparent', desc: '' },
+            { icon: '🌊', label: 'INFILTRATION', color: '#34D399', desc: 'Water infiltrates the soil column. Rate depends on soil type, compaction, and vegetation cover.' },
+            { icon: '↓', label: '', color: 'transparent', desc: '' },
+            { icon: '🌱', label: 'SOIL MOISTURE', color: '#FBBF24', desc: 'Soil water content rises. High moisture reduces inter-particle friction and shear strength.' },
+            { icon: '↓', label: '', color: 'transparent', desc: '' },
+            { icon: '⛰', label: 'SLOPE CONDITION', color: '#F87171', desc: 'Combined with slope angle, saturated soil has reduced stability and greater failure susceptibility.' },
+            { icon: '↓', label: '', color: 'transparent', desc: '' },
+            { icon: '⚠', label: 'RISK CONTEXT', color: '#FB923C', desc: 'Elevated environmental conditions → elevated risk score → potential early warning trigger.' },
+          ].map(item => (
+            item.label === '' ? (
+              <div class="env-chain-arrow" aria-hidden="true">↓</div>
+            ) : (
+              <div class="env-chain-node">
+                <div class="env-chain-icon" style={`background: ${item.color}22; border-color: ${item.color}55;`}>
+                  <span aria-hidden="true">{item.icon}</span>
+                </div>
+                <div class="env-chain-body">
+                  <span class="env-chain-label" style={`color: ${item.color};`}>{item.label}</span>
+                  {item.desc && <p class="env-chain-desc">{item.desc}</p>}
+                </div>
+              </div>
+            )
+          ))}
+        </div>
+
+        <div class="env-side-notes gsap-reveal-right">
+          <div class="env-side-note">
+            <span class="badge badge-demo" style="margin-bottom: var(--s3);">PHYSICS-INFORMED MODEL</span>
+            <p>The relationship between rainfall, soil moisture, and slope failure is well-established in geotechnical engineering. MALAI VIZHI implements an <strong>empirical multi-factor analysis</strong> based on these known physical relationships.</p>
+          </div>
+          <div class="env-side-note">
+            <span class="badge badge-limited" style="margin-bottom: var(--s3);">NOT A SIMULATION</span>
+            <p>MALAI VIZHI does not simulate pore water pressure, soil mechanics, or fluid dynamics. It uses normalized environmental measurements as indicators within a configured risk model. Results are probabilistic indicators — not deterministic failure predictions.</p>
+          </div>
+          <div class="env-side-note">
+            <span class="badge badge-unavail" style="margin-bottom: var(--s3);">DATA AVAILABILITY</span>
+            <p>Open-Meteo API provides precipitation and soil moisture data where available. In some locations or conditions, data may be UNAVAILABLE or ESTIMATED. Confidence is tracked and reported separately from the risk score.</p>
+          </div>
+
+          <!-- Rainfall canvas animation -->
+          <div class="rainfall-canvas-wrap">
+            <canvas id="rainfall-canvas" width="300" height="160" aria-label="Animated rainfall visualization" role="img"></canvas>
+            <p class="illustrative-note" style="margin-top: var(--s2);">ANIMATED ILLUSTRATION — NOT LIVE DATA</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 07 — RISK ENGINE
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg topo-bg" id="risk-engine" aria-labelledby="engine-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 07 / RISK ENGINE (landslide_model_v1)</span></div>
+      <h2 class="display-lg gsap-reveal-up" id="engine-title">
+        Multi-Factor Landslide Risk Analysis Engine.
+      </h2>
+      <p class="body-lg gsap-reveal-up" style="margin-top: var(--s5); max-width: 660px;">
+        The MALAI VIZHI risk engine is an <strong>empirical, physics-informed multi-factor analysis system</strong>. It calculates a points-based contribution for each environmental factor.
+      </p>
+
+      <!-- Normalization explainer -->
+      <div class="engine-explainer gsap-scale" style="margin-top: var(--s10);">
+        <div class="engine-explainer-header">
+          <span class="tech-panel-title">ACTUAL RISK MODEL STRUCTURE</span>
+        </div>
+        <div class="engine-explainer-body">
+          <div class="engine-explainer-problem">
+            <p class="engine-explain-label">❌ CANNOT DIRECTLY SUM</p>
+            <div class="engine-formula bad">
+              <span>63.5% soil moisture</span>
+              <span>+</span>
+              <span>5.4° slope</span>
+              <span>+</span>
+              <span>0.6 mm rainfall</span>
+              <span>=</span>
+              <span>69.5 ???</span>
+            </div>
+            <p class="engine-explain-note">Different units cannot be directly summed into a meaningful risk score.</p>
+          </div>
+          <div class="engine-explainer-solution">
+            <p class="engine-explain-label">✅ MALAI VIZHI DOES THIS</p>
+            <div class="engine-formula good">
+              <span>63.5% → <strong>23.4</strong> pts</span>
+              <span>+</span>
+              <span>5.4° → <strong>3.2</strong> pts</span>
+              <span>+</span>
+              <span>0.6mm → <strong>0.6</strong> pts</span>
+              <span>=</span>
+              <span class="formula-result">27.2 SCORE</span>
+            </div>
+            <p class="engine-explain-note">Each factor contributes a specific number of 'pts' (points) based on its impact scale.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Factor pipeline -->
+      <div class="factors-grid gsap-reveal-up" style="margin-top: var(--s10);">
+        <h3 class="display-sm" style="grid-column: 1 / -1; margin-bottom: var(--s6);">Risk Factor Contribution</h3>
+        {[
+          {
+            icon: '🌧',
+            title: 'Recent Rainfall (24h)',
+            raw: '110.5 mm',
+            normalized: '15.4 pts',
+            width: '15.4%',
+            impact: 'MODERATE',
+            impactColor: 'mod',
+            why: 'Rainfall contributes up to 40 max points depending on intensity.',
+            avail: 'limited',
+          },
+          {
+            icon: '🌱',
+            title: 'Soil Moisture',
+            raw: '80.2 %',
+            normalized: '28.5 pts',
+            width: '28.5%',
+            impact: 'HIGH',
+            impactColor: 'high',
+            why: 'High moisture heavily reduces shear strength, contributing up to 30 max points.',
+            avail: 'modeled',
+          },
+          {
+            icon: '⛰',
+            title: 'Slope & Terrain',
+            raw: '42.1°',
+            normalized: '12.0 pts',
+            width: '12%',
+            impact: 'HIGH',
+            impactColor: 'high',
+            why: 'Steep slopes provide structural vulnerability, contributing up to 20 max points.',
+            avail: 'historical',
+          },
+          {
+            icon: '📚',
+            title: 'Historical Hazard',
+            raw: 'ZONE III',
+            normalized: '8.5 pts',
+            width: '8.5%',
+            impact: 'MODERATE',
+            impactColor: 'mod',
+            why: 'Prior susceptibility mapping provides up to 10 points of baseline risk.',
+            avail: 'live',
+          },
+        ].map(f => (
+          <div class="factor-card gsap-reveal-up">
+            <div class="factor-card-header">
+              <span class="factor-card-icon" aria-hidden="true">{f.icon}</span>
+              <div>
+                <h4 class="factor-card-title">{f.title}</h4>
+                <span class={`badge badge-${f.avail}`}>{f.avail.toUpperCase()}</span>
+              </div>
+            </div>
+            <div class="factor-card-values">
+              <div class="factor-val-pair">
+                <span class="factor-val-key">RAW</span>
+                <span class="factor-val-num">{f.raw}</span>
+              </div>
+              <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-label="normalized to">
+                <path d="M3 10h14M13 6l4 4-4 4" stroke="var(--green-primary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <div class="factor-val-pair">
+                <span class="factor-val-key">CONTRIB</span>
+                <span class="factor-val-num green">{f.normalized}</span>
+              </div>
+            </div>
+            <div class="factor-bar-track">
+              <div class="factor-bar-fill" style={`--w: ${f.width}; background: var(--risk-${f.impactColor === 'high' ? 'high' : f.impactColor === 'mod' ? 'mod' : 'low'});`}></div>
+            </div>
+            <p class="factor-card-why">{f.why}</p>
+            <div class="factor-card-footer">
+              <span class={`badge badge-risk-${f.impactColor}`}>IMPACT: {f.impact}</span>
+              <span class="illustrative-note" style="font-size: 0.55rem; padding: 2px 5px;">ILLUSTRATIVE</span>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      <div class="callout" style="margin-top: var(--s8);">
+        <p>The total risk score is the <strong>sum of all factor points</strong>. Actual values depend on real-time data availability. When exposure data (population, roads) is <strong>UNAVAILABLE</strong>, it does not artificially inflate the risk.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 08 — INTERACTIVE RISK SCORE DEMO
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-dark section-lg" id="risk-score" aria-labelledby="riskscore-title">
+    <div class="container">
+      <div class="section-label dark"><span class="section-label-text">SECTION 08 / INTERACTIVE RISK LAB</span></div>
+      <h2 class="display-lg gsap-reveal-up" id="riskscore-title">
+        Live API Risk Calculation Demo.
+      </h2>
+      <p class="body-lg gsap-reveal-up" style="margin-top: var(--s5); max-width: 640px;">
+        Pulling live data from the backend `landslide_model_v1`. Use the simulation sliders to see how the risk score changes when environmental conditions are modified in real-time.
+      </p>
+
+      <div class="sim-outer-label">
+        <span class="live-badge">LIVE API CONNECTION</span>
+        <span class="badge badge-historical" style="font-size: var(--text-xs);">LOCATION: CHERRAPUNJI, MEGHALAYA</span>
+      </div>
+
+      <div class="simulator-wrap gsap-scale" style="margin-top: var(--s8);">
+        <div class="simulator-controls tech-panel-dark">
+          <div class="tech-panel-header">
+            <span class="tech-panel-title">SCENARIO CONTROLS</span>
+            <span class="sim-badge">SIMULATION MODE</span>
+          </div>
+          <div class="tech-panel-body">
+            <p class="simulator-controls-sub">Modify live inputs to test the risk engine.</p>
+
+            <div class="slider-group">
+              <div class="slider-item">
+                <div class="slider-label-row">
+                  <label class="slider-label" for="sim-rainfall">Recent Rainfall (24h)</label>
+                  <span class="slider-val mono-value-dark" id="sim-rainfall-val">110 mm</span>
+                </div>
+                <input type="range" id="sim-rainfall" min="0" max="400" value="110" class="sim-slider" aria-label="Rainfall slider" />
+              </div>
+              <div class="slider-item">
+                <div class="slider-label-row">
+                  <label class="slider-label" for="sim-soil">Soil Moisture</label>
+                  <span class="slider-val mono-value-dark" id="sim-soil-val">80 %</span>
+                </div>
+                <input type="range" id="sim-soil" min="0" max="100" value="80" class="sim-slider" aria-label="Soil moisture slider" />
+              </div>
+              <div class="slider-item">
+                <div class="slider-label-row">
+                  <label class="slider-label" for="sim-slope">Terrain Slope</label>
+                  <span class="slider-val mono-value-dark" id="sim-slope-val">15 °</span>
+                </div>
+                <input type="range" id="sim-slope" min="0" max="60" value="15" class="sim-slider" aria-label="Slope angle slider" />
+              </div>
+            </div>
+
+            <!-- PTS Breakdown panel -->
+            <div class="pts-breakdown" id="factor-breakdown" style="margin-top: var(--s6);">
+              <!-- Will be hydrated by JS but showing initial state -->
+              <div class="pts-factor-row">
+                <div class="pts-factor-header">
+                  <span class="pts-factor-name">Rainfall Contribution</span>
+                  <span class="pts-value" id="pts-val-rain">15.4 pts</span>
+                </div>
+                <div class="pts-bar-track"><div class="pts-bar-fill" id="pts-bar-rain" style="width: 38%; background: var(--risk-mod);"></div></div>
+              </div>
+              <div class="pts-factor-row">
+                <div class="pts-factor-header">
+                  <span class="pts-factor-name">Soil Contribution</span>
+                  <span class="pts-value" id="pts-val-soil">28.5 pts</span>
+                </div>
+                <div class="pts-bar-track"><div class="pts-bar-fill" id="pts-bar-soil" style="width: 95%; background: var(--risk-high);"></div></div>
+              </div>
+              <div class="pts-factor-row">
+                <div class="pts-factor-header">
+                  <span class="pts-factor-name">Terrain Contribution</span>
+                  <span class="pts-value" id="pts-val-terrain">4.2 pts</span>
+                </div>
+                <div class="pts-bar-track"><div class="pts-bar-fill" id="pts-bar-terrain" style="width: 21%; background: var(--risk-low);"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="simulator-display">
+          <!-- Risk meter -->
+          <div class="risk-meter-wrap">
+            <svg class="risk-arc-svg" viewBox="0 0 200 120" aria-hidden="true">
+              <defs>
+                <linearGradient id="arcGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#16A34A" />
+                  <stop offset="50%" style="stop-color:#B45309" />
+                  <stop offset="100%" style="stop-color:#B91C1C" />
+                </linearGradient>
+              </defs>
+              <path d="M 20 100 A 80 80 0 0 1 180 100" class="risk-arc-track"/>
+              <path d="M 20 100 A 80 80 0 0 1 180 100" class="risk-arc-fill" id="sim-arc-fill"
+                stroke="url(#arcGradient)" stroke-dasharray="251" stroke-dashoffset="130"/>
+            </svg>
+            <div class="risk-score-display">
+              <div class="risk-score-num" id="sim-score">48</div>
+              <div class="risk-level-badge badge-risk-mod" id="sim-level" style="font-size: var(--text-xs); padding: 4px 10px; border-radius: var(--r-md); border: 1px solid var(--risk-mod); margin-top: 4px; display: inline-block;">MODERATE</div>
+            </div>
+            <div class="risk-meter-label">TOTAL RISK SCORE</div>
+          </div>
+
+          <!-- Confidence indicator -->
+          <div class="confidence-display">
+            <div class="confidence-header">
+              <span class="confidence-label">CONFIDENCE</span>
+              <span class="confidence-note">Exposure data UNAVAILABLE</span>
+            </div>
+            <div class="confidence-bar-wrap">
+              <div class="confidence-bar-track">
+                <div class="confidence-bar-fill" id="sim-confidence-bar" style="width: 90%;"></div>
+              </div>
+              <span class="confidence-pct" id="sim-confidence-val">90%</span>
+            </div>
+            <p class="confidence-explanation">The risk score is a direct sum of the factor points. High confidence indicates that all critical environmental inputs are successfully retrieved.</p>
+          </div>
+
+          <p class="sim-disclaimer">
+            <a href="/api-testing" class="btn-technical-white" style="margin-top: var(--s4);">VIEW API RAW RESPONSE</a>
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 09 & 10 — EXPLAINABILITY + RISK VS CONFIDENCE
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg topo-bg" id="explainability" aria-labelledby="explain-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 09 / EXPLAINABILITY</span></div>
+      <div class="explain-grid">
+        <div>
+          <h2 class="display-lg gsap-reveal-up" id="explain-title">Why Is the Risk High?</h2>
+          <p class="body-lg gsap-reveal-up" style="margin-top: var(--s5);">
+            Every risk score can be decomposed into its contributing factors. A score of 65 means something specific — MALAI VIZHI shows exactly what drove it.
+          </p>
+          <div class="explain-example gsap-scale" style="margin-top: var(--s8);">
+            <div class="tech-panel">
+              <div class="tech-panel-header">
+                <span class="tech-panel-title">EXAMPLE RISK BREAKDOWN</span>
+                <span class="illustrative-note">DEMO EVENT</span>
+              </div>
+              <div class="tech-panel-body">
+                <div class="risk-score-summary">
+                  <div class="risk-score-big">65</div>
+                  <div>
+                    <div class="badge badge-risk-mod" style="font-size: 0.8rem; padding: 6px 14px; margin-bottom: 6px;">MODERATE RISK</div>
+                    <p style="font-size: var(--text-xs); color: var(--text-muted);">Confidence: HIGH (90%) · Exposure: UNAVAILABLE</p>
+                  </div>
+                </div>
+
+                {[
+                  { factor: 'Recent Rainfall', raw: '159 mm', score: '38.2 pts', pct: 95, impact: 'HIGH', color: '#B91C1C', avail: 'LIMITED' },
+                  { factor: 'Soil Moisture', raw: '63.0 %', score: '18.4 pts', pct: 61, impact: 'MODERATE', color: '#B45309', avail: 'MODELED' },
+                  { factor: 'Terrain Slope', raw: '12.4°', score: '3.4 pts', pct: 17, impact: 'LOW', color: '#16A34A', avail: 'STATIC DEM' },
+                  { factor: 'Historical Context', raw: 'Zone II', score: '5.0 pts', pct: 50, impact: 'MODERATE', color: '#B45309', avail: 'AVAILABLE' },
+                ].map(f => (
+                  <div class="explain-factor-row">
+                    <div class="explain-factor-top">
+                      <span class="explain-factor-name">{f.factor}</span>
+                      <span class="explain-factor-raw">{f.raw}</span>
+                      <span class={`badge badge-risk-${f.impact === 'HIGH' ? 'high' : f.impact === 'LOW' ? 'low' : 'mod'}`}>{f.impact}</span>
+                      <span class={`badge badge-${f.avail === 'AVAILABLE' ? 'live' : f.avail === 'MODELED' ? 'modeled' : 'limited'}`}>{f.avail}</span>
+                    </div>
+                    <div class="factor-bar-track" style="margin-top: 6px;">
+                      <div class="factor-bar-fill animated" style={`--w: ${f.pct}%; background: ${f.color}; transition: width 1.2s cubic-bezier(0.4,0,0.2,1);`}></div>
+                    </div>
+                    <div class="explain-factor-note">
+                      Raw value ({f.raw}) contributes {f.score} to the total risk sum of 65.
+                    </div>
+                  </div>
+                ))}
+
+                <div class="callout" style="margin-top: var(--s6);">
+                  <p>"Because the risk score is a direct sum of pts, you can clearly trace exactly why an alert triggered. In this case, rainfall was the primary driver (38.2/65 = 58% of the risk)."</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Risk vs Confidence -->
+        <div id="confidence">
+          <div class="section-label" style="margin-top: var(--s16);"><span class="section-label-text">SECTION 10 / RISK VS CONFIDENCE</span></div>
+          <h2 class="display-md gsap-reveal-up">Risk Is Not the Same as Confidence.</h2>
+          <p class="body-base gsap-reveal-up" style="margin-top: var(--s5);">
+            MALAI VIZHI tracks these separately. A HIGH risk score with LOW confidence means: "available data suggests danger, but data is incomplete." Both values must be communicated.
+          </p>
+          <div class="confidence-dual-meters gsap-scale" style="margin-top: var(--s8);">
+            <div class="confidence-meter-card">
+              <div class="confidence-meter-label">RISK</div>
+              <div class="confidence-meter-value" style="color: var(--risk-high);">65</div>
+              <div class="confidence-meter-desc">What available inputs indicate about environmental hazard level</div>
+              <div class="confidence-meter-bar">
+                <div style="width: 65%; background: var(--risk-high); height: 100%; border-radius: var(--r-full);"></div>
+              </div>
+              <span class="badge badge-risk-mod">MODERATE HAZARD INDICATION</span>
+            </div>
+            <div class="confidence-vs" aria-hidden="true">≠</div>
+            <div class="confidence-meter-card">
+              <div class="confidence-meter-label">CONFIDENCE</div>
+              <div class="confidence-meter-value" style="color: var(--status-limited);">20%</div>
+              <div class="confidence-meter-desc">How complete and fresh the input data was for this assessment</div>
+              <div class="confidence-meter-bar">
+                <div style="width: 20%; background: var(--status-limited); height: 100%; border-radius: var(--r-full);"></div>
+              </div>
+              <span class="badge badge-limited">LIMITED CONFIDENCE</span>
+            </div>
+          </div>
+          <div class="callout callout-warning" style="margin-top: var(--s6);">
+            <p>When data is missing (e.g. Exposure Data), the system shows UNAVAILABLE with POOR data quality — it does not fabricate values. Confidence reflects this honestly.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 11 & 12 — SENSORS + SENSOR FAILURE
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg" id="sensors" aria-labelledby="sensors-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 11–12 / SENSOR NETWORK</span></div>
+      <div class="sensor-grid">
+        <div class="gsap-reveal-up">
+          <h2 class="display-lg" id="sensors-title">Ground-Level Observation.</h2>
+          <p class="body-lg" style="margin-top: var(--s6); max-width: 480px;">
+            MALAI VIZHI is designed with a sensor-ready architecture. Ground sensors provide physical measurements that remote data cannot match.
+          </p>
+          <div class="badge badge-unavail" style="margin-top: var(--s4); display: inline-flex; font-size: var(--text-xs);">
+            SENSOR-READY ARCHITECTURE — DEPLOYMENT PENDING
+          </div>
+
+          <!-- Sensor types -->
+          <div class="sensor-types" style="margin-top: var(--s8);">
+            {[
+              { icon: '🌧', name: 'Rainfall Gauge', unit: 'mm/hr', status: 'SENSOR-READY' },
+              { icon: '🌱', name: 'Soil Moisture Probe', unit: '%', status: 'SENSOR-READY' },
+              { icon: '📐', name: 'Inclinometer', unit: 'mm / degrees', status: 'SENSOR-READY' },
+              { icon: '🔋', name: 'Battery / Power Monitor', unit: '% charge', status: 'SENSOR-READY' },
+              { icon: '📍', name: 'GPS Unit', unit: 'lat / lng', status: 'SENSOR-READY' },
+              { icon: '🕐', name: 'Timestamp', unit: 'UTC', status: 'SENSOR-READY' },
+            ].map(s => (
+              <div class="sensor-type-item">
+                <span class="sensor-type-icon" aria-hidden="true">{s.icon}</span>
+                <div>
+                  <span class="sensor-type-name">{s.name}</span>
+                  <span class="sensor-type-unit">({s.unit})</span>
+                </div>
+                <span class="badge badge-unavail" style="margin-left: auto;">{s.status}</span>
+              </div>
+            ))}
+          </div>
+
+          <!-- Architecture flow -->
+          <div class="sensor-arch" style="margin-top: var(--s8);">
+            <p class="sensor-arch-title">SENSOR ARCHITECTURE FLOW</p>
+            {['FIELD SENSOR', 'NETWORK / GATEWAY', 'BACKEND API', 'DATA VALIDATION', 'RISK ENGINE', 'ALERT ENGINE'].map((step, i, arr) => (
+              <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                <div class="flow-node" style="font-size: var(--text-xs);">{step}</div>
+                {i < arr.length - 1 && <div class="flow-arrow" style="margin: 3px 12px;"></div>}
+              </div>
+            ))}
+          </div>
+        </div>
+
+        <!-- Sensor failure simulation -->
+        <div class="sensor-failure-panel gsap-reveal-right" id="sensor-failure">
+          <div class="section-label"><span class="section-label-text">SECTION 12 / FAILURE RESILIENCE</span></div>
+          <h3 class="display-md">What Happens If a Sensor Fails?</h3>
+          <p class="body-base" style="margin-top: var(--s4);">
+            A sensor failure is not treated as a confirmed landslide. The system distinguishes between sensor availability and hazard events.
+          </p>
+
+          <div class="failure-demo">
+            <button class="btn-green" id="failure-sim-btn" style="margin-bottom: var(--s6);" aria-controls="failure-steps">
+              <span>Simulate Sensor Failure</span>
+              <svg class="btn-arrow" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+
+            <div class="failure-steps" id="failure-steps">
+              {[
+                { icon: '🟢', label: 'SENSOR ONLINE', state: 'normal', desc: 'All sensors reporting normally. Heartbeat received.' },
+                { icon: '🔴', label: 'HEARTBEAT MISSED', state: 'warning', desc: 'No telemetry received within expected interval.' },
+                { icon: '⚫', label: 'SENSOR OFFLINE', state: 'error', desc: 'Sensor marked STALE / OFFLINE. Last valid reading preserved.' },
+                { icon: '💾', label: 'LAST VALID DATA PRESERVED', state: 'info', desc: 'Previous telemetry retained. Confidence downgraded.' },
+                { icon: '🔄', label: 'REMAINING SOURCES CONTINUE', state: 'info', desc: 'Other data sources (Open-Meteo, DEM, citizen reports) continue operating.' },
+                { icon: '🔍', label: 'AUTHORITY VERIFICATION', state: 'action', desc: 'Possible causes: network failure, power failure, hardware fault, physical burial. Human verification required.' },
+              ].map((step, i) => (
+                <div class={`failure-step failure-step--${step.state}`} id={`failure-step-${i}`} style="opacity: 0.25; transition: opacity 0.4s ease;">
+                  <span class="failure-step-icon" aria-hidden="true">{step.icon}</span>
+                  <div>
+                    <span class="failure-step-label">{step.label}</span>
+                    <p class="failure-step-desc">{step.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div class="callout" style="margin-top: var(--s6);">
+              <p><strong>Key principle:</strong> SENSOR OFFLINE ≠ CONFIRMED LANDSLIDE. The system requires authority verification to distinguish a technical failure from a physical hazard event.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 13 — GIS MAP
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg topo-bg" id="gis" aria-labelledby="gis-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 13 / GIS & MONITORING</span></div>
+      <div class="gis-intro gsap-reveal-up" style="margin-bottom: var(--s8);">
+        <h2 class="display-lg" id="gis-title">See Risk in Space.</h2>
+        <p class="body-lg" style="margin-top: var(--s5); max-width: 620px;">
+          Risk is fundamentally geographic. The GIS map overlays active alerts, historical events, citizen reports, villages, and critical infrastructure — showing not just where risk is, but what is there.
+        </p>
+      </div>
+      <GISMapSection />
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 14 & 15 — CITIZEN REPORTS + PHOTO VERIFICATION
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg" id="citizen-reports" aria-labelledby="reports-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 14 / CITIZEN REPORTING</span></div>
+      <div class="reports-grid">
+        <div class="gsap-reveal-up">
+          <h2 class="display-lg" id="reports-title">The Ground Can Report Back.</h2>
+          <p class="body-lg" style="margin-top: var(--s5); max-width: 480px;">
+            Citizens can submit observations directly from the field — with GPS, photo evidence, and description. These reports become part of the monitoring picture.
+          </p>
+
+          <!-- Categories -->
+          <div class="report-categories" style="margin-top: var(--s8);">
+            <p class="report-categories-title">REPORT CATEGORIES</p>
+            <div class="report-categories-grid">
+              {['Landslide', 'Flood', 'Road Damage', 'Drainage Blockage', 'Soil Crack', 'Rockfall', 'Water Logging', 'Other'].map(cat => (
+                <div class="report-category-chip">{cat}</div>
+              ))}
+            </div>
+          </div>
+
+          <!-- Verification lifecycle -->
+          <div class="report-lifecycle" style="margin-top: var(--s8);">
+            <p class="report-lifecycle-title">VERIFICATION LIFECYCLE</p>
+            {[
+              { stage: 'SUBMITTED', color: '#2563EB', desc: 'Report received, timestamped, GPS recorded.' },
+              { stage: 'REVIEWED', color: '#B45309', desc: 'Authority reviews evidence, location, timing.' },
+              { stage: 'VERIFIED', color: '#16A34A', desc: 'Confirmed ground event. Archived.' },
+              { stage: 'UNVERIFIED', color: '#6B7280', desc: 'Cannot be confirmed. Retained.' },
+              { stage: 'REJECTED', color: '#B91C1C', desc: 'Likely incorrect / spam. Marked.' },
+            ].map(step => (
+              <div class="lifecycle-step">
+                <div class="lifecycle-dot" style={`background: ${step.color};`}></div>
+                <div>
+                  <span class="lifecycle-label" style={`color: ${step.color};`}>{step.stage}</span>
+                  <span class="lifecycle-desc">{step.desc}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div class="callout callout-warning" style="margin-top: var(--s6);">
+            <p><strong>CITIZEN REPORT ≠ AUTOMATIC RISK SCORE CHANGE.</strong> Reports provide supplementary ground context. The environmental risk score is based on objective environmental data, not on report count.</p>
+          </div>
+        </div>
+
+        <!-- Live reports feed -->
+        <div class="gsap-reveal-right">
+          <CitizenReportsFeed />
+
+          <!-- Photo verification -->
+          <div class="photo-verify-panel" style="margin-top: var(--s6);" id="photo-verification">
+            <div class="tech-panel">
+              <div class="tech-panel-header">
+                <span class="tech-panel-title">PHOTO EVIDENCE — SECTION 15</span>
+                <span class="badge badge-modeled">METADATA ANALYSIS</span>
+              </div>
+              <div class="tech-panel-body">
+                <p class="body-sm">Photo submissions can provide:</p>
+                <div class="photo-meta-grid" style="margin-top: var(--s4);">
+                  {[
+                    { label: 'TIMESTAMP', desc: 'When the photo was taken (EXIF)' },
+                    { label: 'LOCATION', desc: 'GPS coordinates from EXIF data' },
+                    { label: 'HASH', desc: 'Duplicate detection signal' },
+                    { label: 'EVIDENCE', desc: 'Visual context for authority review' },
+                  ].map(item => (
+                    <div class="photo-meta-item">
+                      <span class="photo-meta-label">{item.label}</span>
+                      <span class="photo-meta-desc">{item.desc}</span>
+                    </div>
+                  ))}
+                </div>
+                <div class="callout" style="margin-top: var(--s5);">
+                  <p>Photo analysis does not automatically confirm a landslide. All evidence is subject to human review and authority verification.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 16 — EXPOSURE & IMPACT
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg topo-bg" id="exposure" aria-labelledby="exposure-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 16 / EXPOSURE & IMPACT</span></div>
+      <h2 class="display-lg gsap-reveal-up" id="exposure-title">
+        Hazard tells us where risk is.<br/>Exposure tells us what is there.
+      </h2>
+      <p class="body-lg gsap-reveal-up" style="margin-top: var(--s5); max-width: 660px;">
+        Two areas can have identical risk scores but very different impact priorities — depending on what is located within the hazard zone.
+      </p>
+
+      <div class="exposure-grid" style="margin-top: var(--s10);">
+        {[
+          {
+            scenario: 'Scenario A',
+            hazard: 'HIGH (78)',
+            exposure: 'LOW',
+            impact: 'MODERATE',
+            detail: 'High hazard but remote, uninhabited slope. Low infrastructure density. Monitor but immediate evacuation may not be required.',
+            hazardColor: '#B91C1C',
+            impactColor: '#B45309',
+          },
+          {
+            scenario: 'Scenario B',
+            hazard: 'HIGH (78)',
+            exposure: 'HIGH',
+            impact: 'CRITICAL',
+            detail: 'Same risk score as Scenario A. However, the slope is above a village of 500+ population and a highway. Immediate priority response.',
+            hazardColor: '#B91C1C',
+            impactColor: '#B91C1C',
+          },
+          {
+            scenario: 'Scenario C',
+            hazard: 'MODERATE (52)',
+            exposure: 'HIGH',
+            impact: 'HIGH',
+            detail: 'Moderate hazard, but high exposure (hospital, bridge, dense population). Impact priority may exceed a higher-hazard remote area.',
+            hazardColor: '#B45309',
+            impactColor: '#B91C1C',
+          },
+        ].map(sc => (
+          <div class="exposure-scenario-card gsap-reveal-up">
+            <div class="exposure-scenario-label">{sc.scenario}</div>
+            <div class="exposure-row">
+              <div class="exposure-metric">
+                <span class="exposure-metric-title">HAZARD</span>
+                <span class="exposure-metric-val" style={`color: ${sc.hazardColor};`}>{sc.hazard}</span>
+              </div>
+              <span class="exposure-plus" aria-hidden="true">+</span>
+              <div class="exposure-metric">
+                <span class="exposure-metric-title">EXPOSURE</span>
+                <span class="exposure-metric-val">{sc.exposure}</span>
+              </div>
+              <span class="exposure-plus" aria-hidden="true">=</span>
+              <div class="exposure-metric">
+                <span class="exposure-metric-title">IMPACT PRIORITY</span>
+                <span class="exposure-metric-val" style={`color: ${sc.impactColor};`}>{sc.impact}</span>
+              </div>
+            </div>
+            <p class="exposure-detail">{sc.detail}</p>
+          </div>
+        ))}
+      </div>
+
+      <div class="callout" style="margin-top: var(--s8);">
+        <p>MALAI VIZHI's exposure analysis uses GIS data (villages, roads, infrastructure) where available. Current data is marked <strong>[DEMO]</strong>. Real operational deployment requires verified GIS datasets for the target region.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 17 — ROUTE RISK ANALYSIS
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-dark section-lg" id="route-risk" aria-labelledby="route-title">
+    <div class="container">
+      <div class="section-label dark"><span class="section-label-text">SECTION 17 / ROUTE RISK ANALYSIS</span></div>
+      <h2 class="display-lg gsap-reveal-up" id="route-title">Connecting the Dots.</h2>
+      <p class="body-lg gsap-reveal-up" style="margin-top: var(--s5); max-width: 660px;">
+        Highways are critical infrastructure. MALAI VIZHI evaluates risk not just at points, but along routes, dividing roads into 1km segments to calculate aggregate exposure and weakest points.
+      </p>
+
+      <div class="route-risk-demo gsap-scale" style="margin-top: var(--s10);">
+        <div class="tech-panel tech-panel-dark">
+          <div class="tech-panel-header">
+            <span class="tech-panel-title">ROUTE ANALYSIS: NH-44 (SHILLONG TO CHERRAPUNJI)</span>
+            <span class="sim-badge">AGGREGATE RISK: MODERATE</span>
+          </div>
+          <div class="tech-panel-body">
+            <div class="route-segments" style="display: flex; gap: 4px; height: 32px; width: 100%; margin-bottom: var(--s6);">
+              {[
+                { risk: 'low', width: '20%' },
+                { risk: 'low', width: '15%' },
+                { risk: 'mod', width: '10%' },
+                { risk: 'high', width: '12%' },
+                { risk: 'mod', width: '18%' },
+                { risk: 'low', width: '25%' },
+              ].map(seg => (
+                <div style={`width: ${seg.width}; height: 100%; background: var(--risk-${seg.risk}); border-radius: 4px;`}></div>
+              ))}
+            </div>
+            <div class="route-stats-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--s4);">
+              <div class="route-stat">
+                <span style="font-size: var(--text-xs); color: var(--text-muted-dark);">TOTAL SEGMENTS</span>
+                <span style="font-size: var(--text-lg); font-weight: 500;">45 km</span>
+              </div>
+              <div class="route-stat">
+                <span style="font-size: var(--text-xs); color: var(--text-muted-dark);">HIGH RISK SEGMENTS</span>
+                <span style="font-size: var(--text-lg); font-weight: 500; color: var(--risk-high);">12% (5.4 km)</span>
+              </div>
+              <div class="route-stat">
+                <span style="font-size: var(--text-xs); color: var(--text-muted-dark);">VULNERABILITY</span>
+                <span style="font-size: var(--text-lg); font-weight: 500;">Km 22-27</span>
+              </div>
+            </div>
+            <p class="body-sm" style="margin-top: var(--s4); color: var(--text-muted-dark);">
+              By splitting roads into discrete nodes, the backend can issue warnings for specific travel corridors. Route risk helps emergency responders identify safe traversal paths during severe weather.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 18 — WHAT-IF SIMULATION
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg" style="background: var(--bg-soft);" id="simulation" aria-labelledby="sim-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 18 / WHAT-IF SIMULATION</span></div>
+      <h2 class="display-lg gsap-reveal-up" id="sim-title">What Happens If Conditions Change?</h2>
+      <p class="body-lg gsap-reveal-up" style="margin-top: var(--s5); max-width: 640px;">
+        Simulate how changing rainfall patterns would affect the risk score for a monitored location. Useful for understanding system sensitivity and planning.
+      </p>
+      <div class="badge badge-demo" style="margin-top: var(--s4); display: inline-flex; font-size: var(--text-sm);">SIMULATION — NOT A FORECAST</div>
+
+      <div class="whatif-grid gsap-scale" style="margin-top: var(--s10);">
+        <div class="whatif-controls">
+          <h3 class="whatif-controls-title">SCENARIO PARAMETERS</h3>
+          <div class="whatif-baseline">
+            <span class="whatif-label">BASELINE RISK:</span>
+            <span class="whatif-baseline-val" id="whatif-baseline">54</span>
+          </div>
+
+          <div class="whatif-buttons">
+            <div class="whatif-group">
+              <p class="whatif-group-label">RAINFALL CHANGE</p>
+              {['0', '+10%', '+30%', '+50%', '+75%', '+100%'].map(pct => (
+                <button class={`whatif-btn ${pct === '0' ? 'active' : ''}`} data-type="rain" data-val={pct}>{pct === '0' ? 'Baseline' : pct}</button>
+              ))}
+            </div>
+            <div class="whatif-group">
+              <p class="whatif-group-label">SOIL MOISTURE CHANGE</p>
+              {['0', '+10%', '+20%', '+30%'].map(pct => (
+                <button class={`whatif-btn ${pct === '0' ? 'active' : ''}`} data-type="soil" data-val={pct}>{pct === '0' ? 'Baseline' : pct}</button>
+              ))}
+            </div>
+          </div>
+
+          <button class="btn-outline" id="whatif-reset" style="margin-top: var(--s6);">↺ Reset to Baseline</button>
+        </div>
+
+        <div class="whatif-result">
+          <div class="whatif-comparison">
+            <div class="whatif-col">
+              <span class="whatif-col-label">BASELINE</span>
+              <div class="whatif-score" id="whatif-base-score">54</div>
+              <span class="badge badge-risk-mod">MODERATE</span>
+            </div>
+            <div class="whatif-arrow" aria-hidden="true">→</div>
+            <div class="whatif-col">
+              <span class="whatif-col-label">SCENARIO</span>
+              <div class="whatif-score" id="whatif-new-score" style="color: var(--risk-mod);">54</div>
+              <span class="badge" id="whatif-level-badge">MODERATE</span>
+            </div>
+          </div>
+
+          <div class="whatif-change-indicator">
+            <div class="whatif-change-bar-wrap">
+              <div class="whatif-change-bar" id="whatif-change-bar" style="width: 54%;"></div>
+            </div>
+            <p class="whatif-change-note" id="whatif-change-note">Scenario matches baseline.</p>
+          </div>
+
+          <p class="sim-disclaimer" style="margin-top: var(--s6);">
+            ⚠ SIMULATION ONLY · Results use illustrative scaling · Not a real forecast · Does not represent any specific location
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 19 — HISTORICAL EVENTS
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg topo-bg" id="historical" aria-labelledby="historical-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 19 / HISTORICAL EVENTS</span></div>
+      <div class="historical-grid">
+        <div class="gsap-reveal-up">
+          <h2 class="display-lg" id="historical-title">Understand the Past. Monitor the Present.</h2>
+          <p class="body-lg" style="margin-top: var(--s5); max-width: 480px;">
+            Historical landslide records provide spatial context and inform susceptibility assessment. MALAI VIZHI integrates verified historical events from GSI, SDMA, and NRSC.
+          </p>
+          <div class="callout" style="margin-top: var(--s8);">
+            <p>Historical events do not predict future landslides at the same location. They indicate terrain that has been susceptible in the past under certain conditions.</p>
+          </div>
+        </div>
+        <div class="gsap-reveal-right">
+          <HistoricalEvents />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 20 — EARLY WARNING & ALERTS
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg" id="early-warning" aria-labelledby="warning-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 20 / EARLY WARNING SYSTEM</span></div>
+      <h2 class="display-lg gsap-reveal-up" id="warning-title">From Risk to Warning.</h2>
+      <p class="body-lg gsap-reveal-up" style="margin-top: var(--s5); max-width: 640px;">
+        When the risk engine determines that conditions exceed configured thresholds, the alert pipeline activates. Alerts are dispatched to configured recipients with full contextual information.
+      </p>
+
+      <div class="alerts-main-grid" style="margin-top: var(--s10);">
+        <!-- Alert flow -->
+        <div class="alert-flow gsap-scale">
+          <div class="tech-panel">
+            <div class="tech-panel-header">
+              <span class="tech-panel-title">ALERT GENERATION FLOW</span>
+            </div>
+            <div class="tech-panel-body">
+              {[
+                { step: 'RISK SCORE COMPUTED', icon: '🔬', desc: 'Multi-factor analysis completes for a location.' },
+                { step: 'THRESHOLD CHECK', icon: '⚖', desc: 'Score compared against configured alert thresholds.' },
+                { step: 'ALERT CREATED', icon: '🔔', desc: 'Alert record created with severity, location, factors, timestamp.' },
+                { step: 'DELIVERY — WEB PUSH', icon: '🌐', desc: 'Web Push notification sent to subscribed browsers.' },
+                { step: 'DELIVERY — ANDROID', icon: '📱', desc: 'Local / FCM notification to Android app users.' },
+                { step: 'DELIVERY — SMS', icon: '💬', desc: 'SMS via external provider. SMS NOT CONFIGURED in current deployment.', warn: true },
+                { step: 'AUTHORITY RECEIVES', icon: '🏛', desc: 'Authority dashboard displays alert with full breakdown and GIS context.' },
+              ].map((s, i, arr) => (
+                <div style="display: flex; flex-direction: column; align-items: flex-start;">
+                  <div class={`alert-flow-step ${s.warn ? 'alert-flow-step--warn' : ''}`}>
+                    <span class="alert-flow-icon" aria-hidden="true">{s.icon}</span>
+                    <div>
+                      <span class="alert-flow-label">{s.step}</span>
+                      <p class="alert-flow-desc">{s.desc}</p>
+                    </div>
+                    {s.warn && <span class="badge badge-limited" style="margin-left: auto;">NOT CONFIGURED</span>}
+                  </div>
+                  {i < arr.length - 1 && <div class="flow-arrow" style="margin: 4px 18px;"></div>}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        <!-- Live alerts feed -->
+        <div class="gsap-reveal-right">
+          <LiveAlertsFeed />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 24 — COMPLETE SYSTEM ARCHITECTURE
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-xl" style="background: var(--bg-navy); color: white;" id="architecture" aria-labelledby="arch-title">
+    <div class="container">
+      <div class="section-label dark"><span class="section-label-text">SECTION 24 / SYSTEM ARCHITECTURE</span></div>
+      <h2 class="display-lg gsap-reveal-up" id="arch-title" style="color: white;">The MALAI VIZHI System.</h2>
+      <p class="gsap-reveal-up" style="margin-top: var(--s5); color: rgba(255,255,255,0.65); font-size: var(--text-lg); max-width: 640px; line-height: 1.7;">
+        From raw sensor data to authority response — every component in the platform.
+      </p>
+
+      <div class="arch-diagram gsap-scale" style="margin-top: var(--s12);" id="arch-diagram" aria-label="MALAI VIZHI system architecture diagram">
+        {[
+          {
+            title: 'DATA SOURCES',
+            color: '#60A5FA',
+            items: ['Rainfall (Open-Meteo)', 'Soil Moisture (ERA5-Land)', 'Terrain DEM (Copernicus)', 'Historical Landslides (GSI)', 'GIS / Exposure Data', 'Ground Sensors', 'Citizen Reports'],
+          },
+          {
+            title: 'DATA PROCESSING',
+            color: '#34D399',
+            items: ['Validation', 'Normalization', 'Freshness Check', 'Duplicate Detection', 'Data Quality Scoring'],
+          },
+          {
+            title: 'RISK ENGINE',
+            color: '#FBBF24',
+            items: ['Factor Scores', 'Configured Weights', 'Risk Score (0–100)', 'Level Classification', 'Confidence Score', 'Explainability'],
+          },
+          {
+            title: 'PLATFORM (BACKEND)',
+            color: '#F87171',
+            items: ['Python / Flask REST API', 'SQLite Database', 'Alert Engine', 'Authentication', 'Notification Services'],
+          },
+          {
+            title: 'APPLICATION (FRONTEND)',
+            color: '#C084FC',
+            items: ['React Web App (Vite)', 'Android (Capacitor)', 'PWA / Offline Mode', 'Leaflet GIS Map', 'Authority Dashboard'],
+          },
+          {
+            title: 'OUTCOMES',
+            color: '#86EFAC',
+            items: ['Risk Awareness', 'Early Warning Alerts', 'Citizen Ground Reports', 'Priority Locations', 'Route Risk Analysis', 'Authority Response Support'],
+          },
+        ].map((layer, i, arr) => (
+          <div class="arch-layer" style={`--layer-color: ${layer.color};`}>
+            <div class="arch-layer-header">
+              <div class="arch-layer-dot" aria-hidden="true"></div>
+              <h3 class="arch-layer-title">{layer.title}</h3>
+            </div>
+            <div class="arch-layer-items">
+              {layer.items.map(item => (
+                <span class="arch-layer-item">{item}</span>
+              ))}
+            </div>
+            {i < arr.length - 1 && (
+              <div class="arch-layer-arrow" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 5v14M7 16l5 5 5-5" stroke="rgba(255,255,255,0.3)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 25 — PWA & OFFLINE MODE
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg topo-bg" id="pwa-offline" aria-labelledby="pwa-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 25 / OFFLINE RESILIENCE</span></div>
+      <h2 class="display-lg gsap-reveal-up" id="pwa-title">When Networks Fail, We Don't.</h2>
+      <p class="body-lg gsap-reveal-up" style="margin-top: var(--s5); max-width: 640px;">
+        Disasters destroy infrastructure. MALAI VIZHI is built as a Progressive Web App (PWA) with Service Workers to ensure critical functionality remains accessible even when internet connectivity drops.
+      </p>
+
+      <div class="pwa-grid gsap-scale" style="margin-top: var(--s10); display: grid; grid-template-columns: 1fr 1fr; gap: var(--s8);">
+        <div class="tech-panel">
+          <div class="tech-panel-header">
+            <span class="tech-panel-title">OFFLINE CACHE STRATEGY</span>
+            <span class="badge badge-live">ACTIVE</span>
+          </div>
+          <div class="tech-panel-body">
+            <div class="pwa-status-row" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--s4); padding-bottom: var(--s4); border-bottom: 1px solid var(--border-light);">
+              <span class="body-sm" style="font-weight: 500;">Core Shell (UI & Scripts)</span>
+              <span class="badge badge-green">CACHE FIRST</span>
+            </div>
+            <div class="pwa-status-row" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--s4); padding-bottom: var(--s4); border-bottom: 1px solid var(--border-light);">
+              <span class="body-sm" style="font-weight: 500;">Last Known Risk Data</span>
+              <span class="badge badge-demo">STALE WHILE REVALIDATE</span>
+            </div>
+            <div class="pwa-status-row" style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--s4); padding-bottom: var(--s4); border-bottom: 1px solid var(--border-light);">
+              <span class="body-sm" style="font-weight: 500;">Citizen Report Submissions</span>
+              <span class="badge badge-historical">BACKGROUND SYNC</span>
+            </div>
+            <p class="body-sm" style="color: var(--text-muted); margin-top: var(--s4);">
+              Users can continue to view their last downloaded risk data, and queue citizen reports to automatically submit when the network returns.
+            </p>
+          </div>
+        </div>
+
+        <div class="tech-panel tech-panel-dark">
+          <div class="tech-panel-header">
+            <span class="tech-panel-title">NETWORK SIMULATOR</span>
+          </div>
+          <div class="tech-panel-body" style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: var(--s8) var(--s4);">
+            <div class="network-toggle" style="background: var(--risk-low); color: white; padding: 12px 24px; border-radius: 50px; font-weight: 600; display: inline-flex; align-items: center; gap: 8px; margin-bottom: var(--s4);">
+              <div class="pulsing-dot" style="width: 10px; height: 10px; background: white; border-radius: 50%; box-shadow: 0 0 10px white;"></div>
+              NETWORK: ONLINE
+            </div>
+            <p class="body-sm" style="color: var(--text-muted-dark);">
+              In a real scenario, losing connection triggers offline mode. The UI shifts to amber warning borders, timestamping the age of the displayed data.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 26 — API TESTING CONSOLE
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-dark section-lg" id="api-testing" aria-labelledby="api-title">
+    <div class="container">
+      <div class="section-label dark"><span class="section-label-text">SECTION 26 / SYSTEM API</span></div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: var(--s6);">
+        <div style="max-width: 600px;">
+          <h2 class="display-lg gsap-reveal-up" id="api-title">Verify the Backend Engine.</h2>
+          <p class="body-lg gsap-reveal-up" style="margin-top: var(--s5);">
+            MALAI VIZHI isn't just a UI — it's a headless risk engine. Developers and evaluators can interact with the live Flask API endpoints directly to verify calculations, validate inputs, and test responses.
+          </p>
+        </div>
+        <a href="/api-testing" class="btn-primary gsap-reveal-right">
+          <span>Open API Console</span>
+          <svg class="btn-arrow" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+            <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </a>
+      </div>
+
+      <div class="api-console-preview gsap-scale" style="margin-top: var(--s10); background: #0d1117; border: 1px solid #30363d; border-radius: var(--r-md); overflow: hidden;">
+        <div style="display: flex; background: #161b22; border-bottom: 1px solid #30363d; padding: 12px 16px; align-items: center; gap: 12px;">
+          <div style="display: flex; gap: 6px;">
+            <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+            <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+            <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+          </div>
+          <div style="color: #8b949e; font-family: var(--font-mono); font-size: 0.8rem;">MALAI VIZHI POSTMAN-STYLE CONSOLE</div>
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; border-bottom: 1px solid #30363d;">
+          <!-- Request -->
+          <div style="padding: var(--s6); border-right: 1px solid #30363d;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: var(--s4);">
+              <span style="color: #58a6ff; font-weight: bold; font-family: var(--font-mono);">GET</span>
+              <span style="color: #c9d1d9; font-family: var(--font-mono); font-size: 0.9rem;">/api/risk/evaluate?lat=25.2&lng=91.7</span>
+            </div>
+            <pre style="margin: 0; color: #8b949e; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.5;">&#123;
+  "api_key": "hidden",
+  "client_id": "evaluator_1"
+&#125;</pre>
+          </div>
+          <!-- Response -->
+          <div style="padding: var(--s6); background: #0a0c10;">
+            <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--s4);">
+              <span style="color: #3fb950; font-family: var(--font-mono); font-size: 0.85rem;">200 OK</span>
+              <span style="color: #8b949e; font-family: var(--font-mono); font-size: 0.85rem;">214 ms</span>
+            </div>
+            <pre style="margin: 0; color: #e6edf3; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.5;">&#123;
+  "risk_score": 64.5,
+  "level": "MODERATE",
+  "confidence": 90,
+  "factors": &#123;
+    "rainfall_24h": &#123; "value": 110, "pts": 15.4 &#125;,
+    "soil_moisture": &#123; "value": 80.2, "pts": 28.5 &#125;,
+    "slope": &#123; "value": 15, "pts": 4.2 &#125;
+  &#125;
+&#125;</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 27 — TECHNOLOGY STACK
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg topo-bg" id="technology" aria-labelledby="tech-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 25 / TECHNOLOGY STACK</span></div>
+      <h2 class="display-lg gsap-reveal-up" id="tech-title">Built as a Real Working Platform.</h2>
+      <p class="body-lg gsap-reveal-up" style="margin-top: var(--s5); max-width: 640px;">
+        MALAI VIZHI is a full-stack system — not a prototype or mockup. Every listed technology is actually used in the platform.
+      </p>
+
+      <div class="tech-stack-grid" style="margin-top: var(--s10);">
+        {[
+          {
+            category: 'FRONTEND',
+            icon: '💻',
+            techs: [
+              { name: 'React', desc: 'UI component framework' },
+              { name: 'TypeScript', desc: 'Type-safe JavaScript' },
+              { name: 'Vite', desc: 'Build tooling and dev server' },
+              { name: 'Leaflet.js', desc: 'Interactive GIS maps' },
+              { name: 'PWA', desc: 'Offline support and caching' },
+              { name: 'Capacitor', desc: 'Android app wrapper' },
+            ],
+          },
+          {
+            category: 'BACKEND',
+            icon: '⚙',
+            techs: [
+              { name: 'Python', desc: 'Core language' },
+              { name: 'Flask', desc: 'REST API framework' },
+              { name: 'SQLite', desc: 'Database for reports, alerts, sensors' },
+              { name: 'Gunicorn', desc: 'Production WSGI server' },
+              { name: 'REST API', desc: 'JSON-based API for all clients' },
+            ],
+          },
+          {
+            category: 'DATA / GIS',
+            icon: '🗺',
+            techs: [
+              { name: 'Open-Meteo', desc: 'Rainfall, soil moisture data' },
+              { name: 'Copernicus DEM', desc: 'Terrain elevation (GLO-30)' },
+              { name: 'GSI / NRSC', desc: 'Historical landslide data' },
+              { name: 'GIS Datasets', desc: 'Villages, roads, infrastructure' },
+            ],
+          },
+          {
+            category: 'SECURITY',
+            icon: '🔒',
+            techs: [
+              { name: 'Password Hashing', desc: 'bcrypt / secure hashing' },
+              { name: 'Bearer Tokens', desc: 'Session authentication' },
+              { name: 'Password Reset', desc: 'Secure reset flow with tokens' },
+              { name: 'Input Validation', desc: 'Server-side request validation' },
+              { name: 'Duplicate Detection', desc: 'Photo hash + location-time check' },
+            ],
+          },
+        ].map(stack => (
+          <div class="tech-stack-card gsap-reveal-up">
+            <div class="tech-stack-header">
+              <span class="tech-stack-icon" aria-hidden="true">{stack.icon}</span>
+              <span class="tech-stack-category">{stack.category}</span>
+            </div>
+            <div class="tech-stack-items">
+              {stack.techs.map(t => (
+                <div class="tech-item">
+                  <span class="tech-item-name">{t.name}</span>
+                  <span class="tech-item-desc">{t.desc}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 29 — LIMITATIONS
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg" id="limitations" aria-labelledby="limits-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 29 / DEPLOYMENT LIMITATIONS</span></div>
+      <h2 class="display-lg gsap-reveal-up" id="limits-title">
+        What the System Still Needs for Large-Scale Deployment.
+      </h2>
+      <p class="body-lg gsap-reveal-up" style="margin-top: var(--s5); max-width: 640px;">
+        Technical honesty is part of the MALAI VIZHI design philosophy. These are real requirements for operational deployment — not hidden, not minimized.
+      </p>
+
+      <div class="limitations-grid" style="margin-top: var(--s10);">
+        {[
+          {
+            num: '01',
+            title: 'Physical Sensor Deployment',
+            desc: 'Reliable field hardware, maintenance cycles, weatherproofing, and sustained power supply are required for continuous ground-level telemetry. Currently: SENSOR-READY ARCHITECTURE only.',
+            status: 'REQUIRED FOR PRODUCTION',
+            urgency: 'high',
+          },
+          {
+            num: '02',
+            title: 'Network Availability',
+            desc: 'Remote mountainous terrain can experience sustained communication failures. Cellular, satellite, or LoRa connectivity must be designed for the specific deployment region.',
+            status: 'DEPLOYMENT-SPECIFIC',
+            urgency: 'high',
+          },
+          {
+            num: '03',
+            title: 'Data Completeness',
+            desc: 'Currently, Open-Meteo and Copernicus DEM data returns UNAVAILABLE for many locations. Risk assessments reflect LIMITED confidence when sources are absent.',
+            status: 'CURRENTLY LIMITED',
+            urgency: 'high',
+          },
+          {
+            num: '04',
+            title: 'Ground Validation',
+            desc: 'High-risk indications must be physically verified by qualified authorities before initiating evacuations or emergency responses. The system supports — does not replace — human judgment.',
+            status: 'ALWAYS REQUIRED',
+            urgency: 'critical',
+          },
+          {
+            num: '05',
+            title: 'Calibration',
+            desc: 'Risk thresholds and factor weights must be validated against local terrain, soil type, historical events, and monsoon patterns. A single global configuration may not be appropriate for all NER sub-regions.',
+            status: 'REGION-SPECIFIC',
+            urgency: 'high',
+          },
+          {
+            num: '06',
+            title: 'Governance & Authority Workflows',
+            desc: 'Alert policies, escalation procedures, authority contacts, and emergency response workflows must be configured and agreed upon for each deployment jurisdiction.',
+            status: 'REQUIRED FOR PRODUCTION',
+            urgency: 'high',
+          },
+        ].map(lim => (
+          <div class="limitation-card gsap-reveal-up">
+            <div class="limitation-card-header">
+              <span class="limitation-num">{lim.num}</span>
+              <h3 class="limitation-title">{lim.title}</h3>
+            </div>
+            <p class="limitation-desc">{lim.desc}</p>
+            <div class="limitation-footer">
+              <span class={`badge badge-${lim.urgency === 'critical' ? 'risk-high' : 'limited'}`}>{lim.status}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 30 — DIFFERENTIATION
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg" style="background: var(--bg-soft); " id="differentiation" aria-labelledby="diff-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 30 / DIFFERENTIATION</span></div>
+      <h2 class="display-lg gsap-reveal-up" id="diff-title">Why MALAI VIZHI Is Different.</h2>
+      <p class="body-lg gsap-reveal-up" style="margin-top: var(--s5); max-width: 640px;">
+        Not claims — documented platform capabilities.
+      </p>
+      <div class="diff-grid" style="margin-top: var(--s10);">
+        {[
+          { cap: 'Multi-Factor Risk', icon: '🔬', desc: 'Combines 5 environmental factors — not just rainfall.' },
+          { cap: 'Explainable Factors', icon: '📊', desc: 'Every risk score can be decomposed into contributing factors.' },
+          { cap: 'GIS-Based Monitoring', icon: '🗺', desc: 'Interactive map with multiple data layers.' },
+          { cap: 'Citizen Ground Reporting', icon: '👥', desc: 'Structured observational evidence from the field.' },
+          { cap: 'Sensor-Ready Architecture', icon: '📡', desc: 'Backend designed for real-time telemetry ingestion.' },
+          { cap: 'Risk vs Confidence', icon: '⚖', desc: 'Two separate metrics — never combined into one.' },
+          { cap: 'What-If Simulation', icon: '🧪', desc: 'Explore scenario impacts before they occur.' },
+          { cap: 'Route Risk Analysis', icon: '🛣', desc: 'Segment-level risk along travel routes.' },
+          { cap: 'Exposure / Impact Priority', icon: '🏘', desc: 'Hazard × Exposure = impact-informed prioritization.' },
+          { cap: 'Early Warning Alerts', icon: '🔔', desc: 'Threshold-based automated alert generation.' },
+          { cap: 'Web + Android + PWA', icon: '📱', desc: 'Multiple access points including low-connectivity mode.' },
+          { cap: 'Technical Honesty', icon: '✓', desc: 'Limitations documented openly. No fabricated data.' },
+        ].map(cap => (
+          <div class="diff-card gsap-reveal-up">
+            <span class="diff-icon" aria-hidden="true">{cap.icon}</span>
+            <div>
+              <h3 class="diff-title">{cap.cap}</h3>
+              <p class="diff-desc">{cap.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 32 — TEAM HIVE
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg topo-bg" id="team" aria-labelledby="team-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 32 / TEAM HIVE</span></div>
+      <h2 class="display-lg gsap-reveal-up" id="team-title">Team HIVE.</h2>
+      <p class="body-lg gsap-reveal-up" style="margin-top: var(--s5); max-width: 520px;">
+        The multidisciplinary team behind MALAI VIZHI — combining expertise in development, data, GIS, risk analysis, and design.
+      </p>
+      <div class="team-grid" style="margin-top: var(--s10);">
+        {[
+          { name: 'Sastivelan P', role: 'Full Stack Development', contrib: 'Backend API · Astro Architecture · System Design', abbr: 'SP', color: '#2D6A4F' },
+          { name: 'Kanishka M', role: 'Research & Logic', contrib: 'Factor Calibration · Equation Modeling', abbr: 'KM', color: '#0F1E3C' },
+          { name: 'Praveen K', role: 'Data Integration', contrib: 'Open-Meteo Integration · DEM Processing', abbr: 'PK', color: '#B45309' },
+          { name: 'Akshit H', role: 'Frontend & Animations', contrib: 'GSAP Animations · UI Interactions', abbr: 'AH', color: '#7C3AED' },
+          { name: 'Sridhar A', role: 'GIS & Mapping', contrib: 'Leaflet Maps · Spatial Data Overlays', abbr: 'SA', color: '#B91C1C' },
+          { name: 'Santhosh L', role: 'Mobile & QA', contrib: 'PWA Integration · Testing', abbr: 'SL', color: '#2563EB' },
+        ].map(member => (
+          <div class="team-card gsap-reveal-up" tabindex="0">
+            <div class="team-card-avatar" style={`background: ${member.color};`} aria-hidden="true">
+              <span>{member.abbr}</span>
+            </div>
+            <div class="team-card-body">
+              <h3 class="team-card-name">{member.name}</h3>
+              <p class="team-card-role">{member.role}</p>
+              <p class="team-card-contrib">{member.contrib}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+      <p class="team-placeholder-note">
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true"><circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.25"/><path d="M7 4.5v3.5M7 9.5v.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/></svg>
+        Team member names and photos to be updated with actual team information before final presentation.
+      </p>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 33 — BLOG
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg" id="blog" aria-labelledby="blog-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 33 / BLOG</span></div>
+      <h2 class="display-lg gsap-reveal-up" id="blog-title">Understanding MALAI VIZHI.</h2>
+      <p class="body-lg gsap-reveal-up" style="margin-top: var(--s5); max-width: 540px;">
+        In-depth articles explaining every aspect of the project — from the problem to the technology.
+      </p>
+      <div class="blog-cards-grid" style="margin-top: var(--s10);">
+        {[
+          { num: '01', title: 'Understanding MALAI VIZHI', excerpt: 'What is MALAI VIZHI, why does it exist, and what problem does it address in the North Eastern Region of India?', href: '/blog/understanding-malai-vizhi', time: '8 min' },
+          { num: '02', title: 'How MALAI VIZHI Works', excerpt: 'A deep dive into the five-stage data pipeline from collection to early warning — and how each stage contributes to the final output.', href: '/blog/how-malai-vizhi-works', time: '12 min' },
+          { num: '03', title: 'Technology Behind MALAI VIZHI', excerpt: 'The engineering approach: DEM slope derivation, empirical risk analysis, GIS integration and the Astro + React + Flask technology stack.', href: '/blog/technology-behind-malai-vizhi', time: '10 min' },
+        ].map(article => (
+          <a href={article.href} class="blog-card gsap-reveal-up" aria-label={`Read: ${article.title}`}>
+            <div class="blog-card-num">{article.num}</div>
+            <div class="blog-card-body">
+              <h3 class="blog-card-title">{article.title}</h3>
+              <p class="blog-card-excerpt">{article.excerpt}</p>
+            </div>
+            <div class="blog-card-footer">
+              <span class="blog-card-time">{article.time} read</span>
+              <span class="blog-card-arrow" aria-hidden="true">→</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 34 — GLOSSARY
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg" style="background: var(--bg-soft);" id="glossary" aria-labelledby="gloss-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 34 / TECHNICAL GLOSSARY</span></div>
+      <h2 class="display-md gsap-reveal-up" id="gloss-title">Technical Terms Explained.</h2>
+      <p class="body-base gsap-reveal-up" style="margin-top: var(--s4); max-width: 560px;">
+        Click any term to expand its definition. Every term is defined in the context of MALAI VIZHI's implementation.
+      </p>
+      <div style="margin-top: var(--s10);">
+        <TechGlossary />
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 35 — FAQ
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-lg" id="faq" aria-labelledby="faq-title">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">SECTION 35 / FREQUENTLY ASKED QUESTIONS</span></div>
+      <div class="faq-outer-grid">
+        <div class="gsap-reveal-up">
+          <h2 class="display-md" id="faq-title">Common Questions.</h2>
+          <p class="body-base" style="margin-top: var(--s4); max-width: 360px;">
+            Technical questions about MALAI VIZHI answered with accuracy. No generic or evasive answers.
+          </p>
+        </div>
+        <div>
+          <FAQAccordion />
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- ═══════════════════════════════════════════════════════════
+    SECTION 36 — FINAL CTA
+  ═══════════════════════════════════════════════════════════ -->
+  <section class="section-xl cta-section" id="cta" aria-labelledby="cta-title">
+    <canvas class="cta-canvas" id="cta-canvas" aria-hidden="true"></canvas>
+    <div class="container" style="position: relative; z-index: 1;">
+      <div class="cta-inner gsap-reveal-up">
+        <div class="cta-tag">
+          <span class="badge badge-live"><span class="badge-dot"></span>SYSTEM ONLINE</span>
+          <span class="badge badge-historical">TEAM HIVE · NER INDIA</span>
+        </div>
+        <h2 class="display-xl cta-title" id="cta-title">MALAI VIZHI</h2>
+        <p class="cta-tagline">Seeing the Risk Before the Landslide.</p>
+        <p class="cta-desc">
+          A platform for understanding environmental conditions, identifying location-based risk, and supporting earlier awareness and community response in the North Eastern Region of India.
+        </p>
+        <div class="cta-actions">
+          <a href="#how-it-works" class="btn-green">
+            <span>Explore the System</span>
+            <svg class="btn-arrow" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="#architecture" class="btn-ghost-white">
+            <span>View Architecture</span>
+            <svg class="btn-arrow" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="#blog" class="btn-ghost-white">
+            <span>Read the Blog</span>
+            <svg class="btn-arrow" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+          <a href="#team" class="btn-ghost-white">
+            <span>Meet Team HIVE</span>
+            <svg class="btn-arrow" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+              <path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+/* ══════════════════════════ HERO ══════════════════════════ */
+.hero-section {
+  min-height: 100vh;
+  padding: calc(var(--nav-h) + var(--s16)) 0 var(--s16);
+  background: linear-gradient(165deg, #FAFAFA 0%, #F0FAF3 50%, #FAFAFA 100%);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.hero-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.hero-topo-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.hero-topo-overlay svg { width: 100%; height: 100%; }
+
+@keyframes heroPulse1 {
+  0%, 100% { r: 8; opacity: 0.4; }
+  50% { r: 14; opacity: 0.1; }
+}
+
+@keyframes heroPulse2 {
+  0%, 100% { r: 16; opacity: 0.12; }
+  50% { r: 24; opacity: 0.03; }
+}
+
+.hero-pulse-1 { animation: heroPulse1 2.5s ease-in-out infinite; }
+.hero-pulse-2 { animation: heroPulse2 2.5s ease-in-out infinite 0.8s; }
+
+.hero-inner {
+  display: grid;
+  grid-template-columns: 1fr 420px;
+  gap: var(--s16);
+  align-items: center;
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 1100px) { .hero-inner { grid-template-columns: 1fr; } }
+@media (max-width: 768px) { .hero-inner { gap: var(--s10); } }
+
+/* Hero labels */
+.hero-label {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  margin-bottom: var(--s6);
+  flex-wrap: wrap;
+}
+
+.hero-label-tag {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--green-primary);
+  background: var(--green-bg);
+  padding: 4px 10px;
+  border-radius: var(--r-full);
+  border: 1px solid var(--border-green);
+}
+
+.hero-label-divider { color: var(--text-light); }
+
+.hero-label-text {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* Hero title */
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 11vw, 9rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.05em;
+  color: var(--text-navy);
+  display: flex;
+  flex-direction: column;
+  margin-bottom: var(--s5);
+}
+
+.hero-title-main { display: block; }
+.hero-title-accent { color: var(--green-primary); }
+
+.hero-tagline {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  color: var(--text-navy-mid);
+  letter-spacing: -0.01em;
+  margin-bottom: var(--s5);
+  opacity: 0.85;
+}
+
+.hero-desc {
+  font-size: var(--text-lg);
+  line-height: 1.72;
+  color: var(--text-secondary);
+  max-width: 580px;
+  margin-bottom: var(--s8);
+}
+
+.hero-desc strong { color: var(--text-navy); font-weight: 700; }
+
+/* Hero actions */
+.hero-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  flex-wrap: wrap;
+  margin-bottom: var(--s8);
+}
+
+/* Status strip */
+.hero-status-strip {
+  display: flex;
+  align-items: center;
+  gap: var(--s5);
+  flex-wrap: wrap;
+  padding: var(--s4) 0;
+  border-top: 1px solid var(--border);
+}
+
+.hero-status-item {
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.hero-status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--status-unavail);
+}
+
+.hero-status-dot.green { background: var(--status-live); animation: livePulse 2s ease-in-out infinite; }
+
+/* Hero panel */
+.hero-panel {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2xl);
+  padding: var(--s6);
+  box-shadow: var(--shadow-xl);
+  backdrop-filter: blur(10px);
+}
+
+.hero-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: var(--s5);
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--s5);
+  gap: var(--s3);
+  flex-wrap: wrap;
+}
+
+.hero-panel-title {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-navy);
+}
+
+.hero-stats-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s4);
+  margin-bottom: var(--s5);
+}
+
+.hero-stat {
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--s4);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.hero-stat-num {
+  font-family: var(--font-display);
+  font-size: var(--text-4xl);
+  font-weight: 800;
+  letter-spacing: -0.04em;
+  color: var(--text-navy);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.hero-stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 4px;
+}
+
+/* Coverage */
+.hero-coverage { margin-bottom: var(--s5); }
+
+.hero-coverage-label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: var(--s3);
+}
+
+.hero-regions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+
+.hero-region-tag {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  padding: 3px 8px;
+  border-radius: var(--r-full);
+}
+
+/* Risk scale */
+.hero-risk-scale { margin-bottom: var(--s5); }
+
+.hero-risk-bar-wrap { display: flex; flex-direction: column; gap: 6px; }
+
+.hero-risk-bar {
+  height: 8px;
+  border-radius: var(--r-full);
+  background: linear-gradient(to right, var(--risk-low), var(--risk-mod), var(--risk-high));
+}
+
+.hero-risk-labels {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.hero-risk-values {
+  display: flex;
+  justify-content: space-between;
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-light);
+}
+
+.hero-panel-note {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  padding-top: var(--s4);
+  border-top: 1px solid var(--border);
+  font-style: italic;
+}
+
+/* Hero scroll indicator */
+.hero-scroll-indicator {
+  position: absolute;
+  bottom: var(--s8);
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--s3);
+  animation: scrollBounce 2s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes scrollBounce {
+  0%, 100% { transform: translateX(-50%) translateY(0); }
+  50% { transform: translateX(-50%) translateY(8px); }
+}
+
+.hero-scroll-line {
+  width: 1px;
+  height: 40px;
+  background: linear-gradient(to bottom, transparent, var(--text-muted));
+}
+
+.hero-scroll-indicator span {
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-light);
+}
+
+/* ══════════════════════════ PROBLEM ══════════════════════════ */
+.problem-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s10);
+}
+
+.problem-region-note {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s3);
+  font-size: var(--text-sm);
+  color: var(--text-muted);
+  margin-top: var(--s5);
+  line-height: 1.6;
+}
+
+.problem-region-note svg { flex-shrink: 0; margin-top: 2px; }
+
+.problem-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+  gap: var(--s5);
+}
+
+.problem-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: var(--s6);
+  transition: all var(--ease-base);
+  cursor: default;
+}
+
+.problem-card:hover, .problem-card:focus-visible {
+  transform: translateY(-6px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--border-mid);
+}
+
+.problem-card--blue { border-top: 3px solid #60A5FA; }
+.problem-card--amber { border-top: 3px solid #FBBF24; }
+.problem-card--green { border-top: 3px solid var(--green-light); }
+.problem-card--red { border-top: 3px solid var(--risk-high); }
+
+.problem-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--s4);
+}
+
+.problem-card-num {
+  font-family: var(--font-mono);
+  font-size: var(--text-4xl);
+  font-weight: 800;
+  color: var(--text-light);
+  line-height: 1;
+}
+
+.problem-card-icon { font-size: 2rem; }
+.problem-card-title { font-size: var(--text-xl); font-weight: 700; color: var(--text-navy); margin-bottom: var(--s3); }
+.problem-card-desc { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.7; margin-bottom: var(--s4); }
+.problem-card-factor {
+  padding: var(--s2) var(--s3);
+  background: var(--bg-soft);
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+  display: inline-block;
+}
+.problem-card-factor-text {
+  font-family: var(--font-mono);
+  font-size: var(--text-2xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ══════════════════════════ PIPELINE ══════════════════════════ */
+.pipeline-wrap { position: relative; }
+
+.pipeline-stages {
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+  padding-bottom: var(--s2);
+  scrollbar-width: thin;
+}
+
+.pipeline-stage {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  cursor: pointer;
+  outline: none;
+}
+
+.pipeline-stage:focus-visible .pipeline-stage-inner { border-color: var(--green-primary); }
+
+.pipeline-stage-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--s2);
+  padding: var(--s5) var(--s6);
+  background: var(--bg-white);
+  border: 1.5px solid var(--border-mid);
+  border-radius: var(--r-xl);
+  min-width: 140px;
+  transition: all var(--ease-base);
+}
+
+.pipeline-stage:hover .pipeline-stage-inner,
+.pipeline-stage.active .pipeline-stage-inner {
+  border-color: var(--green-primary);
+  background: var(--green-bg);
+  box-shadow: var(--shadow-green);
+  transform: translateY(-4px);
+}
+
+.pipeline-stage-num { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; color: var(--green-primary); letter-spacing: 0.1em; }
+.pipeline-stage-icon { font-size: 1.5rem; }
+.pipeline-stage-title { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-navy); }
+.pipeline-stage-short { font-size: 0.65rem; color: var(--text-muted); line-height: 1.4; max-width: 110px; }
+
+.pipeline-arrow {
+  color: var(--text-light);
+  flex-shrink: 0;
+  padding: 0 var(--s2);
+}
+
+/* Pipeline detail panels */
+.pipeline-details { margin-top: var(--s6); }
+
+.pipeline-detail {
+  display: none;
+  animation: fadeIn 0.3s ease;
+}
+
+.pipeline-detail.visible { display: block; }
+
+.pipeline-detail-inner {
+  background: var(--green-bg);
+  border: 1px solid var(--border-green);
+  border-radius: var(--r-xl);
+  padding: var(--s6);
+}
+
+.pipeline-detail-title {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--green-deep);
+  margin-bottom: var(--s4);
+}
+
+.pipeline-detail-content {
+  font-size: var(--text-base);
+  color: var(--text-secondary);
+  line-height: 1.75;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ══════════════════════════ DATA SOURCES ══════════════════════════ */
+.data-sources-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+  gap: var(--s5);
+}
+
+.data-source-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: var(--s6);
+  transition: all var(--ease-base);
+  cursor: default;
+}
+
+.data-source-card:hover, .data-source-card:focus-visible {
+  box-shadow: var(--shadow-lg);
+  transform: translateY(-4px);
+  border-color: var(--border-mid);
+}
+
+.data-source-header {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s4);
+  margin-bottom: var(--s5);
+  padding-bottom: var(--s4);
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+
+.data-source-icon { font-size: 1.75rem; flex-shrink: 0; }
+.data-source-title { font-weight: 700; font-size: var(--text-base); color: var(--text-navy); margin-bottom: 2px; }
+.data-source-provider { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); letter-spacing: 0.06em; }
+
+.data-source-details { display: flex; flex-direction: column; gap: var(--s4); }
+.data-source-row { display: grid; grid-template-columns: 70px 1fr; gap: var(--s3); align-items: flex-start; }
+.data-source-key { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--green-primary); padding-top: 2px; }
+.data-source-val { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.6; }
+
+/* ══════════════════════════ TERRAIN ══════════════════════════ */
+.terrain-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s12);
+  align-items: flex-start;
+}
+
+@media (max-width: 900px) { .terrain-grid { grid-template-columns: 1fr; } }
+
+.terrain-flow { margin-top: var(--s8); display: flex; flex-direction: column; gap: 0; }
+
+.terrain-step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s4);
+  position: relative;
+}
+
+.terrain-step-num {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--green-primary);
+  background: var(--green-bg);
+  border: 1px solid var(--border-green);
+  border-radius: var(--r-full);
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  z-index: 1;
+}
+
+.terrain-step-body {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding-bottom: var(--s4);
+}
+
+.terrain-step-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: var(--text-navy);
+}
+
+.terrain-step-sub { font-size: var(--text-xs); color: var(--text-muted); }
+
+.terrain-step-line {
+  position: absolute;
+  left: 13px;
+  top: 28px;
+  width: 1.5px;
+  height: calc(100% - 28px + var(--s4));
+  background: var(--border-mid);
+}
+
+/* DEM Grid */
+.terrain-visual-col { position: sticky; top: calc(var(--nav-h) + var(--s8)); }
+
+.dem-grid-wrap {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: var(--s6);
+  box-shadow: var(--shadow-sm);
+}
+
+.dem-grid-title {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: var(--s5);
+}
+
+.dem-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 3px;
+  margin-bottom: var(--s5);
+}
+
+.dem-cell {
+  aspect-ratio: 1;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 0.55rem;
+  font-weight: 700;
+  color: white;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+  transition: transform 0.2s ease;
+}
+
+.dem-cell:hover { transform: scale(1.15); z-index: 1; }
+
+.dem-legend {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  margin-bottom: var(--s5);
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+}
+
+.dem-legend-bar {
+  flex: 1;
+  height: 8px;
+  border-radius: var(--r-full);
+  background: linear-gradient(to right, #93C5FD, #3B82F6, #1D4ED8, #1E3A5F);
+}
+
+.dem-calc-note {
+  font-size: var(--text-xs);
+  color: var(--text-secondary);
+  line-height: 1.75;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--s4);
+}
+
+/* ══════════════════════════ ENVIRONMENT SECTION ══════════════════════════ */
+.env-chain-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s12);
+}
+
+@media (max-width: 900px) { .env-chain-grid { grid-template-columns: 1fr; } }
+
+.env-chain { display: flex; flex-direction: column; gap: 0; }
+
+.env-chain-node {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s5);
+  padding: var(--s4) 0;
+}
+
+.env-chain-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--r-lg);
+  border: 1.5px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.env-chain-body { flex: 1; }
+.env-chain-label { font-family: var(--font-mono); font-size: var(--text-sm); font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; display: block; margin-bottom: 4px; }
+.env-chain-desc { font-size: var(--text-sm); color: rgba(255,255,255,0.65); line-height: 1.65; }
+.env-chain-arrow { font-size: var(--text-2xl); color: rgba(255,255,255,0.2); padding: var(--s1) var(--s6); display: block; }
+
+.env-side-notes { display: flex; flex-direction: column; gap: var(--s5); }
+
+.env-side-note {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: var(--r-xl);
+  padding: var(--s5);
+}
+
+.env-side-note p { font-size: var(--text-sm); color: rgba(255,255,255,0.70); line-height: 1.75; }
+.env-side-note strong { color: white; }
+
+.rainfall-canvas-wrap {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: var(--r-xl);
+  padding: var(--s4);
+  overflow: hidden;
+  text-align: center;
+}
+
+#rainfall-canvas { border-radius: var(--r-lg); display: block; margin: 0 auto; background: rgba(255,255,255,0.05); }
+
+/* ══════════════════════════ RISK ENGINE ══════════════════════════ */
+.engine-explainer {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  overflow: hidden;
+}
+
+.engine-explainer-header {
+  padding: var(--s4) var(--s6);
+  background: var(--bg-soft);
+  border-bottom: 1px solid var(--border);
+}
+
+.engine-explainer-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0;
+  padding: var(--s6);
+  gap: var(--s6);
+}
+
+@media (max-width: 768px) { .engine-explainer-body { grid-template-columns: 1fr; } }
+
+.engine-explain-label {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  margin-bottom: var(--s4);
+}
+
+.engine-formula {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+  align-items: center;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: var(--s4);
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  margin-bottom: var(--s4);
+}
+
+.engine-formula.bad { border-color: var(--risk-high-border); background: var(--risk-high-bg); color: #7F1D1D; }
+.engine-formula.good { border-color: var(--risk-low-border); background: var(--risk-low-bg); color: #14532D; }
+.formula-result { color: var(--green-primary); font-weight: 800; font-size: var(--text-sm); }
+
+.engine-explain-note { font-size: var(--text-xs); color: var(--text-muted); line-height: 1.6; }
+
+.factors-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr));
+  gap: var(--s5);
+}
+
+.factor-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: var(--s5);
+  box-shadow: var(--shadow-sm);
+}
+
+.factor-card-header { display: flex; align-items: flex-start; gap: var(--s3); margin-bottom: var(--s4); }
+.factor-card-icon { font-size: 1.5rem; }
+.factor-card-title { font-weight: 700; font-size: var(--text-sm); color: var(--text-navy); margin-bottom: 4px; }
+.factor-card-values { display: flex; align-items: center; gap: var(--s3); margin-bottom: var(--s3); }
+.factor-val-pair { display: flex; flex-direction: column; gap: 2px; }
+.factor-val-key { font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--text-muted); }
+.factor-val-num { font-family: var(--font-mono); font-size: var(--text-base); font-weight: 700; color: var(--text-navy); }
+.factor-val-num.green { color: var(--green-primary); }
+.factor-card-why { font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.6; margin-top: var(--s3); margin-bottom: var(--s3); }
+.factor-card-footer { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; }
+
+/* ══════════════════════════ SIMULATOR ══════════════════════════ */
+.sim-outer-label { display: flex; gap: var(--s3); flex-wrap: wrap; margin-top: var(--s5); }
+
+.simulator-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s8);
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2xl);
+  padding: var(--s8);
+  box-shadow: var(--shadow-lg);
+}
+
+@media (max-width: 900px) { .simulator-wrap { grid-template-columns: 1fr; } }
+
+.simulator-controls-title {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-navy);
+  margin-bottom: 4px;
+}
+
+.simulator-controls-sub {
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  margin-bottom: var(--s6);
+  font-style: italic;
+}
+
+.slider-group { display: flex; flex-direction: column; gap: var(--s5); }
+
+.slider-item { display: flex; flex-direction: column; gap: var(--s2); }
+
+.slider-label-row { display: flex; justify-content: space-between; align-items: center; }
+
+.slider-label {
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--text-navy);
+}
+
+.slider-val {
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--green-primary);
+}
+
+.sim-slider {
+  width: 100%;
+  height: 6px;
+  border-radius: var(--r-full);
+  outline: none;
+  -webkit-appearance: none;
+  background: linear-gradient(to right, var(--green-light) 0%, var(--green-light) var(--pct, 50%), var(--bg-muted) var(--pct, 50%), var(--bg-muted) 100%);
+  cursor: pointer;
+}
+
+.sim-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--green-primary);
+  border: 2px solid white;
+  box-shadow: var(--shadow-sm);
+  cursor: pointer;
+}
+
+.factor-breakdown { margin-top: var(--s6); display: flex; flex-direction: column; gap: var(--s3); }
+
+/* Risk meter display */
+.simulator-display { display: flex; flex-direction: column; align-items: center; gap: var(--s5); }
+
+.risk-meter-wrap { display: flex; flex-direction: column; align-items: center; gap: var(--s4); width: 100%; }
+
+.risk-arc-svg { width: 200px; height: 120px; overflow: visible; }
+
+.risk-arc-track { fill: none; stroke: var(--bg-muted); stroke-width: 14; stroke-linecap: round; }
+.risk-arc-fill  { fill: none; stroke-width: 14; stroke-linecap: round; stroke-dasharray: 251; stroke-dashoffset: 251; transition: stroke-dashoffset 1s cubic-bezier(0.4,0,0.2,1), stroke 0.5s; }
+
+.risk-score-display { text-align: center; }
+.risk-score-num { font-family: var(--font-display); font-size: var(--text-7xl); font-weight: 800; letter-spacing: -0.05em; color: var(--text-navy); line-height: 1; }
+.risk-level-badge { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-muted); margin-top: 4px; }
+
+.risk-meter-label { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); text-align: center; }
+
+/* Confidence display */
+.confidence-display { width: 100%; }
+.confidence-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: var(--s3); }
+.confidence-label { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-navy); }
+.confidence-note { font-size: var(--text-xs); color: var(--text-muted); font-style: italic; }
+
+.confidence-bar-wrap { display: flex; align-items: center; gap: var(--s3); margin-bottom: var(--s3); }
+.confidence-bar-track { flex: 1; height: 8px; background: var(--bg-muted); border-radius: var(--r-full); overflow: hidden; }
+.confidence-bar-fill { height: 100%; background: var(--status-limited); border-radius: var(--r-full); transition: width 0.6s ease, background 0.3s ease; }
+.confidence-pct { font-family: var(--font-mono); font-size: var(--text-sm); font-weight: 700; color: var(--status-limited); }
+.confidence-explanation { font-size: var(--text-xs); color: var(--text-muted); line-height: 1.6; }
+
+.sim-disclaimer {
+  font-size: var(--text-xs);
+  color: var(--status-limited);
+  background: var(--risk-mod-bg);
+  border: 1px solid var(--risk-mod-border);
+  border-radius: var(--r-lg);
+  padding: var(--s3) var(--s4);
+  text-align: center;
+  line-height: 1.5;
+  width: 100%;
+}
+
+/* ══════════════════════════ EXPLAINABILITY ══════════════════════════ */
+.explain-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--s8);
+}
+
+.risk-score-summary { display: flex; align-items: center; gap: var(--s5); margin-bottom: var(--s6); }
+.risk-score-big { font-family: var(--font-display); font-size: var(--text-8xl); font-weight: 800; letter-spacing: -0.05em; color: var(--risk-mod); line-height: 1; }
+
+.explain-factor-row {
+  padding: var(--s4) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.explain-factor-row:last-child { border-bottom: none; }
+
+.explain-factor-top { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; margin-bottom: 6px; }
+.explain-factor-name { font-weight: 600; font-size: var(--text-sm); color: var(--text-navy); }
+.explain-factor-raw { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); }
+.explain-factor-note { font-size: 0.65rem; color: var(--text-muted); margin-top: 4px; font-style: italic; }
+
+/* Confidence dual meters */
+.confidence-dual-meters { display: grid; grid-template-columns: 1fr auto 1fr; gap: var(--s4); align-items: center; }
+.confidence-meter-card { background: var(--bg-white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: var(--s5); text-align: center; }
+.confidence-meter-label { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--s3); display: block; }
+.confidence-meter-value { font-family: var(--font-display); font-size: var(--text-5xl); font-weight: 800; letter-spacing: -0.04em; line-height: 1; margin-bottom: var(--s3); }
+.confidence-meter-desc { font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.6; margin-bottom: var(--s4); }
+.confidence-meter-bar { height: 8px; background: var(--bg-muted); border-radius: var(--r-full); overflow: hidden; margin-bottom: var(--s4); }
+.confidence-vs { font-family: var(--font-display); font-size: var(--text-4xl); font-weight: 800; color: var(--text-muted); text-align: center; }
+@media (max-width: 640px) { .confidence-dual-meters { grid-template-columns: 1fr; } .confidence-vs { display: none; } }
+
+/* ══════════════════════════ SENSORS ══════════════════════════ */
+.sensor-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s12);
+}
+
+@media (max-width: 900px) { .sensor-grid { grid-template-columns: 1fr; } }
+
+.sensor-types { display: flex; flex-direction: column; gap: var(--s3); }
+
+.sensor-type-item {
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  padding: var(--s3) var(--s4);
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+}
+
+.sensor-type-icon { font-size: 1.25rem; flex-shrink: 0; }
+.sensor-type-name { font-weight: 600; font-size: var(--text-sm); color: var(--text-navy); }
+.sensor-type-unit { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); margin-left: 4px; }
+
+.sensor-arch { background: var(--bg-soft); border: 1px solid var(--border); border-radius: var(--r-xl); padding: var(--s5); }
+.sensor-arch-title { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--s4); }
+
+/* Sensor failure */
+.sensor-failure-panel {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2xl);
+  padding: var(--s8);
+  box-shadow: var(--shadow-md);
+}
+
+.failure-demo { margin-top: var(--s6); }
+.failure-steps { display: flex; flex-direction: column; gap: var(--s3); }
+
+.failure-step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s4);
+  padding: var(--s4);
+  border-radius: var(--r-lg);
+  border: 1px solid var(--border);
+  background: var(--bg-soft);
+  transition: all 0.4s ease;
+}
+
+.failure-step--normal  { }
+.failure-step--warning { border-color: var(--risk-mod-border); background: var(--risk-mod-bg); }
+.failure-step--error   { border-color: var(--risk-high-border); background: var(--risk-high-bg); }
+.failure-step--info    { border-color: #BFDBFE; background: #EFF6FF; }
+.failure-step--action  { border-color: var(--border-green); background: var(--green-bg); }
+
+.failure-step-icon { font-size: 1.25rem; flex-shrink: 0; }
+.failure-step-label { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--text-navy); display: block; margin-bottom: 2px; }
+.failure-step-desc { font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.6; }
+
+/* ══════════════════════════ HISTORICAL / ALERTS ══════════════════════════ */
+.historical-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s10);
+  align-items: flex-start;
+}
+
+@media (max-width: 900px) { .historical-grid { grid-template-columns: 1fr; } }
+
+.alerts-main-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s8);
+}
+
+@media (max-width: 900px) { .alerts-main-grid { grid-template-columns: 1fr; } }
+
+.alert-flow-step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s4);
+  padding: var(--s3) var(--s4);
+  border-radius: var(--r-lg);
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+}
+
+.alert-flow-step--warn { border-color: var(--risk-mod-border); background: var(--risk-mod-bg); }
+.alert-flow-icon { font-size: 1.25rem; flex-shrink: 0; }
+.alert-flow-label { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--text-navy); display: block; margin-bottom: 2px; }
+.alert-flow-desc { font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.6; }
+
+/* ══════════════════════════ ARCHITECTURE ══════════════════════════ */
+.arch-diagram {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--s4);
+}
+
+@media (max-width: 1024px) { .arch-diagram { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 640px)  { .arch-diagram { grid-template-columns: 1fr; } }
+
+.arch-layer {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: var(--r-xl);
+  padding: var(--s5);
+  position: relative;
+  transition: all var(--ease-base);
+}
+
+.arch-layer:hover {
+  background: rgba(255,255,255,0.09);
+  border-color: rgba(255,255,255,0.20);
+  transform: translateY(-4px);
+}
+
+.arch-layer-header { display: flex; align-items: center; gap: var(--s3); margin-bottom: var(--s4); }
+
+.arch-layer-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--layer-color, white);
+  flex-shrink: 0;
+}
+
+.arch-layer-title {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--layer-color, white);
+}
+
+.arch-layer-items { display: flex; flex-direction: column; gap: var(--s2); }
+
+.arch-layer-item {
+  font-size: var(--text-xs);
+  color: rgba(255,255,255,0.65);
+  padding: 3px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+}
+
+.arch-layer-item::before {
+  content: '›';
+  color: var(--layer-color, rgba(255,255,255,0.3));
+  flex-shrink: 0;
+}
+
+.arch-layer-arrow { text-align: center; padding: var(--s2) 0; }
+
+/* ══════════════════════════ TECH STACK ══════════════════════════ */
+.tech-stack-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: var(--s5); }
+
+.tech-stack-card { background: var(--bg-white); border: 1px solid var(--border); border-radius: var(--r-xl); padding: var(--s6); box-shadow: var(--shadow-sm); transition: all var(--ease-base); }
+.tech-stack-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+
+.tech-stack-header { display: flex; align-items: center; gap: var(--s3); padding-bottom: var(--s4); border-bottom: 1px solid var(--border); margin-bottom: var(--s5); }
+.tech-stack-icon { font-size: 1.5rem; }
+.tech-stack-category { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-navy); }
+
+.tech-stack-items { display: flex; flex-direction: column; gap: var(--s3); }
+.tech-item { display: flex; justify-content: space-between; align-items: baseline; gap: var(--s3); padding: var(--s2) 0; border-bottom: 1px solid var(--border); }
+.tech-item:last-child { border-bottom: none; }
+.tech-item-name { font-weight: 700; font-size: var(--text-sm); color: var(--text-navy); }
+.tech-item-desc { font-size: var(--text-xs); color: var(--text-muted); text-align: right; }
+
+/* ══════════════════════════ LIMITATIONS ══════════════════════════ */
+.limitations-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr)); gap: var(--s5); }
+
+.limitation-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: var(--s6);
+  transition: all var(--ease-base);
+}
+
+.limitation-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); }
+
+.limitation-card-header { display: flex; align-items: center; gap: var(--s4); margin-bottom: var(--s4); }
+.limitation-num { font-family: var(--font-mono); font-size: var(--text-3xl); font-weight: 800; color: var(--text-light); line-height: 1; }
+.limitation-title { font-weight: 700; font-size: var(--text-base); color: var(--text-navy); }
+.limitation-desc { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.75; margin-bottom: var(--s4); }
+.limitation-footer { display: flex; gap: var(--s3); flex-wrap: wrap; }
+
+/* ══════════════════════════ DIFFERENTIATION ══════════════════════════ */
+.diff-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 260px), 1fr)); gap: var(--s4); }
+
+.diff-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s4);
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: var(--s5);
+  transition: all var(--ease-base);
+}
+
+.diff-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); border-color: var(--border-green); }
+
+.diff-icon { font-size: 1.5rem; flex-shrink: 0; }
+.diff-title { font-weight: 700; font-size: var(--text-sm); color: var(--text-navy); margin-bottom: 4px; }
+.diff-desc { font-size: var(--text-xs); color: var(--text-secondary); line-height: 1.65; }
+
+/* ══════════════════════════ EXPOSURE ══════════════════════════ */
+.exposure-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)); gap: var(--s5); }
+
+.exposure-scenario-card {
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: var(--s6);
+  transition: all var(--ease-base);
+}
+
+.exposure-scenario-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); }
+
+.exposure-scenario-label { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--s5); }
+
+.exposure-row { display: flex; align-items: center; gap: var(--s4); margin-bottom: var(--s5); flex-wrap: wrap; }
+
+.exposure-metric { display: flex; flex-direction: column; align-items: center; gap: var(--s2); text-align: center; }
+.exposure-metric-title { font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+.exposure-metric-val { font-family: var(--font-display); font-size: var(--text-2xl); font-weight: 800; letter-spacing: -0.02em; color: var(--text-navy); }
+.exposure-plus { font-size: var(--text-2xl); color: var(--text-light); }
+.exposure-detail { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.7; }
+
+/* ══════════════════════════ WHAT-IF ══════════════════════════ */
+.whatif-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s8);
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-2xl);
+  padding: var(--s8);
+  box-shadow: var(--shadow-lg);
+}
+
+@media (max-width: 900px) { .whatif-grid { grid-template-columns: 1fr; } }
+
+.whatif-controls-title { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-navy); margin-bottom: var(--s5); }
+
+.whatif-baseline {
+  display: flex;
+  align-items: center;
+  gap: var(--s4);
+  padding: var(--s4);
+  background: var(--bg-soft);
+  border-radius: var(--r-lg);
+  margin-bottom: var(--s5);
+}
+
+.whatif-label { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; color: var(--text-muted); }
+.whatif-baseline-val { font-family: var(--font-display); font-size: var(--text-4xl); font-weight: 800; color: var(--risk-mod); }
+
+.whatif-buttons { display: flex; flex-direction: column; gap: var(--s5); }
+.whatif-group { }
+.whatif-group-label { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--s3); }
+
+.whatif-btn {
+  font-family: var(--font-mono);
+  font-size: var(--text-xs);
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  padding: 7px 14px;
+  border-radius: var(--r-lg);
+  border: 1.5px solid var(--border-mid);
+  color: var(--text-secondary);
+  background: var(--bg-white);
+  transition: all var(--ease-fast);
+  margin-right: var(--s2);
+  margin-bottom: var(--s2);
+  display: inline-block;
+}
+
+.whatif-btn.active, .whatif-btn:hover { background: var(--green-primary); border-color: var(--green-primary); color: white; }
+
+/* Result display */
+.whatif-result { display: flex; flex-direction: column; gap: var(--s5); }
+
+.whatif-comparison { display: flex; align-items: center; justify-content: center; gap: var(--s6); }
+
+.whatif-col { display: flex; flex-direction: column; align-items: center; gap: var(--s3); }
+.whatif-col-label { font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); }
+.whatif-score { font-family: var(--font-display); font-size: var(--text-7xl); font-weight: 800; letter-spacing: -0.05em; color: var(--text-navy); line-height: 1; transition: color 0.4s ease; }
+.whatif-arrow { font-size: var(--text-3xl); color: var(--text-light); }
+
+.whatif-change-bar-wrap { height: 8px; background: var(--bg-muted); border-radius: var(--r-full); overflow: hidden; margin-bottom: var(--s3); }
+.whatif-change-bar { height: 100%; background: var(--risk-mod); border-radius: var(--r-full); transition: width 0.8s cubic-bezier(0.4,0,0.2,1), background 0.4s ease; }
+.whatif-change-note { font-size: var(--text-xs); color: var(--text-muted); text-align: center; }
+
+/* ══════════════════════════ TEAM ══════════════════════════ */
+.team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr)); gap: var(--s5); }
+
+.team-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s5);
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: var(--s6);
+  transition: all var(--ease-base);
+  cursor: default;
+}
+
+.team-card:hover, .team-card:focus-visible { box-shadow: var(--shadow-lg); transform: translateY(-4px); border-color: var(--border-green); }
+
+.team-card-avatar {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+  font-weight: 800;
+  color: white;
+  flex-shrink: 0;
+}
+
+.team-card-name { font-weight: 700; font-size: var(--text-base); color: var(--text-navy); margin-bottom: 4px; }
+.team-card-role { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--green-primary); margin-bottom: var(--s3); }
+.team-card-contrib { font-size: var(--text-sm); color: var(--text-muted); line-height: 1.6; }
+
+.team-placeholder-note {
+  display: flex;
+  align-items: center;
+  gap: var(--s3);
+  margin-top: var(--s5);
+  font-size: var(--text-xs);
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ══════════════════════════ BLOG ══════════════════════════ */
+.blog-cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: var(--s5); }
+
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--s4);
+  background: var(--bg-white);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: var(--s6);
+  transition: all var(--ease-base);
+  text-decoration: none;
+}
+
+.blog-card:hover { box-shadow: var(--shadow-lg); transform: translateY(-4px); border-color: var(--border-green); }
+
+.blog-card-num { font-family: var(--font-mono); font-size: var(--text-3xl); font-weight: 800; color: var(--text-light); line-height: 1; }
+.blog-card-body { flex: 1; }
+.blog-card-title { font-weight: 700; font-size: var(--text-lg); color: var(--text-navy); margin-bottom: var(--s3); }
+.blog-card-excerpt { font-size: var(--text-sm); color: var(--text-secondary); line-height: 1.7; }
+.blog-card-footer { display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--border); padding-top: var(--s4); }
+.blog-card-time { font-family: var(--font-mono); font-size: var(--text-xs); color: var(--text-muted); }
+.blog-card-arrow { font-size: var(--text-xl); color: var(--green-primary); transition: transform var(--ease-base); }
+.blog-card:hover .blog-card-arrow { transform: translateX(4px); }
+
+/* ══════════════════════════ FAQ ══════════════════════════ */
+.faq-outer-grid {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: var(--s12);
+  align-items: flex-start;
+}
+
+@media (max-width: 900px) { .faq-outer-grid { grid-template-columns: 1fr; } }
+
+/* ══════════════════════════ CITIZEN REPORTS ══════════════════════════ */
+.reports-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--s10);
+  align-items: flex-start;
+}
+
+@media (max-width: 900px) { .reports-grid { grid-template-columns: 1fr; } }
+
+.report-categories-title { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--s4); }
+
+.report-categories-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s2);
+}
+
+.report-category-chip {
+  font-size: var(--text-xs);
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  padding: 5px 12px;
+  border-radius: var(--r-full);
+  cursor: default;
+  transition: all var(--ease-fast);
+}
+
+.report-category-chip:hover { background: var(--green-bg); border-color: var(--border-green); color: var(--green-primary); }
+
+.report-lifecycle-title { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-bottom: var(--s4); }
+
+.lifecycle-step {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s4);
+  padding: var(--s3) 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.lifecycle-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; margin-top: 4px; }
+.lifecycle-label { font-family: var(--font-mono); font-size: var(--text-xs); font-weight: 700; letter-spacing: 0.10em; text-transform: uppercase; display: block; margin-bottom: 2px; }
+.lifecycle-desc { font-size: var(--text-xs); color: var(--text-secondary); }
+
+.photo-meta-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--s3); }
+.photo-meta-item { background: var(--bg-soft); border: 1px solid var(--border); border-radius: var(--r-lg); padding: var(--s3); }
+.photo-meta-label { font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--green-primary); display: block; margin-bottom: 2px; }
+.photo-meta-desc { font-size: var(--text-xs); color: var(--text-secondary); }
+
+/* ══════════════════════════ CTA ══════════════════════════ */
+.cta-section {
+  background: linear-gradient(145deg, var(--bg-navy) 0%, var(--bg-green-deep) 60%, var(--bg-navy) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.cta-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0.15; pointer-events: none; }
+
+.cta-inner { text-align: center; max-width: 820px; margin: 0 auto; }
+
+.cta-tag { display: flex; justify-content: center; gap: var(--s3); flex-wrap: wrap; margin-bottom: var(--s6); }
+
+.cta-title {
+  color: white !important;
+  margin-bottom: var(--s3);
+}
+
+.cta-tagline {
+  font-family: var(--font-display);
+  font-size: var(--text-2xl);
+  font-weight: 600;
+  color: rgba(255,255,255,0.75);
+  letter-spacing: -0.01em;
+  margin-bottom: var(--s6);
+}
+
+.cta-desc {
+  font-size: var(--text-lg);
+  color: rgba(255,255,255,0.65);
+  line-height: 1.75;
+  max-width: 640px;
+  margin: 0 auto var(--s10);
+}
+
+.cta-actions { display: flex; justify-content: center; gap: var(--s4); flex-wrap: wrap; }
+</style>
+
+<script>
+  (() => {
+    // ── GSAP ScrollTrigger Animations ──
+    const initGSAP = () => {
+      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        setTimeout(initGSAP, 200);
+        return;
+      }
+
+      gsap.registerPlugin(ScrollTrigger);
+
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (!reducedMotion) {
+        // Generic reveal for .gsap-reveal-up elements
+        gsap.utils.toArray('.gsap-reveal-up').forEach(el => {
+          gsap.fromTo(el,
+            { opacity: 0, y: 40 },
+            {
+              opacity: 1, y: 0, duration: 0.8, ease: 'power3.out',
+              scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+            }
+          );
+        });
+
+        // Right reveals
+        gsap.utils.toArray('.gsap-reveal-right').forEach(el => {
+          gsap.fromTo(el,
+            { opacity: 0, x: 50 },
+            {
+              opacity: 1, x: 0, duration: 0.8, ease: 'power3.out',
+              scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+            }
+          );
+        });
+
+        // Scale reveals
+        gsap.utils.toArray('.gsap-scale').forEach(el => {
+          gsap.fromTo(el,
+            { opacity: 0, scale: 0.94 },
+            {
+              opacity: 1, scale: 1, duration: 0.8, ease: 'power3.out',
+              scrollTrigger: { trigger: el, start: 'top 85%', once: true }
+            }
+          );
+        });
+
+        // Hero entrance
+        const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+        tl.from('.hero-label', { opacity: 0, y: 20, duration: 0.6, delay: 0.2 })
+          .from('.hero-title-main', { opacity: 0, y: 40, duration: 0.8, stagger: 0.12 }, '-=0.3')
+          .from('.hero-tagline', { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
+          .from('.hero-desc', { opacity: 0, y: 20, duration: 0.6 }, '-=0.4')
+          .from('.hero-actions', { opacity: 0, y: 16, duration: 0.5 }, '-=0.3')
+          .from('.hero-status-strip', { opacity: 0, y: 10, duration: 0.5 }, '-=0.3')
+          .from('.hero-panel', { opacity: 0, x: 40, duration: 0.8, ease: 'power2.out' }, '-=0.6');
+
+        // Factor bars
+        gsap.utils.toArray('.factor-bar-fill').forEach(bar => {
+          ScrollTrigger.create({
+            trigger: bar,
+            start: 'top 90%',
+            once: true,
+            onEnter: () => bar.classList.add('animated'),
+          });
+        });
+
+        // Number counter for hero stats
+        document.querySelectorAll('.hero-stat-num').forEach(el => {
+          const text = el.textContent;
+          if (!isNaN(parseInt(text))) {
+            const target = parseInt(text);
+            gsap.from({ val: 0 }, {
+              val: target, duration: 1.5, ease: 'power2.out',
+              scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+              onUpdate: function() {
+                el.textContent = Math.round(this.targets()[0].val).toString();
+              }
+            });
+          }
+        });
+      } else {
+        // No animation — just show elements
+        document.querySelectorAll('.gsap-reveal-up, .gsap-reveal-right, .gsap-scale').forEach(el => {
+          el.style.opacity = '1';
+          el.style.transform = 'none';
+        });
+      }
+    };
+
+    initGSAP();
+
+    // ── Hero Canvas — Rainfall ──
+    const heroCanvas = document.getElementById('hero-canvas');
+    if (heroCanvas) {
+      const ctx = heroCanvas.getContext('2d');
+      heroCanvas.width = heroCanvas.offsetWidth;
+      heroCanvas.height = heroCanvas.offsetHeight;
+
+      const particles = Array.from({ length: 60 }, () => ({
+        x: Math.random() * heroCanvas.width,
+        y: Math.random() * heroCanvas.height,
+        speed: 1 + Math.random() * 2,
+        length: 8 + Math.random() * 16,
+        opacity: 0.1 + Math.random() * 0.25,
+      }));
+
+      const drawHero = () => {
+        ctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
+        ctx.strokeStyle = 'rgba(45, 106, 79, 0.4)';
+        ctx.lineWidth = 1;
+
+        particles.forEach(p => {
+          ctx.globalAlpha = p.opacity;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p.x - 2, p.y + p.length);
+          ctx.stroke();
+
+          p.y += p.speed;
+          if (p.y > heroCanvas.height) {
+            p.y = -p.length;
+            p.x = Math.random() * heroCanvas.width;
+          }
+        });
+
+        ctx.globalAlpha = 1;
+        requestAnimationFrame(drawHero);
+      };
+
+      drawHero();
+
+      window.addEventListener('resize', () => {
+        heroCanvas.width = heroCanvas.offsetWidth;
+        heroCanvas.height = heroCanvas.offsetHeight;
+      });
+    }
+
+    // ── Rainfall Canvas (environment section) ──
+    const rainCanvas = document.getElementById('rainfall-canvas');
+    if (rainCanvas) {
+      const rctx = rainCanvas.getContext('2d');
+      const rParticles = Array.from({ length: 50 }, () => ({
+        x: Math.random() * 300,
+        y: Math.random() * 160,
+        speed: 1.5 + Math.random() * 2.5,
+        length: 6 + Math.random() * 12,
+        opacity: 0.3 + Math.random() * 0.5,
+      }));
+
+      const drawRain = () => {
+        rctx.clearRect(0, 0, 300, 160);
+        rctx.strokeStyle = '#60A5FA';
+        rctx.lineWidth = 1;
+
+        rParticles.forEach(p => {
+          rctx.globalAlpha = p.opacity;
+          rctx.beginPath();
+          rctx.moveTo(p.x, p.y);
+          rctx.lineTo(p.x - 1, p.y + p.length);
+          rctx.stroke();
+
+          p.y += p.speed;
+          if (p.y > 160) {
+            p.y = -p.length;
+            p.x = Math.random() * 300;
+          }
+        });
+
+        rctx.globalAlpha = 1;
+        requestAnimationFrame(drawRain);
+      };
+
+      drawRain();
+    }
+
+    // ── DEM Grid ──
+    const demGrid = document.getElementById('dem-grid');
+    if (demGrid) {
+      const elevations = [
+        820, 940, 1050, 1100, 1190, 1240, 1180, 1090,
+        760, 870, 980, 1060, 1150, 1195, 1160, 1030,
+        700, 800, 910, 1020, 1100, 1185, 1150, 1000,
+        650, 750, 860, 970, 1060, 1130, 1110, 940,
+        600, 700, 810, 920, 1010, 1080, 1050, 880,
+        570, 660, 770, 870, 960, 1020, 980, 820,
+        540, 630, 730, 830, 910, 960, 930, 770,
+        520, 610, 710, 800, 870, 910, 880, 730,
+      ];
+
+      const minElev = Math.min(...elevations);
+      const maxElev = Math.max(...elevations);
+
+      elevations.forEach((elev, i) => {
+        const cell = document.createElement('div');
+        cell.className = 'dem-cell';
+        const t = (elev - minElev) / (maxElev - minElev);
+        const r = Math.round(29 + t * (59 - 29));
+        const g = Math.round(78 + t * (130 - 78));
+        const b = Math.round(216 + t * (184 - 216));
+        cell.style.background = `rgb(${r},${g},${b})`;
+        cell.title = `${elev}m`;
+
+        // Highlight the max cell
+        if (elev === 1240) {
+          cell.style.outline = '2px solid #F87171';
+          cell.style.outlineOffset = '1px';
+          cell.style.zIndex = '1';
+        }
+
+        demGrid.appendChild(cell);
+      });
+    }
+
+    // ── Risk Score API health check ──
+    fetch('https://backend-malaivizhi2-0.onrender.com/api/health', { signal: AbortSignal.timeout(6000) })
+      .then(r => r.json())
+      .then(data => {
+        if (data.status === 'ok') {
+          const dot = document.getElementById('hero-system-dot');
+          const text = document.getElementById('hero-system-status');
+          if (dot) { dot.className = 'hero-status-dot green'; }
+          if (text) text.textContent = 'SYSTEM LIVE';
+
+          // Update panel badge
+          const panelBadge = document.getElementById('hero-panel-badge');
+          if (panelBadge) { panelBadge.innerHTML = '<span class="badge-dot"></span>API CONNECTED'; panelBadge.className = 'badge badge-live'; }
+        }
+      }).catch(() => {});
+
+    // Fetch stats for hero panel
+    Promise.all([
+      fetch('https://backend-malaivizhi2-0.onrender.com/api/alerts', { signal: AbortSignal.timeout(10000) }).then(r=>r.json()).catch(()=>[]),
+      fetch('https://backend-malaivizhi2-0.onrender.com/api/reports', { signal: AbortSignal.timeout(10000) }).then(r=>r.json()).catch(()=>[]),
+    ]).then(([alerts, reports]) => {
+      const statAlerts = document.getElementById('stat-alerts');
+      const statReports = document.getElementById('stat-reports');
+      if (statAlerts && Array.isArray(alerts)) statAlerts.textContent = alerts.length.toString();
+      if (statReports && Array.isArray(reports)) statReports.textContent = reports.length.toString();
+    });
+
+    // ── Pipeline stage interaction ──
+    const stages = document.querySelectorAll('.pipeline-stage');
+    const details = document.querySelectorAll('.pipeline-detail');
+
+    stages.forEach(stage => {
+      const activate = () => {
+        const id = stage.dataset.stage;
+        stages.forEach(s => s.classList.remove('active'));
+        details.forEach(d => d.classList.remove('visible'));
+        stage.classList.add('active');
+        document.getElementById(`pipeline-detail-${id}`)?.classList.add('visible');
+      };
+
+      stage.addEventListener('click', activate);
+      stage.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
+    });
+
+    // ── Interactive Risk Score Simulator ──
+    const simRainfall = document.getElementById('sim-rainfall');
+    const simSoil = document.getElementById('sim-soil');
+    const simSlope = document.getElementById('sim-slope');
+    const simScore = document.getElementById('sim-score');
+    const simLevel = document.getElementById('sim-level');
+    const simArcFill = document.getElementById('sim-arc-fill');
+    const simConfBar = document.getElementById('sim-confidence-bar');
+    const simConfVal = document.getElementById('sim-confidence-val');
+    const factorBreakdown = document.getElementById('factor-breakdown');
+
+    const calcRisk = () => {
+      const rain = parseFloat(simRainfall?.value || 110);
+      const soil = parseFloat(simSoil?.value || 80);
+      const slope = parseFloat(simSlope?.value || 15);
+
+      // Display values
+      if (document.getElementById('sim-rainfall-val')) document.getElementById('sim-rainfall-val').textContent = `${Math.round(rain)} mm`;
+      if (document.getElementById('sim-soil-val')) document.getElementById('sim-soil-val').textContent = `${Math.round(soil)} %`;
+      if (document.getElementById('sim-slope-val')) document.getElementById('sim-slope-val').textContent = `${Math.round(slope)} °`;
+
+      // PTS Calculation (illustrating backend landslide_model_v1)
+      const rainPts = (Math.min(1, rain / 400)) * 40; // Max 40 pts
+      const soilPts = (Math.min(1, soil / 100)) * 30; // Max 30 pts
+      const slopePts = (Math.min(1, slope / 60)) * 20; // Max 20 pts
+      const histPts = 5; // Base historical hazard
+      
+      const risk = Math.round(rainPts + soilPts + slopePts + histPts);
+      const clampedRisk = Math.min(100, Math.max(0, risk));
+
+      // Update slider backgrounds
+      [simRainfall, simSoil, simSlope].forEach(slider => {
+        if (slider) {
+          const pct = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+          slider.style.setProperty('--pct', `${pct}%`);
+        }
+      });
+
+      // Update score
+      if (simScore) simScore.textContent = clampedRisk.toString();
+
+      // Risk level
+      let level = 'LOW';
+      let levelColor = 'var(--risk-low)';
+      let levelClass = 'badge-risk-low';
+      if (clampedRisk >= 75) { level = 'HIGH'; levelColor = 'var(--risk-high)'; levelClass = 'badge-risk-high'; }
+      else if (clampedRisk >= 45) { level = 'MODERATE'; levelColor = 'var(--risk-mod)'; levelClass = 'badge-risk-mod'; }
+
+      if (simLevel) { 
+        simLevel.textContent = level; 
+        simLevel.className = `risk-level-badge ${levelClass}`;
+        simLevel.style.color = levelColor;
+        simLevel.style.borderColor = levelColor;
+      }
+      if (simScore) simScore.style.color = levelColor;
+
+      // Arc fill (251 is full arc length)
+      if (simArcFill) {
+        const offset = 251 - (clampedRisk / 100) * 251;
+        simArcFill.style.strokeDashoffset = offset.toString();
+      }
+
+      // Confidence (Exposure UNAVAILABLE = 90% confidence)
+      const conf = 90;
+      if (simConfBar) simConfBar.style.width = `${conf}%`;
+      if (simConfVal) simConfVal.textContent = `${conf}%`;
+
+      // Factor breakdown
+      if (factorBreakdown) {
+        factorBreakdown.innerHTML = [
+          { name: 'Rainfall Contribution', score: rainPts.toFixed(1), max: 40 },
+          { name: 'Soil Contribution', score: soilPts.toFixed(1), max: 30 },
+          { name: 'Terrain Contribution', score: slopePts.toFixed(1), max: 20 },
+        ].map(f => {
+          const pct = (parseFloat(f.score) / f.max) * 100;
+          return `
+          <div class="pts-factor-row">
+            <div class="pts-factor-header">
+              <span class="pts-factor-name">${f.name}</span>
+              <span class="pts-value">${f.score} pts</span>
+            </div>
+            <div class="pts-bar-track">
+              <div class="pts-bar-fill" style="width: ${pct}%; background: ${pct >= 75 ? 'var(--risk-high)' : pct >= 45 ? 'var(--risk-mod)' : 'var(--risk-low)'};"></div>
+            </div>
+          </div>
+        `}).join('');
+      }
+    };
+
+    [simRainfall, simSoil, simSlope].forEach(slider => {
+      slider?.addEventListener('input', calcRisk);
+    });
+
+    calcRisk();
+
+    // ── What-If Simulation ──
+    const baseRisk = 54;
+    let rainMod = 0, soilMod = 0;
+
+    const updateWhatIf = () => {
+      const newRisk = Math.min(100, Math.round(baseRisk * (1 + rainMod * 0.4 + soilMod * 0.3)));
+      const scoreEl = document.getElementById('whatif-new-score');
+      const bar = document.getElementById('whatif-change-bar');
+      const note = document.getElementById('whatif-change-note');
+      const levelBadge = document.getElementById('whatif-level-badge');
+
+      if (scoreEl) { scoreEl.textContent = newRisk.toString(); }
+
+      let level = 'LOW';
+      let color = 'var(--risk-low)';
+      let badgeClass = 'badge badge-risk-low';
+      if (newRisk >= 75) { level = 'HIGH'; color = 'var(--risk-high)'; badgeClass = 'badge badge-risk-high'; }
+      else if (newRisk >= 45) { level = 'MODERATE'; color = 'var(--risk-mod)'; badgeClass = 'badge badge-risk-mod'; }
+
+      if (scoreEl) scoreEl.style.color = color;
+      if (bar) { bar.style.width = `${newRisk}%`; bar.style.background = color; }
+      if (levelBadge) { levelBadge.textContent = level; levelBadge.className = badgeClass; }
+
+      const diff = newRisk - baseRisk;
+      if (note) {
+        if (diff === 0) note.textContent = 'Scenario matches baseline.';
+        else if (diff > 0) note.textContent = `Risk increases by +${diff} points under this scenario.`;
+        else note.textContent = `Risk decreases by ${diff} points under this scenario.`;
+      }
+    };
+
+    document.querySelectorAll('.whatif-btn[data-type="rain"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.whatif-btn[data-type="rain"]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const val = btn.dataset.val;
+        rainMod = val === '0' ? 0 : parseFloat(val) / 100;
+        updateWhatIf();
+      });
+    });
+
+    document.querySelectorAll('.whatif-btn[data-type="soil"]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.whatif-btn[data-type="soil"]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const val = btn.dataset.val;
+        soilMod = val === '0' ? 0 : parseFloat(val) / 100;
+        updateWhatIf();
+      });
+    });
+
+    document.getElementById('whatif-reset')?.addEventListener('click', () => {
+      rainMod = 0; soilMod = 0;
+      document.querySelectorAll('.whatif-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.val === '0');
+      });
+      updateWhatIf();
+    });
+
+    updateWhatIf();
+
+    // ── Sensor Failure Simulation ──
+    const failureBtn = document.getElementById('failure-sim-btn');
+    const failureSteps = document.querySelectorAll('[id^="failure-step-"]');
+
+    failureBtn?.addEventListener('click', () => {
+      // Reset
+      failureSteps.forEach(step => { step.style.opacity = '0.25'; });
+      failureBtn.disabled = true;
+      failureBtn.textContent = 'Simulating…';
+
+      // Animate sequentially
+      failureSteps.forEach((step, i) => {
+        setTimeout(() => {
+          step.style.opacity = '1';
+          step.style.transform = 'scale(1.02)';
+          setTimeout(() => { step.style.transform = 'scale(1)'; }, 200);
+          if (i === failureSteps.length - 1) {
+            failureBtn.disabled = false;
+            failureBtn.innerHTML = `<span>Reset & Replay</span>`;
+          }
+        }, i * 600);
+      });
+    });
+
+  })();
+</script>
+</BaseLayout>

@@ -1,0 +1,151 @@
+---
+// Tech Glossary — expandable terms
+---
+
+<div class="glossary-grid" id="glossary-grid">
+  {[
+    { term: "DEM", full: "Digital Elevation Model", def: "A raster dataset where each pixel represents the elevation above sea level at that geographic location. MALAI VIZHI uses the Copernicus Global DEM (GLO-30) at approximately 30m resolution to derive terrain slope." },
+    { term: "SLOPE", full: "Terrain Slope Angle", def: "The maximum rate of change in elevation between a point and its neighbors, expressed in degrees. Derived from DEM data. A slope angle of 30°–45° is considered susceptible for many soil and rock types. This is a key factor in landslide risk assessment." },
+    { term: "SOIL MOISTURE", full: "Volumetric Soil Water Content", def: "The proportion of water present in a given volume of soil, expressed as a percentage. Higher soil moisture reduces shear strength and can increase the likelihood of slope failure under rainfall or loading. Provided by Open-Meteo ERA5-Land." },
+    { term: "RAINFALL", full: "Precipitation Intensity", def: "The depth of rainfall measured over a time period (e.g., mm per hour or mm per 24 hours). Both instantaneous intensity and accumulated rainfall over time are relevant to landslide risk. Provided by Open-Meteo ERA5 / NWP." },
+    { term: "NORMALIZATION", full: "Factor Normalization", def: "The process of converting a raw environmental measurement into a comparable, dimensionless factor score. Because rainfall is in mm, soil moisture is in %, and slope is in degrees, they cannot be directly summed. Each is normalized to a 0–1 or 0–100 scale before being weighted and combined." },
+    { term: "RISK SCORE", full: "Combined Landslide Risk Score", def: "The weighted combination of normalized factor scores (rainfall, previous rainfall, soil moisture, terrain slope, historical susceptibility) into a single 0–100 numeric value. Higher values indicate more hazardous environmental conditions. Does not guarantee a landslide will occur." },
+    { term: "RISK LEVEL", full: "Classified Risk Level", def: "A categorical label derived from the risk score using configured thresholds. MALAI VIZHI uses LOW / MODERATE / HIGH classification. The exact boundary thresholds are configured per implementation and should be validated for local conditions." },
+    { term: "CONFIDENCE", full: "Assessment Confidence", def: "A 0–100 score indicating how complete, fresh, and available the data inputs were for a given risk assessment. A confidence score of 20 (LIMITED) means several key data sources were unavailable. Risk and confidence should be communicated together." },
+    { term: "EXPOSURE", full: "Asset Exposure", def: "The presence of people, communities, roads, infrastructure, or other assets within or near a hazard zone. High hazard with high exposure creates high impact priority. High hazard with low exposure may still require monitoring but has lower immediate impact priority." },
+    { term: "HAZARD", full: "Environmental Hazard Indicator", def: "The environmental indication of danger — in this context, the combination of factors that suggest conditions conducive to a landslide. Hazard is assessed independently of what is located in the affected area." },
+    { term: "IMPACT", full: "Combined Hazard × Exposure Impact", def: "The combined consideration of environmental hazard and asset exposure. Impact analysis helps prioritize response: high-hazard areas with high exposure receive higher attention than equal-hazard areas in uninhabited terrain." },
+    { term: "GIS", full: "Geographic Information System", def: "A framework for capturing, storing, analyzing, and visualizing spatial (geographic) data. MALAI VIZHI uses GIS to display risk zones, sensor locations, citizen reports, historical events, villages, and infrastructure on a map." },
+    { term: "TELEMETRY", full: "Remote Sensor Telemetry", def: "Data transmitted automatically from ground-based sensors (rainfall gauges, soil moisture probes, inclinometers) to the MALAI VIZHI backend. MALAI VIZHI is designed with a sensor-ready architecture, meaning the system can receive and process telemetry when sensors are deployed." },
+    { term: "API", full: "Application Programming Interface", def: "The MALAI VIZHI backend exposes a REST API (built with Python/Flask) that allows the web and Android applications to request data, submit reports, fetch risk assessments, and receive alerts. The live API is hosted at backend-malaivizhi2-0.onrender.com." },
+    { term: "PWA", full: "Progressive Web App", def: "A web application that uses modern browser capabilities to provide app-like experiences, including offline access to cached content, and local notification support. MALAI VIZHI implements PWA features to support use in areas with unreliable network connectivity." },
+    { term: "SENSOR", full: "Environmental Ground Sensor", def: "Physical hardware deployed in the field to measure environmental conditions. Types relevant to MALAI VIZHI: rainfall gauges (mm), soil moisture probes (%), inclinometers (ground movement mm/degrees), GPS units, and battery/power monitors. MALAI VIZHI supports a sensor-ready architecture." },
+    { term: "EARLY WARNING", full: "Landslide Early Warning Signal", def: "A notification generated when the risk engine determines that configured thresholds have been exceeded for a monitored location. Early warning provides time for awareness and response actions. It does not guarantee a landslide will occur — it signals elevated environmental hazard conditions." },
+  ].map((item, i) => (
+    <div class="glossary-item" id={`gloss-${i}`}>
+      <button
+        class="glossary-trigger"
+        aria-expanded="false"
+        aria-controls={`gloss-body-${i}`}
+      >
+        <div class="glossary-trigger-left">
+          <span class="glossary-term">{item.term}</span>
+          <span class="glossary-full">{item.full}</span>
+        </div>
+        <span class="glossary-icon" aria-hidden="true">+</span>
+      </button>
+      <div class="glossary-body" id={`gloss-body-${i}`}>
+        <p>{item.def}</p>
+      </div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .glossary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 480px), 1fr));
+    gap: var(--s2);
+  }
+
+  .glossary-item {
+    background: var(--bg-white);
+    border: 1px solid var(--border);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    transition: border-color var(--ease-fast), box-shadow var(--ease-fast);
+  }
+
+  .glossary-item.open {
+    border-color: var(--border-green);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .glossary-trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s4);
+    padding: var(--s4) var(--s5);
+    text-align: left;
+    transition: background var(--ease-fast);
+  }
+
+  .glossary-trigger:hover { background: var(--bg-soft); }
+  .glossary-item.open .glossary-trigger { background: var(--green-bg); }
+
+  .glossary-trigger-left {
+    display: flex;
+    align-items: baseline;
+    gap: var(--s3);
+    min-width: 0;
+    flex: 1;
+  }
+
+  .glossary-term {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    font-weight: 700;
+    color: var(--green-primary);
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+  }
+
+  .glossary-full {
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .glossary-icon {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border-mid);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: var(--text-base);
+    color: var(--text-muted);
+    transition: all var(--ease-base);
+    line-height: 1;
+  }
+
+  .glossary-item.open .glossary-icon {
+    background: var(--green-primary);
+    border-color: var(--green-primary);
+    color: white;
+    transform: rotate(45deg);
+  }
+
+  .glossary-body {
+    display: none;
+    padding: 0 var(--s5) var(--s5);
+    font-size: var(--text-sm);
+    line-height: 1.75;
+    color: var(--text-secondary);
+    border-top: 1px solid var(--border);
+    background: var(--green-bg);
+  }
+
+  .glossary-item.open .glossary-body {
+    display: block;
+    padding-top: var(--s4);
+  }
+</style>
+
+<script>
+  (() => {
+    document.querySelectorAll('.glossary-trigger').forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        const item = trigger.closest('.glossary-item');
+        item.classList.toggle('open');
+        trigger.setAttribute('aria-expanded', item.classList.contains('open').toString());
+      });
+    });
+  })();
+</script>

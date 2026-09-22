@@ -1,0 +1,194 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navigation from '../../components/Navigation.astro';
+import Footer from '../../components/Footer.astro';
+
+const posts = [
+  {
+    slug: 'understanding-malai-vizhi',
+    title: 'Understanding MALAI VIZHI',
+    excerpt: 'What is MALAI VIZHI, why does it exist, and what problem does it address in the North Eastern Region of India?',
+    readTime: '8 min',
+    category: 'Introduction',
+    date: '2025-09-15',
+    num: '01',
+  },
+  {
+    slug: 'how-malai-vizhi-works',
+    title: 'How MALAI VIZHI Works',
+    excerpt: 'A deep dive into the five-stage data pipeline from collection to early warning — and how each stage contributes to the final output.',
+    readTime: '12 min',
+    category: 'Technical Deep Dive',
+    date: '2025-09-16',
+    num: '02',
+  },
+  {
+    slug: 'technology-behind-malai-vizhi',
+    title: 'Technology Behind MALAI VIZHI',
+    excerpt: 'The engineering approach: DEM slope derivation, empirical risk analysis, GIS integration and the Astro + React + Flask technology stack.',
+    readTime: '10 min',
+    category: 'Engineering',
+    date: '2025-09-17',
+    num: '03',
+  },
+];
+---
+
+<BaseLayout
+  title="Blog — MALAI VIZHI | Team HIVE"
+  description="In-depth articles explaining the MALAI VIZHI landslide risk monitoring platform — from the problem to the technology."
+>
+  <Navigation slot="nav" />
+
+  <div class="blog-hero">
+    <div class="container">
+      <div class="section-label"><span class="section-label-text">BLOG / ARTICLES</span></div>
+      <h1 class="display-xl">Understanding MALAI VIZHI.</h1>
+      <p class="body-xl" style="margin-top: var(--s5); max-width: 540px;">
+        In-depth articles covering every aspect of the platform — from the disaster management problem to the technical implementation.
+      </p>
+    </div>
+  </div>
+
+  <section class="section-lg" style="background: var(--bg-soft);">
+    <div class="container">
+      <div class="blog-index-grid">
+        {posts.map(post => (
+          <a href={`/blog/${post.slug}`} class="blog-index-card">
+            <div class="blog-index-num">{post.num}</div>
+            <div class="blog-index-header">
+              <span class="blog-index-category">{post.category}</span>
+              <time class="blog-index-date" datetime={post.date}>{post.date}</time>
+            </div>
+            <h2 class="blog-index-title">{post.title}</h2>
+            <p class="blog-index-excerpt">{post.excerpt}</p>
+            <div class="blog-index-footer">
+              <span class="blog-index-time">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                  <circle cx="7" cy="7" r="6" stroke="currentColor" stroke-width="1.25"/>
+                  <path d="M7 4v3.5l2.5 1.5" stroke="currentColor" stroke-width="1.25" stroke-linecap="round"/>
+                </svg>
+                {post.readTime} read
+              </span>
+              <span class="blog-index-arrow">READ ARTICLE →</span>
+            </div>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  .blog-hero {
+    padding: calc(var(--nav-h) + var(--s20)) 0 var(--s16);
+    background: linear-gradient(165deg, #FAFAFA 0%, var(--green-bg) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .blog-index-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 360px), 1fr));
+    gap: var(--s6);
+  }
+
+  .blog-index-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border);
+    border-radius: var(--r-2xl);
+    padding: var(--s8);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s4);
+    text-decoration: none;
+    transition: all var(--ease-base);
+  }
+
+  .blog-index-card:hover {
+    box-shadow: var(--shadow-xl);
+    transform: translateY(-6px);
+    border-color: var(--border-green);
+  }
+
+  .blog-index-num {
+    font-family: var(--font-mono);
+    font-size: var(--text-7xl);
+    font-weight: 800;
+    color: var(--bg-muted);
+    line-height: 1;
+    letter-spacing: -0.05em;
+  }
+
+  .blog-index-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s4);
+  }
+
+  .blog-index-category {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-primary);
+    background: var(--green-bg);
+    padding: 4px 10px;
+    border-radius: var(--r-full);
+    border: 1px solid var(--border-green);
+  }
+
+  .blog-index-date {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+  }
+
+  .blog-index-title {
+    font-family: var(--font-display);
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--text-navy);
+    line-height: 1.2;
+    flex: 1;
+  }
+
+  .blog-index-excerpt {
+    font-size: var(--text-sm);
+    color: var(--text-secondary);
+    line-height: 1.75;
+  }
+
+  .blog-index-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s4);
+    padding-top: var(--s5);
+    border-top: 1px solid var(--border);
+  }
+
+  .blog-index-time {
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+  }
+
+  .blog-index-arrow {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    color: var(--green-primary);
+    transition: letter-spacing var(--ease-base);
+  }
+
+  .blog-index-card:hover .blog-index-arrow { letter-spacing: 0.16em; }
+</style>

@@ -1,0 +1,321 @@
+---
+// GIS Map Section — Leaflet-based, loads live data from API
+---
+
+<div class="gis-section-wrap" id="gis-section-wrap">
+  <!-- Map controls -->
+  <div class="gis-controls">
+    <div class="gis-controls-left">
+      <span class="badge badge-demo"><span class="badge-dot"></span>GIS LAYER VIEWER</span>
+      <span class="gis-region-label">North Eastern Region · India</span>
+    </div>
+    <div class="gis-layer-toggles" id="gis-layer-toggles">
+      <button class="gis-layer-btn active" data-layer="alerts">Alerts</button>
+      <button class="gis-layer-btn active" data-layer="historical">Historical</button>
+      <button class="gis-layer-btn active" data-layer="reports">Reports</button>
+      <button class="gis-layer-btn" data-layer="villages">Villages</button>
+      <button class="gis-layer-btn" data-layer="infra">Infrastructure</button>
+    </div>
+  </div>
+
+  <!-- Map container -->
+  <div class="gis-map-container" id="gis-map" role="application" aria-label="Interactive GIS map of North Eastern India showing risk locations"></div>
+
+  <!-- Map legend -->
+  <div class="gis-legend">
+    <div class="gis-legend-item">
+      <span class="gis-legend-dot" style="background: #B91C1C;"></span>High Alert
+    </div>
+    <div class="gis-legend-item">
+      <span class="gis-legend-dot" style="background: #B45309;"></span>Moderate Alert
+    </div>
+    <div class="gis-legend-item">
+      <span class="gis-legend-dot" style="background: #7C3AED;"></span>Historical Event
+    </div>
+    <div class="gis-legend-item">
+      <span class="gis-legend-dot" style="background: #0891B2;"></span>Citizen Report
+    </div>
+    <div class="gis-legend-item">
+      <span class="gis-legend-dot" style="background: #16A34A;"></span>Village
+    </div>
+    <div class="gis-legend-item">
+      <span class="gis-legend-dot" style="background: #2563EB;"></span>Infrastructure
+    </div>
+    <span class="illustrative-note" style="margin-left: auto; font-size: 0.6rem; padding: 2px 6px;">DEMO GIS DATA</span>
+  </div>
+</div>
+
+<style>
+  .gis-section-wrap {
+    background: var(--bg-white);
+    border: 1px solid var(--border);
+    border-radius: var(--r-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-md);
+  }
+
+  .gis-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--s4) var(--s6);
+    border-bottom: 1px solid var(--border);
+    background: var(--bg-soft);
+    flex-wrap: wrap;
+    gap: var(--s4);
+  }
+
+  .gis-controls-left {
+    display: flex;
+    align-items: center;
+    gap: var(--s4);
+  }
+
+  .gis-region-label {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+  }
+
+  .gis-layer-toggles {
+    display: flex;
+    gap: var(--s2);
+    flex-wrap: wrap;
+  }
+
+  .gis-layer-btn {
+    font-family: var(--font-mono);
+    font-size: var(--text-2xs);
+    font-weight: 600;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    padding: 4px 10px;
+    border-radius: var(--r-full);
+    border: 1.5px solid var(--border-mid);
+    color: var(--text-muted);
+    background: var(--bg-white);
+    transition: all var(--ease-fast);
+    cursor: pointer;
+  }
+
+  .gis-layer-btn.active {
+    color: var(--green-primary);
+    border-color: var(--green-primary);
+    background: var(--green-bg);
+  }
+
+  .gis-layer-btn:hover {
+    border-color: var(--green-primary);
+    color: var(--green-primary);
+  }
+
+  .gis-map-container {
+    height: 480px;
+    width: 100%;
+    z-index: 1;
+  }
+
+  .gis-legend {
+    display: flex;
+    align-items: center;
+    gap: var(--s5);
+    padding: var(--s4) var(--s6);
+    border-top: 1px solid var(--border);
+    background: var(--bg-soft);
+    flex-wrap: wrap;
+  }
+
+  .gis-legend-item {
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    white-space: nowrap;
+  }
+
+  .gis-legend-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  @media (max-width: 640px) {
+    .gis-map-container { height: 320px; }
+    .gis-controls { flex-direction: column; align-items: flex-start; }
+    .gis-legend { gap: var(--s3); }
+  }
+</style>
+
+<script>
+  (() => {
+    // Wait for Leaflet to load
+    const initMap = () => {
+      if (typeof L === 'undefined') {
+        setTimeout(initMap, 200);
+        return;
+      }
+
+      const mapEl = document.getElementById('gis-map');
+      if (!mapEl || mapEl._leaflet_id) return;
+
+      // Center on NER India
+      const map = L.map('gis-map', {
+        center: [25.5, 92.5],
+        zoom: 6,
+        zoomControl: true,
+        attributionControl: true,
+      });
+
+      // OpenStreetMap tiles with custom style
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors',
+        maxZoom: 18,
+      }).addTo(map);
+
+      // Layer groups
+      const layers = {
+        alerts: L.layerGroup().addTo(map),
+        historical: L.layerGroup().addTo(map),
+        reports: L.layerGroup().addTo(map),
+        villages: L.layerGroup(),
+        infra: L.layerGroup(),
+      };
+
+      // Custom marker functions
+      const makeIcon = (color, size = 12) => L.divIcon({
+        html: `<div style="width:${size}px;height:${size}px;background:${color};border:2px solid white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.3);"></div>`,
+        className: '',
+        iconAnchor: [size/2, size/2],
+        iconSize: [size, size],
+      });
+
+      const makePulseIcon = (color) => L.divIcon({
+        html: `<div style="position:relative;">
+          <div style="width:14px;height:14px;background:${color};border:2px solid white;border-radius:50%;box-shadow:0 2px 8px rgba(0,0,0,0.4);"></div>
+          <div style="position:absolute;top:-4px;left:-4px;width:22px;height:22px;background:${color};border-radius:50%;opacity:0.3;animation:gisRipple 2s ease-out infinite;"></div>
+        </div>
+        <style>@keyframes gisRipple{0%{transform:scale(0.5);opacity:0.4}100%{transform:scale(2);opacity:0}}</style>`,
+        className: '',
+        iconAnchor: [7, 7],
+        iconSize: [14, 14],
+      });
+
+      // Load alerts
+      fetch('https://backend-malaivizhi2-0.onrender.com/api/alerts', { signal: AbortSignal.timeout(10000) })
+        .then(r => r.json())
+        .then(data => {
+          data.forEach(alert => {
+            const color = alert.severity === 'HIGH' ? '#B91C1C' : '#B45309';
+            const marker = L.marker([alert.latitude, alert.longitude], { icon: makePulseIcon(color) });
+            marker.bindPopup(`
+              <div style="font-family: var(--font-body, sans-serif); min-width: 200px;">
+                <div style="font-weight:700; font-size:13px; color:#0F1E3C; margin-bottom:4px;">${alert.location_name}</div>
+                <div style="font-size:11px; color:#718096; margin-bottom:6px;">${alert.location_state}</div>
+                <div style="display:inline-block; background:${color}22; color:${color}; font-size:10px; font-weight:700; padding:2px 8px; border-radius:20px; border:1px solid ${color}44; margin-bottom:6px;">${alert.severity} ALERT</div>
+                <p style="font-size:11px; color:#4A5568; line-height:1.5; margin-bottom:4px;">${alert.message}</p>
+                <div style="font-size:10px; color:#A0AEC0; font-family:monospace;">${alert.latitude.toFixed(4)}°N ${alert.longitude.toFixed(4)}°E</div>
+                <div style="margin-top:6px; padding:4px; background:#FEF3C7; border-radius:4px; font-size:10px; color:#7C2D12;">Confidence: LIMITED — Data partially unavailable</div>
+              </div>
+            `, { maxWidth: 240 });
+            layers.alerts.addLayer(marker);
+          });
+        }).catch(() => {
+          // Add demo markers for NER cities
+          const demoAlerts = [
+            { lat: 25.28, lng: 91.72, name: 'Cherrapunji', state: 'Meghalaya' },
+            { lat: 25.57, lng: 91.89, name: 'Shillong', state: 'Meghalaya' },
+          ];
+          demoAlerts.forEach(a => {
+            L.marker([a.lat, a.lng], { icon: makePulseIcon('#B91C1C') })
+              .bindPopup(`<strong>${a.name}</strong><br/>${a.state}<br/><em style="font-size:10px; color:#718096;">DEMO DATA — Backend unavailable</em>`)
+              .addTo(layers.alerts);
+          });
+        });
+
+      // Load historical events
+      fetch('https://backend-malaivizhi2-0.onrender.com/api/historical-events', { signal: AbortSignal.timeout(10000) })
+        .then(r => r.json())
+        .then(data => {
+          data.forEach(event => {
+            const marker = L.marker([event.latitude, event.longitude], { icon: makeIcon('#7C3AED', 11) });
+            marker.bindPopup(`
+              <div style="font-family:sans-serif; min-width:180px;">
+                <div style="font-weight:700; font-size:12px; color:#0F1E3C; margin-bottom:2px;">📍 ${event.location}</div>
+                <div style="font-size:10px; color:#718096; margin-bottom:6px;">Historical Event · ${event.date}</div>
+                <span style="background:#F5F3FF; color:#7C3AED; font-size:10px; font-weight:700; padding:2px 6px; border-radius:12px; border:1px solid #DDD6FE;">${event.severity}</span>
+                <p style="font-size:11px; color:#4A5568; margin-top:6px; line-height:1.5;">${event.description}</p>
+                <div style="font-size:10px; color:#A0AEC0; margin-top:4px;">Source: ${event.source}</div>
+              </div>
+            `, { maxWidth: 240 });
+            layers.historical.addLayer(marker);
+          });
+        }).catch(() => {});
+
+      // Load citizen reports
+      fetch('https://backend-malaivizhi2-0.onrender.com/api/reports', { signal: AbortSignal.timeout(10000) })
+        .then(r => r.json())
+        .then(data => {
+          data.forEach(report => {
+            const marker = L.marker([report.latitude, report.longitude], { icon: makeIcon('#0891B2', 10) });
+            marker.bindPopup(`
+              <div style="font-family:sans-serif; min-width:180px;">
+                <div style="font-weight:700; font-size:12px; color:#0F1E3C; margin-bottom:2px;">📋 ${report.category}</div>
+                <div style="font-size:10px; color:#718096; margin-bottom:6px;">${report.location}</div>
+                <span style="background:${report.status === 'VERIFIED' ? '#DCFCE7' : '#EFF6FF'}; color:${report.status === 'VERIFIED' ? '#16A34A' : '#2563EB'}; font-size:10px; font-weight:700; padding:2px 6px; border-radius:12px;">${report.status}</span>
+                <p style="font-size:11px; color:#4A5568; margin-top:6px; line-height:1.5;">${report.description}</p>
+                <div style="margin-top:6px; padding:4px; background:#F0FAF3; border-radius:4px; font-size:10px; color:#1A3D2B;">Note: Citizen reports do not directly alter the risk score.</div>
+              </div>
+            `, { maxWidth: 240 });
+            layers.reports.addLayer(marker);
+          });
+        }).catch(() => {});
+
+      // Load GIS layers
+      fetch('https://backend-malaivizhi2-0.onrender.com/api/gis/layers', { signal: AbortSignal.timeout(10000) })
+        .then(r => r.json())
+        .then(data => {
+          (data.villages || []).forEach(v => {
+            L.marker([v.latitude, v.longitude], { icon: makeIcon('#16A34A', 9) })
+              .bindPopup(`<strong>${v.name}</strong><br/>Pop: ${v.population}<br/>Risk Exposure: ${v.risk_exposure}<br/><em style="font-size:10px; color:#718096;">[DEMO] ${v.data_source}</em>`)
+              .addTo(layers.villages);
+          });
+
+          (data.infrastructure || []).forEach(inf => {
+            const color = inf.status === 'AT_RISK' ? '#B91C1C' : '#2563EB';
+            L.marker([inf.latitude, inf.longitude], { icon: makeIcon(color, 9) })
+              .bindPopup(`<strong>${inf.name}</strong><br/>Type: ${inf.type}<br/>Status: ${inf.status}<br/><em style="font-size:10px; color:#718096;">[DEMO] ${inf.data_source}</em>`)
+              .addTo(layers.infra);
+          });
+        }).catch(() => {});
+
+      // Layer toggle buttons
+      document.querySelectorAll('.gis-layer-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const layerName = btn.dataset.layer;
+          const layer = layers[layerName];
+          if (!layer) return;
+
+          btn.classList.toggle('active');
+          if (btn.classList.contains('active')) {
+            map.addLayer(layer);
+          } else {
+            map.removeLayer(layer);
+          }
+        });
+      });
+    };
+
+    // Init after page load
+    if (document.readyState === 'complete') {
+      initMap();
+    } else {
+      window.addEventListener('load', initMap);
+    }
+  })();
+</script>

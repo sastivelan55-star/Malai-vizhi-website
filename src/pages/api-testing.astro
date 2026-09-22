@@ -1,0 +1,213 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="API Testing Console — MALAI VIZHI" description="Interactive Postman-style console to test the MALAI VIZHI risk evaluation API endpoints.">
+  <main class="page-container" style="padding-top: var(--s12); padding-bottom: var(--s24); background: var(--bg-navy); min-height: 100vh;">
+    <div class="container">
+      <a href="/" class="btn-technical-white" style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: var(--s8);">
+        <span aria-hidden="true">←</span>
+        <span>Back to System Overview</span>
+      </a>
+
+      <div class="section-label dark"><span class="section-label-text">API CONSOLE</span></div>
+      <h1 class="display-lg text-white" style="margin-bottom: var(--s4); color: white;">Risk Engine Endpoint</h1>
+      <p class="body-lg" style="color: rgba(255,255,255,0.7); max-width: 640px; margin-bottom: var(--s12);">
+        Send coordinates to the live <code>landslide_model_v1</code> backend to see the full multi-factor analysis response. This is the exact endpoint the Android app uses.
+      </p>
+
+      <div class="api-console" style="background: #0d1117; border: 1px solid #30363d; border-radius: var(--r-xl); overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);">
+        
+        <!-- Header -->
+        <div class="api-console-header" style="display: flex; align-items: center; justify-content: space-between; background: #161b22; border-bottom: 1px solid #30363d; padding: 16px 24px;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="display: flex; gap: 8px;">
+              <div style="width: 12px; height: 12px; border-radius: 50%; background: #ff5f56;"></div>
+              <div style="width: 12px; height: 12px; border-radius: 50%; background: #ffbd2e;"></div>
+              <div style="width: 12px; height: 12px; border-radius: 50%; background: #27c93f;"></div>
+            </div>
+            <span style="color: #8b949e; font-family: var(--font-mono); font-size: 0.85rem; letter-spacing: 0.05em; margin-left: var(--s2);">REST API — MALAI VIZHI v2.0</span>
+          </div>
+          <div class="badge badge-live">LIVE CONNECTION</div>
+        </div>
+
+        <!-- URL Bar -->
+        <div class="api-url-bar" style="display: flex; padding: 16px 24px; background: #0a0c10; border-bottom: 1px solid #30363d;">
+          <div style="display: flex; flex: 1; border: 1px solid #30363d; border-radius: var(--r-md); overflow: hidden;">
+            <div style="background: #161b22; color: #58a6ff; font-family: var(--font-mono); font-weight: bold; padding: 12px 16px; border-right: 1px solid #30363d;">GET</div>
+            <input type="text" id="api-url" value="https://backend-malaivizhi2-0.onrender.com/api/risk/evaluate?lat=25.2&lng=91.7" readonly style="flex: 1; background: #0d1117; border: none; color: #c9d1d9; font-family: var(--font-mono); font-size: 0.95rem; padding: 0 16px; outline: none; width: 100%;">
+          </div>
+          <button id="btn-send" class="btn-primary" style="margin-left: 16px; padding: 0 32px;">SEND</button>
+        </div>
+
+        <div class="api-workspace" style="display: grid; grid-template-columns: 1fr 1fr; min-height: 500px;">
+          
+          <!-- Parameters -->
+          <div class="api-params" style="border-right: 1px solid #30363d; padding: 24px;">
+            <div style="display: flex; border-bottom: 1px solid #30363d; margin-bottom: 24px;">
+              <span style="color: white; font-family: var(--font-mono); font-size: 0.9rem; padding-bottom: 12px; border-bottom: 2px solid #58a6ff; margin-bottom: -1px;">Params</span>
+              <span style="color: #8b949e; font-family: var(--font-mono); font-size: 0.9rem; padding-bottom: 12px; margin-left: 24px; cursor: pointer;">Headers</span>
+            </div>
+
+            <table style="width: 100%; border-collapse: collapse; font-family: var(--font-mono); font-size: 0.9rem;">
+              <thead>
+                <tr style="border-bottom: 1px solid #30363d;">
+                  <th style="text-align: left; padding: 8px 12px; color: #8b949e; font-weight: normal;">KEY</th>
+                  <th style="text-align: left; padding: 8px 12px; color: #8b949e; font-weight: normal;">VALUE</th>
+                  <th style="text-align: left; padding: 8px 12px; color: #8b949e; font-weight: normal;">DESCRIPTION</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr style="border-bottom: 1px solid #21262d;">
+                  <td style="padding: 12px; color: #c9d1d9;">lat</td>
+                  <td style="padding: 12px;">
+                    <input type="number" id="param-lat" value="25.2" step="0.1" style="background: #161b22; border: 1px solid #30363d; color: #79c0ff; padding: 6px 8px; border-radius: 4px; width: 80px; font-family: var(--font-mono);">
+                  </td>
+                  <td style="padding: 12px; color: #8b949e;">Latitude</td>
+                </tr>
+                <tr style="border-bottom: 1px solid #21262d;">
+                  <td style="padding: 12px; color: #c9d1d9;">lng</td>
+                  <td style="padding: 12px;">
+                    <input type="number" id="param-lng" value="91.7" step="0.1" style="background: #161b22; border: 1px solid #30363d; color: #79c0ff; padding: 6px 8px; border-radius: 4px; width: 80px; font-family: var(--font-mono);">
+                  </td>
+                  <td style="padding: 12px; color: #8b949e;">Longitude</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div style="margin-top: 32px;">
+              <p style="color: #8b949e; font-family: var(--font-mono); font-size: 0.8rem; text-transform: uppercase; margin-bottom: 12px;">Preset Locations</p>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button class="preset-btn" data-lat="25.2" data-lng="91.7">Cherrapunji</button>
+                <button class="preset-btn" data-lat="25.5" data-lng="91.8">Shillong</button>
+                <button class="preset-btn" data-lat="27.3" data-lng="88.6">Gangtok</button>
+                <button class="preset-btn" data-lat="26.1" data-lng="91.7">Guwahati</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Response -->
+          <div class="api-response" style="background: #0a0c10; display: flex; flex-direction: column;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #30363d; padding: 12px 24px;">
+              <span style="color: white; font-family: var(--font-mono); font-size: 0.9rem;">Response</span>
+              <div style="display: flex; gap: 16px; font-family: var(--font-mono); font-size: 0.85rem;">
+                <span id="res-status" style="color: #8b949e;">Status: <span style="color: #3fb950;">200 OK</span></span>
+                <span id="res-time" style="color: #8b949e;">Time: <span style="color: #c9d1d9;">-- ms</span></span>
+              </div>
+            </div>
+            
+            <div style="flex: 1; position: relative; padding: 24px; overflow-y: auto;">
+              <div id="loader" style="display: none; position: absolute; inset: 0; background: rgba(10,12,16,0.8); align-items: center; justify-content: center; color: #58a6ff; font-family: var(--font-mono); font-size: 0.9rem;">
+                <div class="pulsing-dot" style="margin-right: 8px;"></div>
+                Awaiting Response...
+              </div>
+              <pre id="json-output" style="margin: 0; color: #e6edf3; font-family: var(--font-mono); font-size: 0.85rem; line-height: 1.6; white-space: pre-wrap; word-break: break-all;">
+// Click SEND to execute API request...
+              </pre>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<style>
+  .preset-btn {
+    background: #161b22;
+    border: 1px solid #30363d;
+    color: #c9d1d9;
+    padding: 6px 12px;
+    border-radius: 50px;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .preset-btn:hover {
+    border-color: #8b949e;
+    color: white;
+  }
+</style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const latInput = document.getElementById('param-lat');
+    const lngInput = document.getElementById('param-lng');
+    const urlBar = document.getElementById('api-url');
+    const sendBtn = document.getElementById('btn-send');
+    const output = document.getElementById('json-output');
+    const loader = document.getElementById('loader');
+    const resTime = document.getElementById('res-time');
+    const resStatus = document.getElementById('res-status');
+    const presets = document.querySelectorAll('.preset-btn');
+
+    const updateUrl = () => {
+      urlBar.value = `https://backend-malaivizhi2-0.onrender.com/api/risk/evaluate?lat=${latInput.value}&lng=${lngInput.value}`;
+    };
+
+    latInput.addEventListener('input', updateUrl);
+    lngInput.addEventListener('input', updateUrl);
+
+    presets.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        latInput.value = e.target.dataset.lat;
+        lngInput.value = e.target.dataset.lng;
+        updateUrl();
+      });
+    });
+
+    // Syntax Highlighting JSON
+    function syntaxHighlight(json) {
+      if (typeof json != 'string') {
+        json = JSON.stringify(json, undefined, 2);
+      }
+      json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+        var cls = 'color: #79c0ff;'; // number
+        if (/^"/.test(match)) {
+          if (/:$/.test(match)) {
+            cls = 'color: #c9d1d9; font-weight: bold;'; // key
+          } else {
+            cls = 'color: #a5d6ff;'; // string
+          }
+        } else if (/true|false/.test(match)) {
+          cls = 'color: #ff7b72;'; // boolean
+        } else if (/null/.test(match)) {
+          cls = 'color: #ff7b72;'; // null
+        }
+        return '<span style="' + cls + '">' + match + '</span>';
+      });
+    }
+
+    sendBtn.addEventListener('click', async () => {
+      loader.style.display = 'flex';
+      output.style.opacity = '0.5';
+      const start = performance.now();
+      
+      try {
+        const response = await fetch(urlBar.value);
+        const end = performance.now();
+        const data = await response.json();
+        
+        const timeStr = Math.round(end - start);
+        resTime.innerHTML = `Time: <span style="color: #c9d1d9;">${timeStr} ms</span>`;
+        
+        if (response.ok) {
+          resStatus.innerHTML = `Status: <span style="color: #3fb950;">${response.status} OK</span>`;
+        } else {
+          resStatus.innerHTML = `Status: <span style="color: #ff7b72;">${response.status} ERR</span>`;
+        }
+
+        output.innerHTML = syntaxHighlight(data);
+      } catch (error) {
+        resStatus.innerHTML = `Status: <span style="color: #ff7b72;">FAILED</span>`;
+        output.innerHTML = `<span style="color: #ff7b72;">Error: ${error.message}</span>\n\nThe backend server may be spinning up from cold sleep (Render free tier). Please wait 30 seconds and try again.`;
+      } finally {
+        loader.style.display = 'none';
+        output.style.opacity = '1';
+      }
+    });
+  });
+</script>

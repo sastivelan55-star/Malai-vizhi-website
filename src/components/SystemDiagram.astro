@@ -1,0 +1,446 @@
+---
+---
+<!-- System Architecture Diagram -->
+<div class="system-diagram-wrapper reveal" id="system-diagram">
+  <div class="sys-diagram">
+
+    <!-- Data Sources Row -->
+    <div class="sys-section sys-top">
+      <div class="sys-section-label">
+        <span class="label">Data Sources</span>
+      </div>
+      <div class="sys-nodes-row">
+        {[
+          { name: 'Rainfall', icon: '🌧', color: '#3B82F6', desc: 'Precipitation data' },
+          { name: 'Soil Moisture', icon: '💧', color: '#06B6D4', desc: 'Ground saturation' },
+          { name: 'Terrain / DEM', icon: '⛰', color: '#2D6A4F', desc: 'Elevation model' },
+          { name: 'Historical Hazard', icon: '📍', color: '#7C3AED', desc: 'Past events' },
+          { name: 'GIS Information', icon: '🗺', color: '#0D9488', desc: 'Spatial context' },
+          { name: 'Ground Sensors', icon: '📡', color: '#D97706', desc: 'Field instruments' },
+          { name: 'Citizen Reports', icon: '👥', color: '#DB2777', desc: 'Ground observations' },
+        ].map(node => (
+          <div class="sys-node sys-node-source" style={`--nc: ${node.color}`}>
+            <div class="sys-node-icon" aria-hidden="true">{node.icon}</div>
+            <span class="sys-node-name">{node.name}</span>
+            <span class="sys-node-desc">{node.desc}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <!-- SVG Connecting Lines Down -->
+    <div class="sys-connector-zone" aria-hidden="true">
+      <svg class="sys-connector-svg" viewBox="0 0 800 60" preserveAspectRatio="xMidYMid meet" fill="none">
+        <!-- Lines converging to center -->
+        <line class="sys-line" x1="57" y1="0" x2="400" y2="60" stroke="#CBD5E1" stroke-width="1"/>
+        <line class="sys-line" x1="171" y1="0" x2="400" y2="60" stroke="#CBD5E1" stroke-width="1"/>
+        <line class="sys-line" x1="285" y1="0" x2="400" y2="60" stroke="#CBD5E1" stroke-width="1"/>
+        <line class="sys-line" x1="400" y1="0" x2="400" y2="60" stroke="#CBD5E1" stroke-width="1.5"/>
+        <line class="sys-line" x1="514" y1="0" x2="400" y2="60" stroke="#CBD5E1" stroke-width="1"/>
+        <line class="sys-line" x1="628" y1="0" x2="400" y2="60" stroke="#CBD5E1" stroke-width="1"/>
+        <line class="sys-line" x1="742" y1="0" x2="400" y2="60" stroke="#CBD5E1" stroke-width="1"/>
+      </svg>
+    </div>
+
+    <!-- Processing Box -->
+    <div class="sys-section sys-mid-box">
+      <div class="sys-process-card sys-card-green">
+        <span class="label">Step 01</span>
+        <h3 class="sys-card-title">Data Processing</h3>
+        <div class="sys-process-steps">
+          <span class="sys-step">Validation</span>
+          <span class="sys-arrow-sm" aria-hidden="true">→</span>
+          <span class="sys-step">Normalization</span>
+          <span class="sys-arrow-sm" aria-hidden="true">→</span>
+          <span class="sys-step">Availability Check</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow Down -->
+    <div class="sys-arrow-down" aria-hidden="true">
+      <svg width="24" height="40" viewBox="0 0 24 40" fill="none">
+        <line x1="12" y1="0" x2="12" y2="32" stroke="#2D6A4F" stroke-width="2"/>
+        <path d="M6 26l6 8 6-8" stroke="#2D6A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Analysis Engine -->
+    <div class="sys-section sys-mid-box">
+      <div class="sys-process-card sys-card-deep">
+        <span class="label">Step 02</span>
+        <h3 class="sys-card-title">Multi-Factor Landslide Risk Analysis</h3>
+        <p class="sys-card-desc">Normalized factor scores combined to produce a risk assessment</p>
+      </div>
+    </div>
+
+    <!-- Arrow Down -->
+    <div class="sys-arrow-down" aria-hidden="true">
+      <svg width="24" height="40" viewBox="0 0 24 40" fill="none">
+        <line x1="12" y1="0" x2="12" y2="32" stroke="#2D6A4F" stroke-width="2"/>
+        <path d="M6 26l6 8 6-8" stroke="#2D6A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Risk Score -->
+    <div class="sys-section sys-mid-box">
+      <div class="sys-risk-display">
+        <div class="sys-risk-score-box">
+          <span class="sys-risk-num" id="sys-score-counter">0</span>
+          <span class="sys-risk-denom">/ 100</span>
+          <span class="sys-risk-label-big">RISK SCORE</span>
+        </div>
+        <div class="sys-risk-levels">
+          <div class="sys-risk-lvl sys-risk-lvl-low">
+            <span class="sys-lvl-dot" aria-hidden="true"></span>
+            <span>LOW</span>
+            <span class="sys-lvl-range">0–33</span>
+          </div>
+          <div class="sys-risk-lvl sys-risk-lvl-mod">
+            <span class="sys-lvl-dot" aria-hidden="true"></span>
+            <span>MODERATE</span>
+            <span class="sys-lvl-range">34–66</span>
+          </div>
+          <div class="sys-risk-lvl sys-risk-lvl-high">
+            <span class="sys-lvl-dot" aria-hidden="true"></span>
+            <span>HIGH</span>
+            <span class="sys-lvl-range">67–100</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Arrow Down -->
+    <div class="sys-arrow-down" aria-hidden="true">
+      <svg width="24" height="40" viewBox="0 0 24 40" fill="none">
+        <line x1="12" y1="0" x2="12" y2="32" stroke="#2D6A4F" stroke-width="2"/>
+        <path d="M6 26l6 8 6-8" stroke="#2D6A4F" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+
+    <!-- Output Row -->
+    <div class="sys-section sys-bottom">
+      <div class="sys-section-label">
+        <span class="label">System Output</span>
+      </div>
+      <div class="sys-nodes-row">
+        {[
+          { name: 'Interactive Map', icon: '🗺', color: '#0D9488' },
+          { name: 'Risk Dashboard', icon: '📊', color: '#2D6A4F' },
+          { name: 'Early Alerts', icon: '🔔', color: '#DC2626' },
+          { name: 'PDF Reports', icon: '📄', color: '#7C3AED' },
+          { name: 'Authority Monitor', icon: '👁', color: '#D97706' },
+        ].map(node => (
+          <div class="sys-node sys-node-output" style={`--nc: ${node.color}`}>
+            <div class="sys-node-icon" aria-hidden="true">{node.icon}</div>
+            <span class="sys-node-name">{node.name}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .system-diagram-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: var(--space-4);
+  }
+
+  .sys-diagram {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    min-width: 600px;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: var(--space-4);
+  }
+
+  .sys-section {
+    width: 100%;
+  }
+
+  .sys-section-label {
+    text-align: center;
+    margin-bottom: var(--space-4);
+  }
+
+  .sys-nodes-row {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+  }
+
+  .sys-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-1);
+    background: white;
+    border: 1.5px solid var(--nc, var(--color-green-primary));
+    border-radius: var(--radius-lg);
+    padding: var(--space-3) var(--space-4);
+    min-width: 90px;
+    max-width: 110px;
+    text-align: center;
+    transition: all var(--transition-base);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  }
+
+  .sys-node:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    background: color-mix(in srgb, var(--nc, #2D6A4F) 5%, white);
+  }
+
+  .sys-node-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+  }
+
+  .sys-node-name {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: var(--nc, var(--color-green-primary));
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  .sys-node-desc {
+    font-size: 0.6rem;
+    color: var(--color-text-muted);
+    text-align: center;
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .sys-node-desc { display: block; }
+    .sys-node { min-width: 100px; }
+  }
+
+  .sys-connector-zone {
+    width: 100%;
+    padding: 0 var(--space-4);
+  }
+
+  .sys-connector-svg {
+    width: 100%;
+    height: 60px;
+  }
+
+  .sys-mid-box {
+    display: flex;
+    justify-content: center;
+    margin: var(--space-1) 0;
+  }
+
+  .sys-process-card {
+    width: 100%;
+    max-width: 560px;
+    border-radius: var(--radius-xl);
+    padding: var(--space-6) var(--space-8);
+    text-align: center;
+    border: 2px solid transparent;
+  }
+
+  .sys-card-green {
+    background: linear-gradient(135deg, #D8F3DC, #B7E4C7);
+    border-color: rgba(45,106,79,0.3);
+  }
+
+  .sys-card-deep {
+    background: var(--color-green-deep);
+    color: white;
+    border-color: var(--color-green-deep);
+  }
+
+  .sys-card-deep .label {
+    color: rgba(255,255,255,0.7);
+  }
+
+  .sys-card-deep .sys-card-title {
+    color: white;
+  }
+
+  .sys-card-title {
+    font-size: clamp(1rem, 2vw, 1.375rem);
+    font-weight: 700;
+    letter-spacing: -0.015em;
+    color: var(--color-text-primary);
+    margin: var(--space-2) 0;
+  }
+
+  .sys-card-desc {
+    font-size: var(--text-sm);
+    color: rgba(255,255,255,0.8);
+    margin-top: var(--space-2);
+    line-height: 1.6;
+  }
+
+  .sys-process-steps {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3);
+    flex-wrap: wrap;
+    margin-top: var(--space-3);
+  }
+
+  .sys-step {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    color: var(--color-green-deep);
+    background: rgba(255,255,255,0.6);
+    padding: var(--space-1) var(--space-3);
+    border-radius: var(--radius-full);
+    border: 1px solid rgba(45,106,79,0.2);
+  }
+
+  .sys-arrow-sm {
+    color: var(--color-green-primary);
+    font-weight: 700;
+    font-size: var(--text-sm);
+  }
+
+  .sys-arrow-down {
+    display: flex;
+    justify-content: center;
+    margin: var(--space-1) 0;
+  }
+
+  .sys-risk-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-8);
+    background: var(--color-bg-soft);
+    border: 1.5px solid var(--color-border-strong);
+    border-radius: var(--radius-xl);
+    padding: var(--space-8) var(--space-10);
+    max-width: 560px;
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .sys-risk-score-box {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .sys-risk-num {
+    font-family: var(--font-sans);
+    font-weight: 900;
+    font-size: 5rem;
+    line-height: 1;
+    color: var(--color-green-primary);
+    letter-spacing: -0.04em;
+  }
+
+  .sys-risk-denom {
+    font-family: var(--font-mono);
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    margin-top: var(--space-1);
+  }
+
+  .sys-risk-label-big {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-text-muted);
+    margin-top: var(--space-2);
+  }
+
+  .sys-risk-levels {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .sys-risk-lvl {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .sys-lvl-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: var(--radius-full);
+    flex-shrink: 0;
+  }
+
+  .sys-risk-lvl-low .sys-lvl-dot { background: var(--color-risk-low); }
+  .sys-risk-lvl-mod .sys-lvl-dot { background: var(--color-risk-moderate); }
+  .sys-risk-lvl-high .sys-lvl-dot { background: var(--color-risk-high); }
+  .sys-risk-lvl-low { color: var(--color-risk-low); }
+  .sys-risk-lvl-mod { color: var(--color-risk-moderate); }
+  .sys-risk-lvl-high { color: var(--color-risk-high); }
+
+  .sys-lvl-range {
+    font-weight: 400;
+    color: var(--color-text-muted);
+  }
+</style>
+
+<script>
+  (() => {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Animate score counter
+    const scoreEl = document.getElementById('sys-score-counter');
+    if (scoreEl) {
+      ScrollTrigger.create({
+        trigger: '#system-diagram',
+        start: 'top 70%',
+        once: true,
+        onEnter: () => {
+          let obj = { val: 0 };
+          gsap.to(obj, {
+            val: 72,
+            duration: 2,
+            ease: 'power2.out',
+            onUpdate: () => { scoreEl.textContent = String(Math.round(obj.val)); }
+          });
+
+          // Animate sys-lines
+          gsap.from('.sys-line', {
+            strokeDashoffset: 200,
+            strokeDasharray: '200',
+            duration: 1.2,
+            stagger: 0.05,
+            ease: 'power2.out',
+          });
+
+          // Animate nodes staggered
+          gsap.from('.sys-node', {
+            opacity: 0,
+            y: 20,
+            scale: 0.9,
+            stagger: 0.06,
+            duration: 0.5,
+            ease: 'back.out(1.7)',
+            delay: 0.2,
+          });
+        }
+      });
+    }
+  })();
+</script>

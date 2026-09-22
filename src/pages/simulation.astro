@@ -1,0 +1,184 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Interactive Risk Simulation — MALAI VIZHI" description="Simulate multi-factor landslide risk conditions in real-time.">
+  <main class="page-container" style="padding-top: var(--s12); padding-bottom: var(--s24); min-height: 100vh;">
+    <div class="container">
+      <a href="/" class="btn-technical-white" style="display: inline-flex; align-items: center; gap: 8px; margin-bottom: var(--s8);">
+        <span aria-hidden="true">←</span>
+        <span>Back to System Overview</span>
+      </a>
+
+      <div class="section-label dark"><span class="section-label-text">INTERACTIVE RISK LAB</span></div>
+      <h1 class="display-lg" style="margin-bottom: var(--s4);">Standalone Simulation Environment.</h1>
+      <p class="body-lg" style="color: var(--text-secondary); max-width: 640px; margin-bottom: var(--s12);">
+        Adjust the environmental conditions below to see how the multi-factor risk engine responds. This simulation uses the same points-based calculation as the backend `landslide_model_v1`.
+      </p>
+
+      <div class="simulator-wrap gsap-scale">
+        <div class="simulator-controls tech-panel-dark">
+          <div class="tech-panel-header">
+            <span class="tech-panel-title">SCENARIO CONTROLS</span>
+            <span class="sim-badge">SIMULATION MODE</span>
+          </div>
+          <div class="tech-panel-body">
+            <p class="simulator-controls-sub">Modify inputs to test the risk engine.</p>
+
+            <div class="slider-group">
+              <div class="slider-item">
+                <div class="slider-label-row">
+                  <label class="slider-label" for="sim-rainfall">Recent Rainfall (24h)</label>
+                  <span class="slider-val mono-value-dark" id="sim-rainfall-val">110 mm</span>
+                </div>
+                <input type="range" id="sim-rainfall" min="0" max="400" value="110" class="sim-slider" aria-label="Rainfall slider" />
+              </div>
+              <div class="slider-item">
+                <div class="slider-label-row">
+                  <label class="slider-label" for="sim-soil">Soil Moisture</label>
+                  <span class="slider-val mono-value-dark" id="sim-soil-val">80 %</span>
+                </div>
+                <input type="range" id="sim-soil" min="0" max="100" value="80" class="sim-slider" aria-label="Soil moisture slider" />
+              </div>
+              <div class="slider-item">
+                <div class="slider-label-row">
+                  <label class="slider-label" for="sim-slope">Terrain Slope</label>
+                  <span class="slider-val mono-value-dark" id="sim-slope-val">15 °</span>
+                </div>
+                <input type="range" id="sim-slope" min="0" max="60" value="15" class="sim-slider" aria-label="Slope angle slider" />
+              </div>
+            </div>
+
+            <div class="pts-breakdown" id="factor-breakdown" style="margin-top: var(--s6);">
+              <!-- Hydrated by JS -->
+            </div>
+          </div>
+        </div>
+
+        <div class="simulator-display" style="background: white;">
+          <!-- Risk meter -->
+          <div class="risk-meter-wrap">
+            <svg class="risk-arc-svg" viewBox="0 0 200 120" aria-hidden="true">
+              <defs>
+                <linearGradient id="arcGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                  <stop offset="0%" style="stop-color:#16A34A" />
+                  <stop offset="50%" style="stop-color:#B45309" />
+                  <stop offset="100%" style="stop-color:#B91C1C" />
+                </linearGradient>
+              </defs>
+              <path d="M 20 100 A 80 80 0 0 1 180 100" class="risk-arc-track"/>
+              <path d="M 20 100 A 80 80 0 0 1 180 100" class="risk-arc-fill" id="sim-arc-fill"
+                stroke="url(#arcGradient)" stroke-dasharray="251" stroke-dashoffset="130"/>
+            </svg>
+            <div class="risk-score-display">
+              <div class="risk-score-num" id="sim-score" style="color: var(--risk-mod);">48</div>
+              <div class="risk-level-badge badge-risk-mod" id="sim-level" style="font-size: var(--text-xs); padding: 4px 10px; border-radius: var(--r-md); border: 1px solid var(--risk-mod); margin-top: 4px; display: inline-block;">MODERATE</div>
+            </div>
+            <div class="risk-meter-label">TOTAL RISK SCORE</div>
+          </div>
+
+          <!-- Confidence indicator -->
+          <div class="confidence-display">
+            <div class="confidence-header">
+              <span class="confidence-label">CONFIDENCE</span>
+              <span class="confidence-note">Exposure data UNAVAILABLE</span>
+            </div>
+            <div class="confidence-bar-wrap">
+              <div class="confidence-bar-track">
+                <div class="confidence-bar-fill" id="sim-confidence-bar" style="width: 90%;"></div>
+              </div>
+              <span class="confidence-pct" id="sim-confidence-val">90%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+</BaseLayout>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const simRainfall = document.getElementById('sim-rainfall');
+    const simSoil = document.getElementById('sim-soil');
+    const simSlope = document.getElementById('sim-slope');
+    const simScore = document.getElementById('sim-score');
+    const simLevel = document.getElementById('sim-level');
+    const simArcFill = document.getElementById('sim-arc-fill');
+    const simConfBar = document.getElementById('sim-confidence-bar');
+    const simConfVal = document.getElementById('sim-confidence-val');
+    const factorBreakdown = document.getElementById('factor-breakdown');
+
+    const calcRisk = () => {
+      const rain = parseFloat(simRainfall?.value || 110);
+      const soil = parseFloat(simSoil?.value || 80);
+      const slope = parseFloat(simSlope?.value || 15);
+
+      if (document.getElementById('sim-rainfall-val')) document.getElementById('sim-rainfall-val').textContent = `${Math.round(rain)} mm`;
+      if (document.getElementById('sim-soil-val')) document.getElementById('sim-soil-val').textContent = `${Math.round(soil)} %`;
+      if (document.getElementById('sim-slope-val')) document.getElementById('sim-slope-val').textContent = `${Math.round(slope)} °`;
+
+      // PTS Calculation
+      const rainPts = (Math.min(1, rain / 400)) * 40;
+      const soilPts = (Math.min(1, soil / 100)) * 30;
+      const slopePts = (Math.min(1, slope / 60)) * 20;
+      const histPts = 5;
+      
+      const risk = Math.round(rainPts + soilPts + slopePts + histPts);
+      const clampedRisk = Math.min(100, Math.max(0, risk));
+
+      [simRainfall, simSoil, simSlope].forEach(slider => {
+        if (slider) {
+          const pct = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
+          slider.style.setProperty('--pct', `${pct}%`);
+        }
+      });
+
+      if (simScore) simScore.textContent = clampedRisk.toString();
+
+      let level = 'LOW';
+      let levelColor = 'var(--risk-low)';
+      let levelClass = 'badge-risk-low';
+      if (clampedRisk >= 75) { level = 'HIGH'; levelColor = 'var(--risk-high)'; levelClass = 'badge-risk-high'; }
+      else if (clampedRisk >= 45) { level = 'MODERATE'; levelColor = 'var(--risk-mod)'; levelClass = 'badge-risk-mod'; }
+
+      if (simLevel) { 
+        simLevel.textContent = level; 
+        simLevel.className = `risk-level-badge ${levelClass}`;
+        simLevel.style.color = levelColor;
+        simLevel.style.borderColor = levelColor;
+      }
+      if (simScore) simScore.style.color = levelColor;
+
+      if (simArcFill) {
+        const offset = 251 - (clampedRisk / 100) * 251;
+        simArcFill.style.strokeDashoffset = offset.toString();
+      }
+
+      if (factorBreakdown) {
+        factorBreakdown.innerHTML = [
+          { name: 'Rainfall Contribution', score: rainPts.toFixed(1), max: 40 },
+          { name: 'Soil Contribution', score: soilPts.toFixed(1), max: 30 },
+          { name: 'Terrain Contribution', score: slopePts.toFixed(1), max: 20 },
+        ].map(f => {
+          const pct = (parseFloat(f.score) / f.max) * 100;
+          return `
+          <div class="pts-factor-row">
+            <div class="pts-factor-header">
+              <span class="pts-factor-name">${f.name}</span>
+              <span class="pts-value">${f.score} pts</span>
+            </div>
+            <div class="pts-bar-track">
+              <div class="pts-bar-fill" style="width: ${pct}%; background: ${pct >= 75 ? 'var(--risk-high)' : pct >= 45 ? 'var(--risk-mod)' : 'var(--risk-low)'};"></div>
+            </div>
+          </div>
+        `}).join('');
+      }
+    };
+
+    [simRainfall, simSoil, simSlope].forEach(slider => {
+      slider?.addEventListener('input', calcRisk);
+    });
+
+    calcRisk();
+  });
+</script>

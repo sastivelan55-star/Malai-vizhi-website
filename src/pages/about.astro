@@ -1,0 +1,467 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Navigation from '../components/Navigation.astro';
+import Footer from '../components/Footer.astro';
+import TeamCard from '../components/TeamCard.astro';
+---
+
+<BaseLayout
+  title="About MALAI VIZHI — Landslide Risk Monitoring Project"
+  description="MALAI VIZHI is a landslide risk monitoring and early-warning platform developed by Team HIVE. Learn about the project, the problem it addresses, and the technology behind it."
+>
+  <Navigation slot="nav" />
+
+  <!-- Page Hero -->
+  <section class="page-hero" aria-labelledby="about-hero-title">
+    <div class="container">
+      <div class="page-hero-inner">
+        <div class="section-label reveal">
+          <span class="label">About the Project</span>
+        </div>
+        <h1 class="display-lg reveal" id="about-hero-title">
+          About<br/><span style="color: var(--color-green-primary);">MALAI VIZHI</span>
+        </h1>
+        <p class="body-lg reveal" style="max-width: 620px; margin-top: var(--space-6);">
+          MALAI VIZHI is a landslide risk monitoring and early-warning platform designed to bring environmental data, terrain information, location intelligence and ground observations together in one understandable system.
+        </p>
+      </div>
+    </div>
+    <div class="page-hero-bg" aria-hidden="true">
+      <svg viewBox="0 0 1200 300" fill="none" preserveAspectRatio="xMidYMax meet">
+        <path d="M0 300 L0 200 Q150 160 300 150 Q450 140 600 120 Q750 100 900 130 Q1050 160 1200 140 L1200 300 Z" fill="#D8F3DC" opacity="0.5"/>
+        <path d="M0 300 L0 240 Q200 210 400 200 Q600 190 800 210 Q1000 230 1200 210 L1200 300 Z" fill="#B7E4C7" opacity="0.4"/>
+      </svg>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- THE PROBLEM -->
+  <section class="section" aria-labelledby="problem-about-heading">
+    <div class="container">
+      <div class="about-2col">
+        <div class="about-col-label">
+          <span class="label">01 / The Problem</span>
+        </div>
+        <div class="about-col-content">
+          <h2 class="display-md reveal" id="problem-about-heading">
+            Landslide risk is difficult to see until it is too late.
+          </h2>
+          <div class="divider reveal"></div>
+          <p class="body-lg reveal">
+            Landslides are among the most destructive natural hazards affecting mountain and hilly regions. They can occur rapidly, affect communities with little warning, and cause significant harm to people, infrastructure and livelihoods.
+          </p>
+          <p class="body-base reveal" style="margin-top: var(--space-4);">
+            The challenge is that the conditions that lead to a landslide — rising soil moisture, accumulating rainfall, steep slopes under stress — develop over time and across multiple environmental dimensions. No single measurement tells the complete story. Communities in high-risk areas often lack the tools to understand how risk is changing around them.
+          </p>
+          <div class="stat-row reveal" style="margin-top: var(--space-8);">
+            <div class="stat-item">
+              <p class="stat-title">Multi-Factor</p>
+              <p class="stat-desc">Landslide risk arises from combined environmental conditions, not a single cause</p>
+            </div>
+            <div class="stat-item">
+              <p class="stat-title">Time-Dependent</p>
+              <p class="stat-desc">Risk evolves as rainfall accumulates and soil saturation changes</p>
+            </div>
+            <div class="stat-item">
+              <p class="stat-title">Location-Specific</p>
+              <p class="stat-desc">Risk varies significantly based on local terrain and historical hazard context</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- THE IDEA -->
+  <section class="section" style="background: var(--color-bg-soft);" aria-labelledby="idea-heading">
+    <div class="container">
+      <div class="about-2col">
+        <div class="about-col-label">
+          <span class="label">02 / The Idea</span>
+        </div>
+        <div class="about-col-content">
+          <h2 class="display-md reveal" id="idea-heading">
+            What if monitoring and early warning could be made understandable?
+          </h2>
+          <div class="divider reveal"></div>
+          <p class="body-lg reveal">
+            MALAI VIZHI began with a straightforward question: could the multiple factors that contribute to landslide risk be brought together into a system that is understandable, accessible, and genuinely useful for communities and authorities?
+          </p>
+          <p class="body-base reveal" style="margin-top: var(--space-4);">
+            The name MALAI VIZHI reflects the core concept — a mountain-focused monitoring perspective. The project aims to combine environmental sensing, terrain analysis, geographic information and ground-level observation into a unified risk picture.
+          </p>
+          <div class="idea-highlights reveal" style="margin-top: var(--space-8);">
+            {[
+              { icon: '🌧', title: 'Combine Multiple Inputs', desc: 'Rainfall, soil moisture, terrain slope, and historical context together' },
+              { icon: '📊', title: 'Produce Understandable Output', desc: 'A risk score with explainable contributing factors' },
+              { icon: '🔔', title: 'Enable Early Warning', desc: 'Communicate changing risk conditions before they become emergencies' },
+              { icon: '🗺', title: 'Be Location-Aware', desc: 'Present risk in its geographic context — where people actually live' },
+            ].map(h => (
+              <div class="idea-highlight-item">
+                <span class="idea-icon" aria-hidden="true">{h.icon}</span>
+                <div>
+                  <p class="idea-title">{h.title}</p>
+                  <p class="idea-desc">{h.desc}</p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- THE TECHNOLOGY -->
+  <section class="section" aria-labelledby="tech-about-heading">
+    <div class="container">
+      <div class="about-2col">
+        <div class="about-col-label">
+          <span class="label">03 / The Technology</span>
+        </div>
+        <div class="about-col-content">
+          <h2 class="display-md reveal" id="tech-about-heading">
+            A structured, multi-factor approach to risk analysis.
+          </h2>
+          <div class="divider reveal"></div>
+          <p class="body-lg reveal">
+            MALAI VIZHI uses an empirical, multi-factor landslide risk analysis engine. Different environmental inputs — each measured in different units — are normalized into comparable factor scores, then combined using configured weights to produce a unified risk score.
+          </p>
+          <div class="tech-stack-mini reveal" style="margin-top: var(--space-8);">
+            <p class="heading-md" style="margin-bottom: var(--space-5);">Core Components</p>
+            <div class="tech-component-list">
+              {[
+                { name: 'Data Collection Layer', desc: 'Rainfall, soil moisture, terrain DEM, historical hazard data, GIS, sensors, citizen reports' },
+                { name: 'Data Processing', desc: 'Validation, normalization, availability checking across multiple data sources' },
+                { name: 'Multi-Factor Risk Analysis Engine', desc: 'Empirical approach combining normalized factor scores with configured weights' },
+                { name: 'Risk Score Output', desc: '0–100 score with LOW / MODERATE / HIGH classification and contributing factor breakdown' },
+                { name: 'Location-Based Alerting', desc: 'Geographic risk presentation and early warning communication' },
+              ].map((c, i) => (
+                <div class="tech-component-item reveal" style={`--di: ${i * 0.08}s`}>
+                  <span class="tech-comp-num">{String(i+1).padStart(2,'0')}</span>
+                  <div>
+                    <p class="tech-comp-name">{c.name}</p>
+                    <p class="tech-comp-desc">{c.desc}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- THE IMPACT -->
+  <section class="section" style="background: var(--color-bg-soft);" aria-labelledby="impact-heading">
+    <div class="container">
+      <div class="about-2col">
+        <div class="about-col-label">
+          <span class="label">04 / The Impact</span>
+        </div>
+        <div class="about-col-content">
+          <h2 class="display-md reveal" id="impact-heading">
+            Who can benefit from MALAI VIZHI?
+          </h2>
+          <div class="divider reveal"></div>
+          <p class="body-lg reveal">
+            MALAI VIZHI is designed as a tool for anyone who needs to understand landslide risk in a specific location — from communities living in mountain regions to authorities responsible for disaster preparedness.
+          </p>
+          <div class="impact-grid reveal" style="margin-top: var(--space-8);">
+            {[
+              { group: 'Local Communities', icon: '🏘', desc: 'Residents in mountain areas can understand risk in their location and act on early warnings' },
+              { group: 'District Authorities', icon: '🏛', desc: 'Officials can monitor risk across multiple locations and coordinate preparedness response' },
+              { group: 'Emergency Services', icon: '🚒', desc: 'Responders gain advance awareness of high-risk locations for resource pre-positioning' },
+              { group: 'Researchers', icon: '🔬', desc: 'Environmental and hazard researchers can use the framework to study multi-factor risk dynamics' },
+            ].map(i => (
+              <div class="impact-card card">
+                <div class="impact-icon" aria-hidden="true">{i.icon}</div>
+                <p class="impact-group">{i.group}</p>
+                <p class="impact-desc">{i.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="section-divider" />
+
+  <!-- TEAM -->
+  <section class="section section-lg" id="team" aria-labelledby="team-heading">
+    <div class="container">
+      <div style="text-align:center; margin-bottom: var(--space-16);">
+        <div class="section-label reveal" style="justify-content:center;">
+          <span class="label">Team HIVE</span>
+        </div>
+        <h2 class="display-md reveal" id="team-heading">The Team Behind MALAI VIZHI</h2>
+        <p class="body-lg reveal" style="max-width:560px; margin: var(--space-6) auto 0;">
+          HIVE is a student innovation team working on technology-driven solutions for real-world environmental and disaster-management challenges.
+        </p>
+      </div>
+
+      <div class="team-grid">
+        <TeamCard name="Team Member 01" role="Project Lead & System Design" index={1} />
+        <TeamCard name="Team Member 02" role="Data Processing & Risk Engine" index={2} />
+        <TeamCard name="Team Member 03" role="GIS & Frontend Development" index={3} />
+        <TeamCard name="Team Member 04" role="Research & Documentation" index={4} />
+      </div>
+
+      <div class="team-note reveal" style="margin-top: var(--space-12);">
+        <p class="highlight-box" style="text-align:center; max-width: 560px; margin: 0 auto; font-size: var(--text-sm); color: var(--color-text-muted); line-height: 1.7;">
+          Built as a student innovation project exploring how technology can support landslide risk awareness in mountain communities. Team member details can be updated here.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: calc(var(--nav-height) + var(--space-20)) 0 var(--space-16);
+    background: linear-gradient(170deg, #FFFFFF 0%, #F0F7F0 100%);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .page-hero-bg {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    pointer-events: none;
+  }
+
+  .page-hero-bg svg { width: 100%; height: auto; }
+
+  .page-hero-inner {
+    position: relative;
+    z-index: 1;
+    max-width: 800px;
+  }
+
+  /* About 2col layout */
+  .about-2col {
+    display: grid;
+    grid-template-columns: 200px 1fr;
+    gap: var(--space-16);
+    align-items: start;
+  }
+
+  .about-col-label {
+    padding-top: var(--space-2);
+    position: sticky;
+    top: calc(var(--nav-height-scrolled) + var(--space-6));
+  }
+
+  .about-col-content {
+    max-width: 720px;
+  }
+
+  @media (max-width: 860px) {
+    .about-2col { grid-template-columns: 1fr; }
+    .about-col-label { position: static; }
+  }
+
+  /* Stat row */
+  .stat-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+  }
+
+  @media (max-width: 640px) {
+    .stat-row { grid-template-columns: 1fr; }
+  }
+
+  .stat-item {
+    padding: var(--space-5);
+    background: var(--color-green-pale);
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(45,106,79,0.15);
+  }
+
+  .stat-title {
+    font-weight: 700;
+    font-size: var(--text-sm);
+    color: var(--color-green-deep);
+    margin-bottom: var(--space-2);
+  }
+
+  .stat-desc {
+    font-size: var(--text-xs);
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+  }
+
+  /* Idea highlights */
+  .idea-highlights {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .idea-highlight-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding: var(--space-4) var(--space-5);
+    background: white;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+  }
+
+  .idea-highlight-item:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateX(4px);
+    border-color: rgba(45,106,79,0.3);
+  }
+
+  .idea-icon {
+    font-size: 1.25rem;
+    line-height: 1;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .idea-title {
+    font-weight: 700;
+    font-size: var(--text-sm);
+    color: var(--color-text-primary);
+    margin-bottom: 2px;
+  }
+
+  .idea-desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.6;
+  }
+
+  /* Tech components */
+  .tech-component-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    background: white;
+  }
+
+  .tech-component-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-4);
+    padding: var(--space-5) var(--space-6);
+    border-bottom: 1px solid var(--color-border);
+    transition: background var(--transition-fast);
+  }
+
+  .tech-component-item:last-child { border-bottom: none; }
+
+  .tech-component-item:hover { background: var(--color-bg-soft); }
+
+  .tech-comp-num {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    color: var(--color-green-primary);
+    letter-spacing: 0.08em;
+    flex-shrink: 0;
+    padding-top: 2px;
+    min-width: 24px;
+  }
+
+  .tech-comp-name {
+    font-weight: 700;
+    font-size: var(--text-sm);
+    color: var(--color-text-primary);
+    margin-bottom: 3px;
+  }
+
+  .tech-comp-desc {
+    font-size: var(--text-xs);
+    color: var(--color-text-muted);
+    line-height: 1.65;
+  }
+
+  /* Impact grid */
+  .impact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-5);
+  }
+
+  @media (max-width: 640px) {
+    .impact-grid { grid-template-columns: 1fr; }
+  }
+
+  .impact-card {
+    padding: var(--space-6) var(--space-6);
+  }
+
+  .impact-icon {
+    font-size: 2rem;
+    margin-bottom: var(--space-4);
+    line-height: 1;
+  }
+
+  .impact-group {
+    font-weight: 700;
+    font-size: var(--text-base);
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+  }
+
+  .impact-desc {
+    font-size: var(--text-sm);
+    color: var(--color-text-muted);
+    line-height: 1.7;
+  }
+
+  /* Team grid */
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-6);
+  }
+
+  @media (max-width: 1024px) { .team-grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (max-width: 480px)  { .team-grid { grid-template-columns: 1fr 1fr; gap: var(--space-4); } }
+</style>
+
+<script>
+  (() => {
+    if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+    gsap.registerPlugin(ScrollTrigger);
+
+    document.querySelectorAll('.reveal').forEach(el => {
+      gsap.from(el, {
+        opacity: 0, y: 28, duration: 0.8, ease: 'power2.out',
+        scrollTrigger: { trigger: el, start: 'top 88%', once: true }
+      });
+    });
+
+    gsap.from('.team-grid > *', {
+      opacity: 0, y: 30, scale: 0.95, duration: 0.6,
+      stagger: 0.1, ease: 'back.out(1.5)',
+      scrollTrigger: { trigger: '.team-grid', start: 'top 75%', once: true }
+    });
+
+    gsap.from('.impact-card', {
+      opacity: 0, y: 24, duration: 0.6,
+      stagger: 0.1, ease: 'power2.out',
+      scrollTrigger: { trigger: '.impact-grid', start: 'top 75%', once: true }
+    });
+  })();
+</script>

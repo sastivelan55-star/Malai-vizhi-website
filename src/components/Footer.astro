@@ -1,0 +1,336 @@
+---
+// Footer — MALAI VIZHI v2.0
+---
+
+<footer class="footer" role="contentinfo">
+  <!-- Terrain decorative top -->
+  <div class="footer-terrain" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" fill="none" preserveAspectRatio="none">
+      <path d="M0 80L0 40 Q120 20 240 30 Q360 40 480 15 Q600 0 720 10 Q840 20 960 5 Q1080 0 1200 15 Q1320 30 1440 20 L1440 80 Z" fill="#0F1E3C"/>
+      <path d="M0 80L0 55 Q180 35 360 45 Q540 55 720 40 Q900 25 1080 38 Q1260 50 1440 42 L1440 80 Z" fill="#1A3D2B" opacity="0.6"/>
+    </svg>
+  </div>
+
+  <div class="footer-body">
+    <div class="container">
+      <div class="footer-grid">
+        <!-- Brand -->
+        <div class="footer-brand">
+          <div class="footer-logo">
+            <div class="footer-logo-mark" aria-hidden="true">
+              <svg width="32" height="32" viewBox="0 0 28 28" fill="none">
+                <path d="M2 26L8 14L14 20L20 8L26 16" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M2 26H26" stroke="rgba(255,255,255,0.4)" stroke-width="1.5" stroke-linecap="round"/>
+                <path d="M4 22Q8 19 12 20Q16 21 20 18" stroke="rgba(255,255,255,0.25)" stroke-width="0.75" fill="none"/>
+              </svg>
+            </div>
+            <div>
+              <p class="footer-logo-name">MALAI VIZHI</p>
+              <p class="footer-logo-tagline">Seeing the Risk Before the Landslide.</p>
+            </div>
+          </div>
+          <p class="footer-desc">
+            A location-based landslide risk monitoring and early-warning platform for the North Eastern Region of India. Multi-factor environmental risk analysis, GIS mapping, citizen reporting, and early warning.
+          </p>
+          <div class="footer-badges">
+            <span class="badge badge-demo"><span class="badge-dot"></span>TEAM HIVE</span>
+            <span class="badge badge-historical">NER INDIA</span>
+            <span class="badge badge-modeled">v1.0</span>
+          </div>
+        </div>
+
+        <!-- Navigation -->
+        <div class="footer-col">
+          <p class="footer-col-title">Sections</p>
+          <ul class="footer-links">
+            <li><a href="#problem">The Problem</a></li>
+            <li><a href="#how-it-works">How It Works</a></li>
+            <li><a href="#data">Data Sources</a></li>
+            <li><a href="#risk-engine">Risk Engine</a></li>
+            <li><a href="#gis">GIS Map</a></li>
+            <li><a href="#citizen-reports">Citizen Reports</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <p class="footer-col-title">More</p>
+          <ul class="footer-links">
+            <li><a href="#early-warning">Early Warning</a></li>
+            <li><a href="#simulation">Simulation</a></li>
+            <li><a href="#technology">Technology</a></li>
+            <li><a href="#architecture">Architecture</a></li>
+            <li><a href="#limitations">Limitations</a></li>
+            <li><a href="#team">Team HIVE</a></li>
+          </ul>
+        </div>
+
+        <!-- API Status -->
+        <div class="footer-col">
+          <p class="footer-col-title">System Status</p>
+          <div class="footer-status-panel">
+            <div class="footer-status-item" id="footer-health">
+              <span class="footer-status-dot" id="footer-health-dot"></span>
+              <div>
+                <p class="footer-status-name">Backend API</p>
+                <p class="footer-status-val" id="footer-health-val">Checking…</p>
+              </div>
+            </div>
+            <div class="footer-status-item">
+              <span class="footer-status-dot" style="background: var(--status-demo);"></span>
+              <div>
+                <p class="footer-status-name">Historical Events</p>
+                <p class="footer-status-val">3 Verified Records</p>
+              </div>
+            </div>
+            <div class="footer-status-item">
+              <span class="footer-status-dot" style="background: var(--status-demo);"></span>
+              <div>
+                <p class="footer-status-name">Active Alerts</p>
+                <p class="footer-status-val" id="footer-alerts-val">Loading…</p>
+              </div>
+            </div>
+            <div class="footer-status-item">
+              <span class="footer-status-dot" style="background: var(--status-unavail);"></span>
+              <div>
+                <p class="footer-status-name">Live Sensor Data</p>
+                <p class="footer-status-val">SENSOR-READY / UNAVAILABLE</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer-bottom">
+      <div class="container">
+        <div class="footer-bottom-inner">
+          <p class="footer-copy">
+            © 2025–2026 Team HIVE · MALAI VIZHI · Landslide Risk Monitoring & Early Warning · North Eastern Region of India
+          </p>
+          <div class="footer-disclaimers">
+            <p>
+              <strong>Important:</strong> MALAI VIZHI provides environmental risk assessment, not guaranteed landslide prediction.
+              Risk scores indicate conditions based on available data. Actual events depend on many physical factors.
+              All illustrative values are clearly labeled.
+            </p>
+            <p style="margin-top: var(--s2);">
+              Data: Open-Meteo (Precipitation, Soil Moisture) · Copernicus Global DEM (Terrain) ·
+              Geological Survey of India (Historical Hazard) · GIS datasets
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    background: var(--bg-navy);
+    color: rgba(255,255,255,0.8);
+    position: relative;
+  }
+
+  .footer-terrain {
+    line-height: 0;
+    background: var(--bg-base);
+  }
+
+  .footer-terrain svg { width: 100%; height: 80px; display: block; }
+
+  .footer-body { padding: var(--s16) 0 0; }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr 1.5fr;
+    gap: var(--s12);
+    padding-bottom: var(--s16);
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  @media (max-width: 1024px) {
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 640px) {
+    .footer-grid { grid-template-columns: 1fr; gap: var(--s8); }
+  }
+
+  /* Brand col */
+  .footer-logo {
+    display: flex;
+    align-items: center;
+    gap: var(--s4);
+    margin-bottom: var(--s5);
+  }
+
+  .footer-logo-mark {
+    width: 44px;
+    height: 44px;
+    background: rgba(255,255,255,0.1);
+    border-radius: var(--r-md);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid rgba(255,255,255,0.15);
+  }
+
+  .footer-logo-name {
+    font-family: var(--font-display);
+    font-size: var(--text-base);
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: var(--text-white);
+    line-height: 1.2;
+  }
+
+  .footer-logo-tagline {
+    font-size: var(--text-xs);
+    color: rgba(255,255,255,0.5);
+    letter-spacing: 0.02em;
+    line-height: 1.4;
+    margin-top: 2px;
+  }
+
+  .footer-desc {
+    font-size: var(--text-sm);
+    line-height: 1.75;
+    color: rgba(255,255,255,0.6);
+    margin-bottom: var(--s5);
+    max-width: 380px;
+  }
+
+  .footer-badges { display: flex; gap: var(--s2); flex-wrap: wrap; }
+
+  /* Footer columns */
+  .footer-col-title {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: var(--s5);
+  }
+
+  .footer-links {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+  }
+
+  .footer-links li a {
+    font-size: var(--text-sm);
+    color: rgba(255,255,255,0.65);
+    transition: color var(--ease-fast);
+    line-height: 1.4;
+  }
+
+  .footer-links li a:hover { color: var(--text-white); }
+
+  /* Status panel */
+  .footer-status-panel {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s4);
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: var(--r-lg);
+    padding: var(--s5);
+  }
+
+  .footer-status-item {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--s3);
+  }
+
+  .footer-status-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--status-unavail);
+    flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .footer-status-name {
+    font-family: var(--font-mono);
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.5);
+    margin-bottom: 2px;
+  }
+
+  .footer-status-val {
+    font-size: var(--text-xs);
+    color: rgba(255,255,255,0.75);
+    font-weight: 500;
+  }
+
+  /* Bottom bar */
+  .footer-bottom {
+    background: rgba(0,0,0,0.25);
+    padding: var(--s8) 0;
+  }
+
+  .footer-bottom-inner {
+    display: flex;
+    gap: var(--s8);
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .footer-copy {
+    font-size: var(--text-xs);
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.02em;
+    flex-shrink: 0;
+    line-height: 1.6;
+  }
+
+  .footer-disclaimers {
+    font-size: var(--text-xs);
+    line-height: 1.7;
+    color: rgba(255,255,255,0.35);
+    flex: 1;
+  }
+
+  .footer-disclaimers strong { color: rgba(255,255,255,0.55); }
+</style>
+
+<script>
+  (() => {
+    // Health check
+    fetch('https://backend-malaivizhi2-0.onrender.com/api/health', { signal: AbortSignal.timeout(6000) })
+      .then(r => r.json())
+      .then(data => {
+        const dot = document.getElementById('footer-health-dot');
+        const val = document.getElementById('footer-health-val');
+        if (data.status === 'ok') {
+          if (dot) { dot.style.background = 'var(--status-live)'; dot.style.animation = 'livePulse 2s infinite'; }
+          if (val) val.textContent = `ONLINE · v${data.version}`;
+        }
+      })
+      .catch(() => {
+        const val = document.getElementById('footer-health-val');
+        if (val) val.textContent = 'UNREACHABLE / DEMO MODE';
+      });
+
+    // Alerts count
+    fetch('https://backend-malaivizhi2-0.onrender.com/api/alerts', { signal: AbortSignal.timeout(6000) })
+      .then(r => r.json())
+      .then(data => {
+        const val = document.getElementById('footer-alerts-val');
+        if (val && Array.isArray(data)) {
+          const high = data.filter(a => a.severity === 'HIGH').length;
+          val.textContent = `${data.length} Alerts · ${high} HIGH`;
+        }
+      })
+      .catch(() => {});
+  })();
+</script>

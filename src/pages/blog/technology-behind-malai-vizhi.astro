@@ -1,0 +1,373 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Navigation from '../../components/Navigation.astro';
+import Footer from '../../components/Footer.astro';
+---
+
+<BaseLayout
+  title="Technology Behind MALAI VIZHI — Blog | Team HIVE"
+  description="The engineering approach: DEM slope derivation, empirical risk analysis, GIS integration and the Astro + React + Flask technology stack."
+>
+  <Navigation slot="nav" />
+
+  <article class="blog-article">
+    <header class="blog-article-hero">
+      <div class="container-text">
+        <div class="blog-article-meta">
+          <a href="/blog" class="blog-back">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M10 4L6 8l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            All Articles
+          </a>
+          <span class="blog-article-category">Engineering</span>
+          <time class="blog-article-date">September 17, 2025</time>
+          <span class="blog-article-time">10 min read</span>
+        </div>
+        <h1 class="display-xl blog-article-title">Technology Behind MALAI VIZHI</h1>
+        <p class="blog-article-lead">
+          DEM slope derivation, empirical risk analysis, GIS integration, and the full technology stack — explained precisely.
+        </p>
+        <div class="blog-article-author">
+          <div class="blog-author-avatar">H</div>
+          <div>
+            <span class="blog-author-name">Team HIVE</span>
+            <span class="blog-author-role">MALAI VIZHI Project Team</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="blog-article-body-wrap">
+      <aside class="blog-toc" aria-label="Table of contents">
+        <p class="blog-toc-title">CONTENTS</p>
+        <ol class="blog-toc-list">
+          <li class="blog-toc-item"><a href="#approach">Technical Approach</a></li>
+          <li class="blog-toc-item"><a href="#dem">DEM Slope Derivation</a></li>
+          <li class="blog-toc-item"><a href="#risk-engine">Risk Engine Implementation</a></li>
+          <li class="blog-toc-item"><a href="#backend">Backend (Python / Flask)</a></li>
+          <li class="blog-toc-item"><a href="#frontend">Frontend (React / Vite)</a></li>
+          <li class="blog-toc-item"><a href="#mobile">Mobile (Capacitor)</a></li>
+          <li class="blog-toc-item"><a href="#gis">GIS (Leaflet)</a></li>
+          <li class="blog-toc-item"><a href="#pwa">PWA & Offline Mode</a></li>
+          <li class="blog-toc-item"><a href="#security">Security Architecture</a></li>
+          <li class="blog-toc-item"><a href="#api">The MALAI VIZHI API</a></li>
+        </ol>
+      </aside>
+
+      <div class="article-body blog-article-content">
+        <h2 id="approach">Technical Approach: Empirical, Not Machine Learning</h2>
+        <p>
+          MALAI VIZHI's risk engine is an <strong>empirical, physics-informed multi-factor analysis system</strong>. This distinction matters.
+        </p>
+        <p>
+          Many modern environmental risk systems use machine learning — training a model on historical disaster data and then asking the model to predict future events. This approach requires large, high-quality training datasets, produces outputs that are not always explainable (black-box behavior), and can fail unpredictably outside the distribution of training data.
+        </p>
+        <p>
+          MALAI VIZHI takes a different approach. Instead of a trained model, it implements a structured, configurable analysis that directly reflects known physical relationships:
+        </p>
+        <ul>
+          <li>High rainfall → increased infiltration → elevated risk contribution</li>
+          <li>High soil moisture → reduced shear strength → elevated risk contribution</li>
+          <li>Steep slope → increased gravitational stress → elevated risk contribution</li>
+        </ul>
+        <p>
+          Every factor in the risk score can be traced back to its measurement. The system is fully explainable — a score of 65 can be decomposed into: "35% came from rainfall factor (0.82), 20% from soil moisture factor (0.65), ..." This explainability is critical for trust and for authority decision-making.
+        </p>
+
+        <h2 id="dem">DEM Slope Derivation</h2>
+        <p>
+          Terrain slope is a fundamental determinant of landslide susceptibility. MALAI VIZHI derives slope angle from the Copernicus Global DEM (GLO-30), which provides elevation values at approximately 30-meter horizontal resolution.
+        </p>
+        <p>
+          The derivation process works as follows:
+        </p>
+        <ul>
+          <li><strong>Step 1:</strong> Given a target geographic coordinate (latitude, longitude), query the DEM for elevation at the point and at neighboring grid cells (east, west, north, south).</li>
+          <li><strong>Step 2:</strong> Calculate the elevation difference between the point and each neighbor.</li>
+          <li><strong>Step 3:</strong> Compute the horizontal distance between grid cells (based on coordinate spacing and Earth radius).</li>
+          <li><strong>Step 4:</strong> For each direction, compute the gradient: elevation difference / horizontal distance.</li>
+          <li><strong>Step 5:</strong> The maximum gradient across all directions represents the steepest slope.</li>
+          <li><strong>Step 6:</strong> Convert to slope angle in degrees: <code>angle = arctan(gradient)</code></li>
+          <li><strong>Step 7:</strong> Normalize the slope angle to a 0–1 factor score using a calibration function.</li>
+        </ul>
+        <p>
+          At GLO-30 resolution, a 90-meter lateral profile is used (three grid cells in each direction). This produces slope estimates appropriate for regional-scale risk assessment. Higher resolution DEM data (if available) would improve the precision of slope estimation, particularly for narrow ridges and gullies.
+        </p>
+
+        <h2 id="risk-engine">Risk Engine Implementation</h2>
+        <p>
+          The risk engine is implemented in Python and integrates with the Flask backend. Its core logic follows this sequence:
+        </p>
+        <ul>
+          <li>Accept a geographic coordinate and optional sensor data as input</li>
+          <li>Query Open-Meteo for rainfall (1h, 24h) and soil moisture at the coordinate</li>
+          <li>Query the Copernicus DEM API to derive slope angle</li>
+          <li>Look up historical susceptibility for the coordinate from stored records</li>
+          <li>Normalize each measurement to a factor score using per-factor calibration functions</li>
+          <li>Apply configured weights to compute the combined risk score</li>
+          <li>Determine the risk level classification based on configured thresholds</li>
+          <li>Compute the confidence score from data availability and freshness</li>
+          <li>Return the full assessment: score, level, factor breakdown, dominant factor, confidence</li>
+        </ul>
+        <p>
+          The engine is designed to be configurable. Normalization function parameters (e.g., what rainfall intensity maps to a factor score of 1.0) and factor weights can be adjusted per deployment to reflect local conditions.
+        </p>
+
+        <h2 id="backend">Backend: Python / Flask</h2>
+        <p>
+          The MALAI VIZHI backend is built with Python and the Flask web framework. It exposes a REST API with JSON response format. Key backend components include:
+        </p>
+        <ul>
+          <li><strong>Flask application:</strong> Handles routing, request parsing, and response formatting</li>
+          <li><strong>SQLite database:</strong> Stores citizen reports, alerts, sensor registrations, and historical events</li>
+          <li><strong>Authentication module:</strong> Manages user registration, login, bearer token issuance, and password reset</li>
+          <li><strong>Risk engine module:</strong> Implements the multi-factor assessment algorithm</li>
+          <li><strong>Alert engine:</strong> Monitors risk assessments and creates alert records when thresholds are exceeded</li>
+          <li><strong>Notification module:</strong> Manages Web Push subscriptions and notification delivery</li>
+          <li><strong>GIS data module:</strong> Serves layer data (villages, infrastructure) for map display</li>
+        </ul>
+        <p>
+          The backend is deployed on Render (free tier) and is accessible at <code>backend-malaivizhi2-0.onrender.com</code>. The free tier causes the backend to spin down during periods of inactivity, which may cause the first request after inactivity to have a delay.
+        </p>
+
+        <h2 id="frontend">Frontend: React / Vite</h2>
+        <p>
+          The MALAI VIZHI web application frontend is built with React and TypeScript, using Vite as the build tool and development server. The frontend communicates with the backend via REST API calls to the hosted backend URL.
+        </p>
+        <p>
+          Key frontend features include:
+        </p>
+        <ul>
+          <li>Interactive risk assessment form with real-time results</li>
+          <li>Leaflet.js GIS map with multiple data layers</li>
+          <li>Citizen report submission form with photo upload and GPS capture</li>
+          <li>Active alerts feed with severity and location information</li>
+          <li>Authority dashboard with detailed factor breakdowns</li>
+          <li>Historical events visualization</li>
+          <li>Route risk analysis display</li>
+          <li>PWA manifest and service worker for offline capabilities</li>
+        </ul>
+
+        <h2 id="mobile">Mobile: Capacitor (Android)</h2>
+        <p>
+          The MALAI VIZHI Android application is built using Capacitor, which wraps the React web application in a native Android container. This approach allows the same codebase to run on both web and Android without maintaining separate implementations.
+        </p>
+        <p>
+          Capacitor provides access to native device capabilities including local push notifications (for alert delivery on Android), camera access for photo capture in citizen reports, GPS access for location tagging, and file system access for offline data caching.
+        </p>
+
+        <h2 id="gis">GIS: Leaflet.js</h2>
+        <p>
+          Geographic visualization is implemented using Leaflet.js, an open-source JavaScript library for interactive maps. Leaflet renders map tiles from OpenStreetMap and overlays dynamic data layers:
+        </p>
+        <ul>
+          <li><strong>Alerts layer:</strong> Animated pulse markers showing active alert locations, color-coded by severity</li>
+          <li><strong>Historical events layer:</strong> Static markers showing verified historical landslide locations</li>
+          <li><strong>Citizen reports layer:</strong> Markers showing submitted citizen observations</li>
+          <li><strong>Villages layer:</strong> Point markers for monitored communities</li>
+          <li><strong>Infrastructure layer:</strong> Markers for roads, bridges, and critical infrastructure with risk status</li>
+        </ul>
+        <p>
+          Each marker includes a detailed popup with relevant data. Layer visibility can be toggled by the user. All GIS coordinate data is in WGS84 (EPSG:4326) format.
+        </p>
+
+        <h2 id="pwa">PWA & Offline Mode</h2>
+        <p>
+          MALAI VIZHI implements Progressive Web App features to support use in areas with unreliable network connectivity, which is relevant given the remote terrain of the NER India deployment context.
+        </p>
+        <p>
+          The PWA implementation includes:
+        </p>
+        <ul>
+          <li>Service worker for caching static assets and cached API responses</li>
+          <li>Manifest file enabling installation to device home screen</li>
+          <li>Offline page displaying the last cached risk state and location data</li>
+          <li>Queue for citizen reports submitted while offline — synchronized when connectivity is restored</li>
+          <li>Visual indicators distinguishing LIVE, CACHED, and QUEUED data states</li>
+        </ul>
+
+        <h2 id="security">Security Architecture</h2>
+        <p>
+          MALAI VIZHI implements several security measures appropriate for the application context:
+        </p>
+        <ul>
+          <li><strong>Password hashing:</strong> User passwords are stored as secure hashes using bcrypt (or equivalent) — never in plaintext</li>
+          <li><strong>Bearer token authentication:</strong> API endpoints that require authentication use bearer token headers issued on login</li>
+          <li><strong>Secure password reset:</strong> Password reset uses time-limited tokens sent via a configured email channel</li>
+          <li><strong>Input validation:</strong> Server-side validation on all POST request fields</li>
+          <li><strong>Duplicate detection:</strong> Photo submissions are checked for duplicates using image hash comparison combined with location-time proximity</li>
+          <li><strong>Report verification:</strong> Citizen reports require authority verification before being marked as confirmed ground events</li>
+        </ul>
+
+        <h2 id="api">The MALAI VIZHI REST API</h2>
+        <p>
+          The MALAI VIZHI backend exposes a REST API that all clients (web, Android) use to access data and submit information. Key endpoints include:
+        </p>
+        <ul>
+          <li><code>GET /api/health</code> — System health check</li>
+          <li><code>POST /api/risk/assess</code> — Request a risk assessment for a coordinate</li>
+          <li><code>GET /api/alerts</code> — Fetch active alerts</li>
+          <li><code>GET /api/historical-events</code> — Fetch verified historical landslide events</li>
+          <li><code>POST /api/reports</code> — Submit a citizen report</li>
+          <li><code>GET /api/reports</code> — Fetch citizen reports</li>
+          <li><code>GET /api/gis/layers</code> — Fetch GIS layer data (villages, infrastructure)</li>
+          <li><code>GET /api/impact/priority-locations</code> — Fetch high-priority impact locations</li>
+          <li><code>POST /api/sensors/register</code> — Register a sensor</li>
+          <li><code>POST /api/sensors/telemetry</code> — Submit sensor telemetry</li>
+        </ul>
+        <p>
+          All API responses are in JSON format. The API is designed to be used by third-party integrations in the future, enabling other systems to query MALAI VIZHI risk data for monitored locations.
+        </p>
+
+        <div class="blog-article-nav">
+          <a href="/blog/how-malai-vizhi-works" class="blog-nav-link">
+            <span class="nav-label">← PREVIOUS ARTICLE</span>
+            <span class="nav-title">How MALAI VIZHI Works</span>
+          </a>
+          <div></div>
+        </div>
+      </div>
+    </div>
+  </article>
+
+  <Footer slot="footer" />
+</BaseLayout>
+
+<style>
+  .blog-article-hero {
+    padding: calc(var(--nav-h) + var(--s16)) 0 var(--s12);
+    background: linear-gradient(165deg, #FAFAFA 0%, var(--green-bg) 100%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .blog-article-meta {
+    display: flex;
+    align-items: center;
+    gap: var(--s5);
+    flex-wrap: wrap;
+    margin-bottom: var(--s6);
+  }
+
+  .blog-back {
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.10em;
+    text-transform: uppercase;
+    color: var(--green-primary);
+    transition: gap var(--ease-base);
+  }
+
+  .blog-back:hover { gap: var(--s1); }
+
+  .blog-article-category {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--green-primary);
+    background: var(--green-bg);
+    padding: 4px 10px;
+    border-radius: var(--r-full);
+    border: 1px solid var(--border-green);
+  }
+
+  .blog-article-date, .blog-article-time {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+  }
+
+  .blog-article-title { margin: var(--s4) 0 var(--s6); }
+
+  .blog-article-lead {
+    font-size: var(--text-xl);
+    line-height: 1.65;
+    color: var(--text-secondary);
+    margin-bottom: var(--s6);
+  }
+
+  .blog-article-author {
+    display: flex;
+    align-items: center;
+    gap: var(--s4);
+  }
+
+  .blog-author-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--green-primary);
+    color: white;
+    font-family: var(--font-mono);
+    font-weight: 700;
+    font-size: var(--text-base);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .blog-author-name {
+    font-weight: 700;
+    font-size: var(--text-sm);
+    color: var(--text-navy);
+    display: block;
+  }
+
+  .blog-author-role {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    display: block;
+  }
+
+  .blog-article-body-wrap {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: var(--s12) var(--s8);
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: var(--s12);
+    align-items: flex-start;
+  }
+
+  @media (max-width: 900px) {
+    .blog-article-body-wrap { grid-template-columns: 1fr; }
+    .blog-toc { display: none; }
+  }
+
+  .blog-toc {
+    position: sticky;
+    top: calc(var(--nav-h) + var(--s8));
+  }
+
+  .blog-toc-title {
+    font-family: var(--font-mono);
+    font-size: var(--text-xs);
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: var(--s4);
+  }
+
+  .blog-toc-list { display: flex; flex-direction: column; gap: 0; }
+
+  .blog-article-nav {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--s5);
+    margin-top: var(--s12);
+    padding-top: var(--s8);
+    border-top: 1px solid var(--border);
+  }
+
+  @media (max-width: 640px) { .blog-article-nav { grid-template-columns: 1fr; } }
+</style>
