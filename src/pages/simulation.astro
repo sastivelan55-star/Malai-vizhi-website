@@ -98,24 +98,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const simRainfall = document.getElementById('sim-rainfall');
-    const simSoil = document.getElementById('sim-soil');
-    const simSlope = document.getElementById('sim-slope');
+    const simRainfall = document.getElementById('sim-rainfall') as HTMLInputElement | null;
+    const simSoil = document.getElementById('sim-soil') as HTMLInputElement | null;
+    const simSlope = document.getElementById('sim-slope') as HTMLInputElement | null;
     const simScore = document.getElementById('sim-score');
     const simLevel = document.getElementById('sim-level');
-    const simArcFill = document.getElementById('sim-arc-fill');
-    const simConfBar = document.getElementById('sim-confidence-bar');
-    const simConfVal = document.getElementById('sim-confidence-val');
+    const simArcFill = document.getElementById('sim-arc-fill') as HTMLElement | null;
     const factorBreakdown = document.getElementById('factor-breakdown');
 
     const calcRisk = () => {
-      const rain = parseFloat(simRainfall?.value || 110);
-      const soil = parseFloat(simSoil?.value || 80);
-      const slope = parseFloat(simSlope?.value || 15);
+      const rain = parseFloat(simRainfall?.value || '110');
+      const soil = parseFloat(simSoil?.value || '80');
+      const slope = parseFloat(simSlope?.value || '15');
 
-      if (document.getElementById('sim-rainfall-val')) document.getElementById('sim-rainfall-val').textContent = `${Math.round(rain)} mm`;
-      if (document.getElementById('sim-soil-val')) document.getElementById('sim-soil-val').textContent = `${Math.round(soil)} %`;
-      if (document.getElementById('sim-slope-val')) document.getElementById('sim-slope-val').textContent = `${Math.round(slope)} °`;
+      const simRainfallVal = document.getElementById('sim-rainfall-val');
+      if (simRainfallVal) simRainfallVal.textContent = `${Math.round(rain)} mm`;
+      const simSoilVal = document.getElementById('sim-soil-val');
+      if (simSoilVal) simSoilVal.textContent = `${Math.round(soil)} %`;
+      const simSlopeVal = document.getElementById('sim-slope-val');
+      if (simSlopeVal) simSlopeVal.textContent = `${Math.round(slope)} °`;
 
       // PTS Calculation
       const rainPts = (Math.min(1, rain / 400)) * 40;
@@ -128,8 +129,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
       [simRainfall, simSoil, simSlope].forEach(slider => {
         if (slider) {
-          const pct = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
-          slider.style.setProperty('--pct', `${pct}%`);
+          const s = slider as HTMLInputElement;
+          const val = parseFloat(s.value);
+          const min = parseFloat(s.min);
+          const max = parseFloat(s.max);
+          const pct = ((val - min) / (max - min)) * 100;
+          s.style.setProperty('--pct', `${pct}%`);
         }
       });
 

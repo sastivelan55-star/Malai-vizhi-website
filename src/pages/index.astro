@@ -3453,7 +3453,7 @@ import TechGlossary from '../components/TechGlossary.astro';
 
       if (!reducedMotion) {
         // Generic reveal for .gsap-reveal-up elements
-        gsap.utils.toArray('.gsap-reveal-up').forEach(el => {
+        gsap.utils.toArray('.gsap-reveal-up').forEach((el: any) => {
           gsap.fromTo(el,
             { opacity: 0, y: 40 },
             {
@@ -3464,7 +3464,7 @@ import TechGlossary from '../components/TechGlossary.astro';
         });
 
         // Right reveals
-        gsap.utils.toArray('.gsap-reveal-right').forEach(el => {
+        gsap.utils.toArray('.gsap-reveal-right').forEach((el: any) => {
           gsap.fromTo(el,
             { opacity: 0, x: 50 },
             {
@@ -3475,7 +3475,7 @@ import TechGlossary from '../components/TechGlossary.astro';
         });
 
         // Scale reveals
-        gsap.utils.toArray('.gsap-scale').forEach(el => {
+        gsap.utils.toArray('.gsap-scale').forEach((el: any) => {
           gsap.fromTo(el,
             { opacity: 0, scale: 0.94 },
             {
@@ -3496,7 +3496,7 @@ import TechGlossary from '../components/TechGlossary.astro';
           .from('.hero-panel', { opacity: 0, x: 40, duration: 0.8, ease: 'power2.out' }, '-=0.6');
 
         // Factor bars
-        gsap.utils.toArray('.factor-bar-fill').forEach(bar => {
+        gsap.utils.toArray('.factor-bar-fill').forEach((bar: any) => {
           ScrollTrigger.create({
             trigger: bar,
             start: 'top 90%',
@@ -3522,8 +3522,9 @@ import TechGlossary from '../components/TechGlossary.astro';
       } else {
         // No animation — just show elements
         document.querySelectorAll('.gsap-reveal-up, .gsap-reveal-right, .gsap-scale').forEach(el => {
-          el.style.opacity = '1';
-          el.style.transform = 'none';
+          const htmlEl = el as HTMLElement;
+          htmlEl.style.opacity = '1';
+          htmlEl.style.transform = 'none';
         });
       }
     };
@@ -3531,55 +3532,55 @@ import TechGlossary from '../components/TechGlossary.astro';
     initGSAP();
 
     // ── Hero Canvas — Rainfall ──
-    const heroCanvas = document.getElementById('hero-canvas');
+    const heroCanvas = document.getElementById('hero-canvas') as HTMLCanvasElement | null;
     if (heroCanvas) {
       const ctx = heroCanvas.getContext('2d');
-      heroCanvas.width = heroCanvas.offsetWidth;
-      heroCanvas.height = heroCanvas.offsetHeight;
+      (heroCanvas as HTMLCanvasElement).width = heroCanvas.offsetWidth;
+      (heroCanvas as HTMLCanvasElement).height = heroCanvas.offsetHeight;
 
       const particles = Array.from({ length: 60 }, () => ({
-        x: Math.random() * heroCanvas.width,
-        y: Math.random() * heroCanvas.height,
+        x: Math.random() * (heroCanvas as HTMLCanvasElement).width,
+        y: Math.random() * (heroCanvas as HTMLCanvasElement).height,
         speed: 1 + Math.random() * 2,
         length: 8 + Math.random() * 16,
         opacity: 0.1 + Math.random() * 0.25,
       }));
 
       const drawHero = () => {
-        ctx.clearRect(0, 0, heroCanvas.width, heroCanvas.height);
-        ctx.strokeStyle = 'rgba(45, 106, 79, 0.4)';
-        ctx.lineWidth = 1;
+        ctx!.clearRect(0, 0, (heroCanvas as HTMLCanvasElement).width, (heroCanvas as HTMLCanvasElement).height);
+        ctx!.strokeStyle = 'rgba(45, 106, 79, 0.4)';
+        ctx!.lineWidth = 1;
 
         particles.forEach(p => {
-          ctx.globalAlpha = p.opacity;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(p.x - 2, p.y + p.length);
-          ctx.stroke();
+          ctx!.globalAlpha = p.opacity;
+          ctx!.beginPath();
+          ctx!.moveTo(p.x, p.y);
+          ctx!.lineTo(p.x - 2, p.y + p.length);
+          ctx!.stroke();
 
           p.y += p.speed;
-          if (p.y > heroCanvas.height) {
+          if (p.y > (heroCanvas as HTMLCanvasElement).height) {
             p.y = -p.length;
-            p.x = Math.random() * heroCanvas.width;
+            p.x = Math.random() * (heroCanvas as HTMLCanvasElement).width;
           }
         });
 
-        ctx.globalAlpha = 1;
+        ctx!.globalAlpha = 1;
         requestAnimationFrame(drawHero);
       };
 
       drawHero();
 
       window.addEventListener('resize', () => {
-        heroCanvas.width = heroCanvas.offsetWidth;
-        heroCanvas.height = heroCanvas.offsetHeight;
+        (heroCanvas as HTMLCanvasElement).width = heroCanvas.offsetWidth;
+        (heroCanvas as HTMLCanvasElement).height = heroCanvas.offsetHeight;
       });
     }
 
     // ── Rainfall Canvas (environment section) ──
     const rainCanvas = document.getElementById('rainfall-canvas');
     if (rainCanvas) {
-      const rctx = rainCanvas.getContext('2d');
+      const rctx = (rainCanvas as HTMLCanvasElement).getContext('2d');
       const rParticles = Array.from({ length: 50 }, () => ({
         x: Math.random() * 300,
         y: Math.random() * 160,
@@ -3589,16 +3590,16 @@ import TechGlossary from '../components/TechGlossary.astro';
       }));
 
       const drawRain = () => {
-        rctx.clearRect(0, 0, 300, 160);
-        rctx.strokeStyle = '#60A5FA';
-        rctx.lineWidth = 1;
+        rctx!.clearRect(0, 0, 300, 160);
+        rctx!.strokeStyle = '#60A5FA';
+        rctx!.lineWidth = 1;
 
         rParticles.forEach(p => {
-          rctx.globalAlpha = p.opacity;
-          rctx.beginPath();
-          rctx.moveTo(p.x, p.y);
-          rctx.lineTo(p.x - 1, p.y + p.length);
-          rctx.stroke();
+          rctx!.globalAlpha = p.opacity;
+          rctx!.beginPath();
+          rctx!.moveTo(p.x, p.y);
+          rctx!.lineTo(p.x - 1, p.y + p.length);
+          rctx!.stroke();
 
           p.y += p.speed;
           if (p.y > 160) {
@@ -3607,7 +3608,7 @@ import TechGlossary from '../components/TechGlossary.astro';
           }
         });
 
-        rctx.globalAlpha = 1;
+        rctx!.globalAlpha = 1;
         requestAnimationFrame(drawRain);
       };
 
@@ -3631,7 +3632,7 @@ import TechGlossary from '../components/TechGlossary.astro';
       const minElev = Math.min(...elevations);
       const maxElev = Math.max(...elevations);
 
-      elevations.forEach((elev, i) => {
+      elevations.forEach((elev) => {
         const cell = document.createElement('div');
         cell.className = 'dem-cell';
         const t = (elev - minElev) / (maxElev - minElev);
@@ -3685,7 +3686,7 @@ import TechGlossary from '../components/TechGlossary.astro';
 
     stages.forEach(stage => {
       const activate = () => {
-        const id = stage.dataset.stage;
+        const id = (stage as HTMLElement).dataset.stage;
         stages.forEach(s => s.classList.remove('active'));
         details.forEach(d => d.classList.remove('visible'));
         stage.classList.add('active');
@@ -3693,13 +3694,13 @@ import TechGlossary from '../components/TechGlossary.astro';
       };
 
       stage.addEventListener('click', activate);
-      stage.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
+      (stage as HTMLElement).addEventListener('keydown', (e: KeyboardEvent) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); } });
     });
 
     // ── Interactive Risk Score Simulator ──
-    const simRainfall = document.getElementById('sim-rainfall');
-    const simSoil = document.getElementById('sim-soil');
-    const simSlope = document.getElementById('sim-slope');
+    const simRainfall = document.getElementById('sim-rainfall') as HTMLInputElement | null;
+    const simSoil = document.getElementById('sim-soil') as HTMLInputElement | null;
+    const simSlope = document.getElementById('sim-slope') as HTMLInputElement | null;
     const simScore = document.getElementById('sim-score');
     const simLevel = document.getElementById('sim-level');
     const simArcFill = document.getElementById('sim-arc-fill');
@@ -3708,14 +3709,17 @@ import TechGlossary from '../components/TechGlossary.astro';
     const factorBreakdown = document.getElementById('factor-breakdown');
 
     const calcRisk = () => {
-      const rain = parseFloat(simRainfall?.value || 110);
-      const soil = parseFloat(simSoil?.value || 80);
-      const slope = parseFloat(simSlope?.value || 15);
+      const rain = parseFloat(simRainfall?.value || '110');
+      const soil = parseFloat(simSoil?.value || '80');
+      const slope = parseFloat(simSlope?.value || '15');
 
       // Display values
-      if (document.getElementById('sim-rainfall-val')) document.getElementById('sim-rainfall-val').textContent = `${Math.round(rain)} mm`;
-      if (document.getElementById('sim-soil-val')) document.getElementById('sim-soil-val').textContent = `${Math.round(soil)} %`;
-      if (document.getElementById('sim-slope-val')) document.getElementById('sim-slope-val').textContent = `${Math.round(slope)} °`;
+      const simRainfallVal = document.getElementById('sim-rainfall-val');
+      if (simRainfallVal) simRainfallVal.textContent = `${Math.round(rain)} mm`;
+      const simSoilVal = document.getElementById('sim-soil-val');
+      if (simSoilVal) simSoilVal.textContent = `${Math.round(soil)} %`;
+      const simSlopeVal = document.getElementById('sim-slope-val');
+      if (simSlopeVal) simSlopeVal.textContent = `${Math.round(slope)} °`;
 
       // PTS Calculation (illustrating backend landslide_model_v1)
       const rainPts = (Math.min(1, rain / 400)) * 40; // Max 40 pts
@@ -3729,8 +3733,12 @@ import TechGlossary from '../components/TechGlossary.astro';
       // Update slider backgrounds
       [simRainfall, simSoil, simSlope].forEach(slider => {
         if (slider) {
-          const pct = ((slider.value - slider.min) / (slider.max - slider.min)) * 100;
-          slider.style.setProperty('--pct', `${pct}%`);
+          const s = slider as HTMLInputElement;
+          const val = parseFloat(s.value);
+          const min = parseFloat(s.min);
+          const max = parseFloat(s.max);
+          const pct = ((val - min) / (max - min)) * 100;
+          (slider as HTMLElement).style.setProperty('--pct', `${pct}%`);
         }
       });
 
@@ -3826,7 +3834,7 @@ import TechGlossary from '../components/TechGlossary.astro';
       btn.addEventListener('click', () => {
         document.querySelectorAll('.whatif-btn[data-type="rain"]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        const val = btn.dataset.val;
+        const val = (btn as HTMLElement).dataset.val;
         rainMod = val === '0' ? 0 : parseFloat(val) / 100;
         updateWhatIf();
       });
@@ -3836,7 +3844,7 @@ import TechGlossary from '../components/TechGlossary.astro';
       btn.addEventListener('click', () => {
         document.querySelectorAll('.whatif-btn[data-type="soil"]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        const val = btn.dataset.val;
+        const val = (btn as HTMLElement).dataset.val;
         soilMod = val === '0' ? 0 : parseFloat(val) / 100;
         updateWhatIf();
       });
@@ -3845,7 +3853,7 @@ import TechGlossary from '../components/TechGlossary.astro';
     document.getElementById('whatif-reset')?.addEventListener('click', () => {
       rainMod = 0; soilMod = 0;
       document.querySelectorAll('.whatif-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.val === '0');
+        btn.classList.toggle('active', (btn as HTMLElement).dataset.val === '0');
       });
       updateWhatIf();
     });
@@ -3858,18 +3866,18 @@ import TechGlossary from '../components/TechGlossary.astro';
 
     failureBtn?.addEventListener('click', () => {
       // Reset
-      failureSteps.forEach(step => { step.style.opacity = '0.25'; });
-      failureBtn.disabled = true;
+      failureSteps.forEach(step => { (step as HTMLElement).style.opacity = '0.25'; });
+      (failureBtn as HTMLButtonElement).disabled = true;
       failureBtn.textContent = 'Simulating…';
 
       // Animate sequentially
       failureSteps.forEach((step, i) => {
         setTimeout(() => {
-          step.style.opacity = '1';
-          step.style.transform = 'scale(1.02)';
-          setTimeout(() => { step.style.transform = 'scale(1)'; }, 200);
+          (step as HTMLElement).style.opacity = '1';
+          (step as HTMLElement).style.transform = 'scale(1.02)';
+          setTimeout(() => { (step as HTMLElement).style.transform = 'scale(1)'; }, 200);
           if (i === failureSteps.length - 1) {
-            failureBtn.disabled = false;
+            (failureBtn as HTMLButtonElement).disabled = false;
             failureBtn.innerHTML = `<span>Reset & Replay</span>`;
           }
         }, i * 600);
