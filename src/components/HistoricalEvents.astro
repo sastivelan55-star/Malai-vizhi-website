@@ -136,10 +136,10 @@
   (() => {
     const timeline = document.getElementById('history-timeline');
 
-    const sevIcon = (s) => {
-      if (s === 'CRITICAL') return '🔴';
-      if (s === 'MAJOR') return '🟠';
-      return '🔵';
+    const sevIcon = (s: string) => {
+      if (s === 'HIGH') return '🔴';
+      if (s === 'MODERATE') return '🟠';
+      return '🟡';
     };
 
     fetch('https://backend-malaivizhi2-0.onrender.com/api/historical-events', { signal: AbortSignal.timeout(10000) })
@@ -149,7 +149,7 @@
         timeline.innerHTML = '';
 
         // Sort by date descending
-        const sorted = [...data].sort((a, b) => new Date(b.date) - new Date(a.date));
+        const sorted = [...data].sort((a, b) => new Date(b.date as string).getTime() - new Date(a.date as string).getTime());
 
         sorted.forEach((event, i) => {
           const item = document.createElement('div');

@@ -143,8 +143,8 @@
     document.querySelectorAll('.glossary-trigger').forEach(trigger => {
       trigger.addEventListener('click', () => {
         const item = trigger.closest('.glossary-item');
-        item.classList.toggle('open');
-        trigger.setAttribute('aria-expanded', item.classList.contains('open').toString());
+        item?.classList.toggle('open');
+        trigger.setAttribute('aria-expanded', (item?.classList.contains('open') || false).toString());
       });
     });
   })();

@@ -133,10 +133,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <script>
   document.addEventListener('DOMContentLoaded', () => {
-    const latInput = document.getElementById('param-lat');
-    const lngInput = document.getElementById('param-lng');
-    const urlBar = document.getElementById('api-url');
-    const sendBtn = document.getElementById('btn-send');
+    const latInput = document.getElementById('param-lat') as HTMLInputElement | null;
+    const lngInput = document.getElementById('param-lng') as HTMLInputElement | null;
+    const urlBar = document.getElementById('api-url') as HTMLInputElement | null;
+    const sendBtn = document.getElementById('btn-send') as HTMLButtonElement | null;
     const output = document.getElementById('json-output');
     const loader = document.getElementById('loader');
     const resTime = document.getElementById('res-time');
@@ -144,27 +144,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     const presets = document.querySelectorAll('.preset-btn');
 
     const updateUrl = () => {
-      urlBar.value = `https://backend-malaivizhi2-0.onrender.com/api/risk/evaluate?lat=${latInput.value}&lng=${lngInput.value}`;
+      if (urlBar && latInput && lngInput) {
+        urlBar.value = `https://backend-malaivizhi2-0.onrender.com/api/risk/evaluate?lat=${latInput.value}&lng=${lngInput.value}`;
+      }
     };
 
-    latInput.addEventListener('input', updateUrl);
-    lngInput.addEventListener('input', updateUrl);
+    latInput?.addEventListener('input', updateUrl);
+    lngInput?.addEventListener('input', updateUrl);
 
     presets.forEach(btn => {
       btn.addEventListener('click', (e) => {
-        latInput.value = e.target.dataset.lat;
-        lngInput.value = e.target.dataset.lng;
+        const target = e.target as HTMLElement;
+        if (latInput && target.dataset.lat) latInput.value = target.dataset.lat;
+        if (lngInput && target.dataset.lng) lngInput.value = target.dataset.lng;
         updateUrl();
       });
     });
 
     // Syntax Highlighting JSON
-    function syntaxHighlight(json) {
+    function syntaxHighlight(json: any) {
       if (typeof json != 'string') {
         json = JSON.stringify(json, undefined, 2);
       }
       json = json.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-      return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match) {
+      return json.replace(/("(\\u[a-zA-Z0-9]{4}|\\[^u]|[^\\"])*"(\s*:)?|\b(true|false|null)\b|-?\d+(?:\.\d*)?(?:[eE][+\-]?\d+)?)/g, function (match: string) {
         var cls = 'color: #79c0ff;'; // number
         if (/^"/.test(match)) {
           if (/:$/.test(match)) {
@@ -181,32 +184,34 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       });
     }
 
-    sendBtn.addEventListener('click', async () => {
-      loader.style.display = 'flex';
-      output.style.opacity = '0.5';
+    sendBtn?.addEventListener('click', async () => {
+      if (loader) loader.style.display = 'flex';
+      if (output) output.style.opacity = '0.5';
       const start = performance.now();
       
       try {
-        const response = await fetch(urlBar.value);
+        const response = await fetch(urlBar?.value || '');
         const end = performance.now();
         const data = await response.json();
         
         const timeStr = Math.round(end - start);
-        resTime.innerHTML = `Time: <span style="color: #c9d1d9;">${timeStr} ms</span>`;
+        if (resTime) resTime.innerHTML = `Time: <span style="color: #c9d1d9;">${timeStr} ms</span>`;
         
-        if (response.ok) {
-          resStatus.innerHTML = `Status: <span style="color: #3fb950;">${response.status} OK</span>`;
-        } else {
-          resStatus.innerHTML = `Status: <span style="color: #ff7b72;">${response.status} ERR</span>`;
+        if (resStatus) {
+          if (response.ok) {
+            resStatus.innerHTML = `Status: <span style="color: #3fb950;">${response.status} OK</span>`;
+          } else {
+            resStatus.innerHTML = `Status: <span style="color: #ff7b72;">${response.status} ERR</span>`;
+          }
         }
 
-        output.innerHTML = syntaxHighlight(data);
+        if (output) output.innerHTML = syntaxHighlight(data);
       } catch (error) {
-        resStatus.innerHTML = `Status: <span style="color: #ff7b72;">FAILED</span>`;
-        output.innerHTML = `<span style="color: #ff7b72;">Error: ${error.message}</span>\n\nThe backend server may be spinning up from cold sleep (Render free tier). Please wait 30 seconds and try again.`;
+        if (resStatus) resStatus.innerHTML = `Status: <span style="color: #ff7b72;">FAILED</span>`;
+        if (output) output.innerHTML = `<span style="color: #ff7b72;">Error: ${(error as Error).message}</span>\n\nThe backend server may be spinning up from cold sleep (Render free tier). Please wait 30 seconds and try again.`;
       } finally {
-        loader.style.display = 'none';
-        output.style.opacity = '1';
+        if (loader) loader.style.display = 'none';
+        if (output) output.style.opacity = '1';
       }
     });
   });

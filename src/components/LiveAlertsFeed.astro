@@ -207,16 +207,16 @@
     const badge = document.getElementById('alerts-live-badge');
     const timestamp = document.getElementById('alerts-timestamp');
 
-    const severityIcon = (s) => {
-      if (s === 'HIGH') return '⚠';
-      if (s === 'MODERATE') return '↑';
+    const severityIcon = (s: string) => {
+      if (s === 'HIGH') return '🔴';
+      if (s === 'MODERATE') return '🟠';
       return '→';
     };
 
-    const formatTime = (ts) => {
+    const formatTime = (ts: string) => {
       try {
-        const d = new Date(ts.replace(' ', 'T') + '+00:00');
-        return d.toLocaleString('en-IN', { timeZone: 'Asia/Kolkata', dateStyle: 'short', timeStyle: 'short' }) + ' IST';
+        const d = new Date(ts);
+        return d.toLocaleTimeString('en-IN', { timeZone: 'Asia/Kolkata', hour: '2-digit', minute: '2-digit' }) + ' IST';
       } catch { return ts; }
     };
 

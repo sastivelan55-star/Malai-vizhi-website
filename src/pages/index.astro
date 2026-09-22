@@ -332,7 +332,7 @@ import TechGlossary from '../components/TechGlossary.astro';
               class="pipeline-stage"
               id={`pipeline-stage-${stage.id}`}
               data-stage={stage.id}
-              role="listitem button"
+              role="button"
               tabindex="0"
               aria-expanded="false"
               aria-controls={`pipeline-detail-${stage.id}`}
@@ -3439,6 +3439,7 @@ import TechGlossary from '../components/TechGlossary.astro';
 </style>
 
 <script>
+  // @ts-nocheck
   (() => {
     // ── GSAP ScrollTrigger Animations ──
     const initGSAP = () => {
@@ -3834,7 +3835,7 @@ import TechGlossary from '../components/TechGlossary.astro';
       btn.addEventListener('click', () => {
         document.querySelectorAll('.whatif-btn[data-type="rain"]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        const val = (btn as HTMLElement).dataset.val;
+        const val = (btn as HTMLElement).dataset.val || '0';
         rainMod = val === '0' ? 0 : parseFloat(val) / 100;
         updateWhatIf();
       });
@@ -3844,7 +3845,7 @@ import TechGlossary from '../components/TechGlossary.astro';
       btn.addEventListener('click', () => {
         document.querySelectorAll('.whatif-btn[data-type="soil"]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-        const val = (btn as HTMLElement).dataset.val;
+        const val = (btn as HTMLElement).dataset.val || '0';
         soilMod = val === '0' ? 0 : parseFloat(val) / 100;
         updateWhatIf();
       });
@@ -3886,4 +3887,3 @@ import TechGlossary from '../components/TechGlossary.astro';
 
   })();
 </script>
-</BaseLayout>

@@ -244,28 +244,41 @@ const { value = 68, label = "Risk Score" } = Astro.props;
     gsap.registerPlugin(ScrollTrigger);
 
     const targetScore = 68;
-    const arcFull = 365;
-
     // Map 0-100 to stroke-dashoffset (365 = full arc hidden, 0 = fully visible)
-    function scoreToOffset(score) {
-      return arcFull - (score / 100) * arcFull;
+    function scoreToOffset(score: number) {
+      const radius = 90;
+      const circumference = Math.PI * radius; // semi-circle
+      const pct = score / 100;
+      return circumference * (1 - pct);
     }
 
-    // Map 0-100 to needle rotation (-110 to +110 degrees)
-    function scoreToRotation(score) {
-      return -110 + (score / 100) * 220;
+    function scoreToRotation(score: number) {
+      // 0 to 100 -> -90deg to 90deg
+      return -90 + (score / 100) * 180;
     }
 
-    function getArcColor(score) {
-      if (score < 33) return '#16A34A';
-      if (score < 67) return '#D97706';
-      return '#DC2626';
+    function getArcColor(score: number) {
+      if (score >= 75) return 'var(--risk-high)';
+      if (score >= 45) return 'var(--risk-mod)';
+      return 'var(--risk-low)';
     }
 
-    function getLevelText(score) {
-      if (score < 33) return { text: 'LOW', cls: 'risk-low-bg' };
-      if (score < 67) return { text: 'MODERATE', cls: 'risk-mod-bg' };
-      return { text: 'HIGH', cls: 'risk-high-bg' };
+    function getLevelText(score: number) {
+      if (score >= 75) return { text: 'HIGH', cls: 'risk-high-bg' };
+      if (score >= 45) return { text: 'MODERATE', cls: 'risk-mod-bg' };
+      return { text: 'LOW', cls: 'risk-low-bg' };
+    }
+
+    function updateMeter(score: number) {
+      const v = Math.round(score);
+      if (scoreText) scoreText.textContent = String(v);
+      if (progressArc) {
+        progressArc.style.strokeDashoffset = String(scoreToOffset(v));
+        progressArc.style.stroke = getArcColor(v);
+      }
+      if (needle) {
+        needle.setAttribute('transform', `rotate(${scoreToRotation(v)}, 140, 168)`);
+      }
     }
 
     const progressArc = document.getElementById('risk-progress-arc');
